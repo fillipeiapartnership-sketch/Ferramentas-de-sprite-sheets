@@ -1,0 +1,73 @@
+FUNDOZERO LOCAL v1.2 - PNG, GIF, WEBP ANIMADO E VIDEO
+===================================================
+Ferramenta para Windows 11. IA sem API nem envio de arquivos ao servidor.
+
+COMO INSTALAR
+1. Extraia o ZIP completamente em uma pasta no PC.
+2. Execute INICIAR.bat (duplo clique).
+3. Caso solicitado, instale Python 3.12 (64 bits) e execute novamente.
+4. A primeira execução instala dependências via internet. Na primeira
+   utilização do modelo de IA escolhido, seu peso também será baixado.
+5. Após essas etapas, processe os arquivos offline.
+
+IMAGENS ESTATICAS
+- Escolha PNG/JPG/WEBP/BMP/TIFF e clique em "Remover fundo com IA".
+- Ajuste borda, suavidade e resíduos. Use pincel Apagar/Restaurar, se preciso.
+- Exporte um PNG com canal alfa e resolução original.
+
+GIFS E WEBP ANIMADOS
+- Importe um GIF animado ou WebP animado.
+- A tela mostra o PRIMEIRO quadro para analisar o resultado. O botão
+  "Remover fundo com IA" recorta somente a PREVIA desse quadro.
+- Para remover o fundo da ANIMACAO INTEIRA, selecione saida "gif" ou "webp"
+  e clique em "Processar GIF / video completo".
+- Todos os quadros sao processados e a duracao de cada quadro e o loop
+  sao preservados (respeitando a precisao do formato).
+- GIF usa transparencia limitada a 1 bit: alguns cabelos e bordas finas
+  podem parecer serrilhados. WEBP animado preserva alfa suave e e a melhor
+  opcao para detalhes, quando o programa de destino for compativel.
+- Os pinceis desenhados sobre a previa nao acompanham objetos em movimento
+  e NAO sao aplicados automaticamente aos demais quadros. Os ajustes
+  globais de borda/suavidade/limpeza sao aplicados a todos os quadros.
+
+VIDEOS
+- Importe MP4, MOV, MKV, WEBM, AVI, M4V, WMV, MPEG/MPG.
+- Clique em "Processar GIF / video completo" para recortar cada quadro.
+- Exportacao em WEBM VP9 com transparencia real (canal alfa).
+- A primeira faixa de audio do original e mantida, quando houver, como Opus.
+- MP4/H.264 comum NAO preserva transparencia: por isso a saida e WebM.
+- Algumas plataformas e editores nao exibem alfa de WebM corretamente.
+  Confirme compatibilidade no editor antes de usar em projetos grandes.
+- A taxa de quadros segue o FPS detectado na entrada. Videos com FPS variavel
+  podem sofrer pequenas diferencas de tempo, pois a saida e FPS constante.
+- O video e lido e processado quadro por quadro sem carregar tudo na memoria.
+- A IA desta versao usa CPU: videos longos, 1080p/4K ou modelos detalhados
+  podem ser MUITO lentos, inclusive em maquinas com GPU dedicada.
+
+PROCESSAMENTO EM LOTE
+1. Coloque as imagens, GIFs e videos na mesma pasta.
+2. Escolha exportacao "Um ZIP" ou "Arquivos separados".
+3. Selecione "Remover fundos em lote" e a pasta de entrada.
+4. Os estaticos viram PNG; GIFs viram GIF ou WEBP; videos viram WEBM.
+5. Em ZIP, tudo fica em um pacote; videos sao adicionados sem carregar
+   seus bytes inteiros na memoria. Falhas individuais sao registradas em
+   ERROS_DO_LOTE.txt, se pelo menos um arquivo foi processado.
+6. Arquivos originais nao sao substituidos; saidas recebem _sem_fundo.
+
+LIMITACOES E NOTAS IMPORTANTES
+- Nenhuma IA garante recorte perfeito em todos os cenarios e em cada quadro.
+  Pode haver cintilacao nas bordas dos videos por diferencas de segmentacao.
+- O processamento E local, mas necessita baixar as dependencias/modelos uma
+  vez; nao ha API, assinatura ou upload de dados.
+- Ha risco de esgotar espaco em disco com videos grandes, arquivos temporarios
+  ou ZIPs de dezenas de gigabytes. Confirme o espaco livre previamente.
+- Nem todos os players suportam WebM VP9 com alfa; o canal pode parecer preto
+  ou opaco num player nao compativel, mesmo se os bytes preservarem o alfa.
+- Os modelos possuem licencas proprias: confira os termos para uso comercial.
+- Para erros, consulte "erros.log" na pasta da ferramenta.
+
+FERRAMENTAS E LICENCAS
+Motor de segmentacao: rembg (Daniel Gatis), MIT - github.com/danielgatis/rembg
+Processamento GIF/WebP: Pillow - python-pillow.github.io
+Video e audio: FFmpeg incluido na dependencia imageio-ffmpeg
+Nao sao incluidos modelos nem executaveis de IA pre-baixados neste ZIP.

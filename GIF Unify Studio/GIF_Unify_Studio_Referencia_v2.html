@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GIF Unify Studio | Editor local de GIFs</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1019;--panel:#151d2b;--panel2:#111925;--line:#293548;--ink:#edf3ff;--muted:#a1b0c6;--blue:#7c9cff;--violet:#b696ff;--mint:#72e8bd;--danger:#ff8499}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 1200px 620px at 15% -20%,#27375d 0,transparent 73%),radial-gradient(ellipse 780px 700px at 95% 0,#2a2443 0,transparent 68%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}.app{max-width:1440px;margin:auto;padding:30px 27px 45px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:25px}.logo{display:flex;align-items:center;gap:14px}.mark{width:48px;height:48px;background:linear-gradient(140deg,#91b4ff,#9a72ef);border-radius:15px;display:grid;place-items:center;box-shadow:0 12px 32px #627af63b}.mark svg{width:28px;height:28px}.logo b{font-size:21px;letter-spacing:-.6px}.logo small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.status{font-size:12px;color:var(--mint);border:1px solid #417561;border-radius:20px;background:#19382e75;padding:8px 13px}.intro h1{font-size:clamp(28px,3vw,40px);font-weight:760;line-height:1.14;letter-spacing:-1.4px;margin:6px 0 10px}.intro h1 span{color:var(--blue)}.intro p{color:var(--muted);max-width:760px;line-height:1.55;font-size:14px;margin:0 0 24px}.drop{position:relative;border:1.5px dashed #657da4;border-radius:20px;min-height:150px;background:linear-gradient(115deg,#1d2c46a8,#181e30b0);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;gap:16px;transition:.18s;margin-bottom:22px}.drop.drag{border-color:var(--mint);background:#1b3c43}.drop-icon{width:56px;height:56px;border-radius:18px;background:#33476a;display:grid;place-items:center;font-size:31px;color:#d4e1ff}.drop h2{font-size:17px;margin:0 0 5px;font-weight:700}.drop p{margin:0;color:var(--muted);font-size:13px}.drop input{display:none}.btn{border:0;padding:11px 16px;border-radius:11px;background:#2b3a52;color:#ebf1ff;font-weight:650;font-size:13px;transition:.15s}.btn:hover:not(:disabled){filter:brightness(1.15)}.primary{background:linear-gradient(120deg,#7694ff,#9b76ff);color:#101524;box-shadow:0 9px 22px #6170cf32}.ghost{background:transparent;border:1px solid var(--line)}.danger{color:var(--danger);border-color:#784052}.layout{display:grid;grid-template-columns:320px minmax(0,1fr) 310px;gap:16px;align-items:start}.panel{border:1px solid var(--line);background:linear-gradient(155deg,#1a2434 0,#141c29 100%);border-radius:17px;overflow:hidden;min-height:380px}.panelhead{display:flex;justify-content:space-between;align-items:center;padding:19px 18px 14px;gap:8px;border-bottom:1px solid #ffffff0c}.panelhead h3{font-size:15px;letter-spacing:-.2px;margin:0}.panelhead small{font-size:12px;color:var(--muted)}.files{max-height:555px;overflow:auto;padding:9px}.file{display:flex;align-items:center;gap:11px;width:100%;border:1px solid transparent;background:transparent;border-radius:12px;padding:9px 7px;text-align:left;margin-bottom:5px;color:inherit;cursor:pointer}.file.active{border-color:#677ff975;background:#33446b64}.file:hover{background:#30415a5c}.thumb{width:58px;height:58px;flex:0 0 58px;border-radius:9px;background:linear-gradient(135deg,#dbe5f7,#7e96b0);overflow:hidden;display:grid;place-items:center}.thumb img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:auto}.filetxt{min-width:0;flex:1}.filetxt strong{font-size:12.5px;display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.filetxt small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.delete{border:0;color:#cbd6e9;font-size:19px;background:transparent;padding:5px 4px}.delete:hover{color:var(--danger)}.sel{accent-color:#9aa9ff;width:16px;height:16px;cursor:pointer}.listfoot{padding:15px;display:flex;gap:8px;border-top:1px solid var(--line);flex-wrap:wrap}.empty{padding:35px 16px;text-align:center;color:var(--muted);line-height:1.6;font-size:13px}.preview-panel{padding:0 17px 17px}.previewheader{padding-left:0;padding-right:0}.comparison{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-top:17px}.viewtitle{font-size:12px;color:#dce8ff;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}.viewtitle span{font-size:10px;color:var(--muted)}.stage{border:1px solid #4c607c;border-radius:13px;background:radial-gradient(circle at 27% 20%,#c6d9eb,#6f87a8 60%,#48627a);aspect-ratio:1/1;min-height:170px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.stage img{max-width:100%;max-height:100%;object-fit:contain;image-rendering:auto}.stage canvas{width:100%;height:100%;object-fit:contain}.stage .hint{color:#1e2e48;font-weight:600;font-size:13px;max-width:140px;text-align:center}.stage::before{content:'';position:absolute;inset:0;background:linear-gradient(transparent 60%,#2c415028);pointer-events:none}.metarow{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}.metric{padding:9px 11px;background:#223149;border:1px solid #33465e;border-radius:10px;flex:1;min-width:95px}.metric strong{font-size:14px;display:block}.metric small{font-size:10px;color:var(--muted);display:block;margin-top:3px}.info{margin-top:15px;font-size:12px;color:#b8c6dc;line-height:1.55;padding:12px;border-radius:11px;background:#172b38;border:1px solid #315063}.info b{color:var(--mint)}.tool-body{padding:18px}.group{margin-bottom:20px}.group-title{font-weight:740;font-size:12.5px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between}.group-title span{font-weight:400;color:var(--muted);font-size:11px}.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}.control label{display:block;font-size:11px;color:#b6c4dc;margin-bottom:7px}.control input[type=number],.control select{width:100%;background:#0d1522;border:1px solid #3b4a62;color:#edf3ff;padding:10px;border-radius:9px;outline:0;min-width:0}.control input:focus{border-color:var(--blue)}.divider{height:1px;background:var(--line);margin:18px 0}.slider-row{display:flex;justify-content:space-between;font-size:11px;color:#b6c4dc;gap:10px}.slider-row strong{color:white}input[type=range]{width:100%;accent-color:#9c93ff;margin:11px 0 4px}.remove-toggle{width:100%;padding:13px 11px;text-align:left;border:1px solid #445672;border-radius:12px;background:#172437;color:var(--ink);display:flex;align-items:center;gap:10px;font-size:12px;font-weight:690}.remove-toggle.on{background:#233c3e;border-color:#55ba97}.toggle-light{width:12px;height:12px;border-radius:50%;background:#6c809c;box-shadow:0 0 0 3px #6c809c33}.on .toggle-light{background:#77ebbc;box-shadow:0 0 0 3px #77ebbc30}.subhint{color:var(--muted);font-size:11px;line-height:1.5;margin:8px 0 13px}.options{display:none}.options.visible{display:block}.colorrow{display:flex;gap:10px;align-items:center}.colorrow input[type=color]{width:42px;height:37px;padding:3px;background:#0d1522;border:1px solid #3b4a62;border-radius:9px}.controls-note{color:var(--muted);font-size:11px;line-height:1.5;margin:0}.exportbar{display:flex;justify-content:space-between;align-items:center;gap:15px;border:1px solid #3b4c67;border-radius:17px;background:linear-gradient(115deg,#1b2740,#191d31);margin-top:18px;padding:17px 21px}.exportbar strong{font-size:14px}.exportbar small{display:block;margin-top:6px;color:var(--muted);font-size:12px}.actions{display:flex;gap:10px;align-items:center}.progress{display:none;height:7px;background:#2d3850;border-radius:5px;overflow:hidden;margin-top:12px}.progress div{height:100%;background:linear-gradient(90deg,#7deac2,#899cff);width:0%;transition:width .2s}.progress.show{display:block}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);max-width:90vw;padding:13px 18px;background:#253954;color:white;border:1px solid #6380a3;box-shadow:0 15px 40px #0009;border-radius:12px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;z-index:10}.toast.show{opacity:1}.foot{margin:20px 0 0;color:#8090a9;font-size:11px;text-align:center}.busyLayer{display:none;position:absolute;inset:0;background:#101a2ecb;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#e8f0ff;font-weight:700;font-size:13px;z-index:2}.busyLayer.show{display:flex}.spinner{width:28px;height:28px;border:3px solid #8195b84d;border-top-color:#b0bfff;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(max-width:1180px){.layout{grid-template-columns:280px minmax(0,1fr)}.tool-panel{grid-column:1/-1}.tool-body{display:grid;grid-template-columns:1fr 1fr;gap:0 25px}.tool-body .divider{display:none}}@media(max-width:680px){.app{padding:17px 12px 25px}.top{align-items:start}.status{font-size:10px}.layout{grid-template-columns:1fr}.tool-panel{grid-column:auto}.tool-body{display:block}.drop{flex-direction:column}.comparison{gap:8px}.stage{min-height:120px}.exportbar{flex-direction:column;align-items:stretch}.actions{justify-content:space-between}.btn{font-size:12px}}
+
+/* Fluxo obrigatório de padronização com referência */
+.upload-flow{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px}.reference-card{border:1.5px solid #7d98e0;border-radius:18px;background:linear-gradient(120deg,#27385b,#1d2b46 57%,#272445);padding:18px 20px;transition:.2s;min-width:0}.reference-card.ready{border-color:#70dabb;background:linear-gradient(115deg,#21423e,#192d3c 55%,#232b48)}.reference-card.drag{border-color:#e2d5ff;box-shadow:0 0 0 3px #849bff4d}.step-label{display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.1px;font-weight:750;color:#d5ddff}.step-num{border-radius:9px;background:linear-gradient(135deg,#94aaff,#bb8fff);color:#11172b;padding:7px 9px;font-size:13px}.step-required{margin-left:auto;letter-spacing:0;color:#c6daff;font-size:10px}.reference-content{display:flex;align-items:center;gap:15px;margin-top:16px;min-height:96px}.ref-thumb{width:84px;height:90px;flex:0 0 84px;border-radius:13px;background:radial-gradient(circle at 35% 15%,#b6cade,#68819c);display:flex;align-items:center;justify-content:center;color:#243b5c;font-size:36px;overflow:hidden}.ref-thumb img{max-width:100%;max-height:100%;object-fit:contain}.ref-copy{flex:1;min-width:0}.ref-copy h2{font-size:16px;margin:0 0 8px}.ref-copy p{font-size:11.5px;line-height:1.5;color:#cad5e6;margin:0}.ref-numbers{font-size:11px;color:#7fe6c5;margin-top:9px;line-height:1.55}.ref-actions{display:flex;flex-direction:column;gap:7px;flex:0 0 auto}.ref-actions .btn{max-width:190px;white-space:nowrap}.drop{margin:0;min-height:160px;justify-content:space-around}.step-caption{font-size:10px;color:#b7cfff;font-weight:760;letter-spacing:1.2px;margin-bottom:8px}.targets-locked{opacity:.56;cursor:not-allowed;filter:saturate(.55)}.targets-locked .btn{cursor:not-allowed}.targets-locked.drag{opacity:.95}.ref-size-readout{border:1px solid #536d8a;background:linear-gradient(115deg,#263953,#1b293b);padding:16px;border-radius:11px;font-size:15px;color:#e9f2ff;font-weight:700}.include-reference{display:flex;align-items:center;gap:6px;color:#d8e5fa;font-size:11px;white-space:nowrap}.include-reference input{accent-color:#88baff}.file .ref-chip{font-size:9px;border:1px solid #76c7b0;border-radius:20px;padding:3px 6px;color:#82e7c7;margin-left:5px}.preview-warning{color:#ffd899;background:#47392288;border:1px solid #a47c42;border-radius:10px;padding:10px;margin-top:10px;font-size:12px;line-height:1.5;display:none}.preview-warning.visible{display:block}@media(max-width:1250px){.upload-flow{grid-template-columns:1fr}.drop{margin:0;justify-content:center;min-height:120px}}@media(max-width:680px){.reference-content{align-items:flex-start;flex-wrap:wrap}.ref-actions{flex-direction:row;flex:1 1 100%}.drop{gap:8px;flex-wrap:wrap}.ref-thumb{width:70px;flex-basis:70px;height:82px}.exportbar{align-items:flex-start}.actions{flex-wrap:wrap}.include-reference{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="logo"><div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#111828" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m10 8 6 4-6 4z" fill="#172238" stroke="none"/></svg></div><div><b>GIF Unify Studio</b><small>Padronização e remoção de fundo em lote</small></div></div><div class="status">● 100% LOCAL · SEM API</div></header>
+<section class="intro"><h1>Um GIF de referência. <span>Todas as animações no mesmo padrão.</span></h1><p>Primeiro escolha o GIF que define o tamanho do personagem. Depois importe vários GIFs para igualar altura visual, escala e dimensões ao modelo. Preserve os movimentos, remova fundos sólidos e exporte tudo em ZIP, sem internet.</p></section>
+<div class="upload-flow">
+  <section class="reference-card" id="referenceDrop" tabindex="0" aria-label="Etapa 1: importar GIF de referência">
+    <div class="step-label"><span class="step-num">01</span><span>GIF DE REFERÊNCIA</span><span class="step-required">Primeiro passo</span></div>
+    <div class="reference-content"><div class="ref-thumb" id="refThumb"><span>★</span></div><div class="ref-copy"><h2 id="refTitle">Escolha o GIF modelo</h2><p id="refDescription">A largura e a altura do arquivo, mais o tamanho visual do personagem, serão usados como padrão para todos os próximos GIFs.</p><div class="ref-numbers" id="referenceStats">Aguardando GIF de referência...</div></div><div class="ref-actions"><button class="btn primary" type="button" id="chooseRef">Escolher referência</button><button class="btn ghost" type="button" id="showRef" disabled>Ver referência</button></div></div>
+    <input type="file" id="refFileInput" accept="image/gif,.gif" hidden>
+  </section>
+  <section class="drop targets-locked" id="drop" aria-label="Etapa 2: importar GIFs a corrigir"><div class="drop-icon">⇧</div><div><div class="step-caption">ETAPA 02 · GIFS A PADRONIZAR</div><h2 id="targetsTitle">Depois, adicione os outros GIFs</h2><p id="targetsDescription">É possível selecionar vários GIFs de uma vez. Todos seguirão o modelo definido acima.</p></div><button type="button" class="btn primary" id="choose" disabled>Importar GIFs em lote</button><input type="file" id="fileInput" accept="image/gif,.gif" multiple disabled></section>
+</div>
+<div class="layout">
+<section class="panel"><div class="panelhead"><h3>GIFs a corrigir</h3><small id="count">0 arquivos</small></div><div id="files" class="files"><div class="empty">Os GIFs carregados depois da referência aparecerão aqui. Selecione um para comparar.</div></div><div class="listfoot"><button class="btn ghost" id="selectAll">Marcar todos</button><button class="btn ghost" id="clearFiles">Limpar lista</button></div></section>
+<section class="panel preview-panel"><div class="panelhead previewheader"><h3>Comparação com o modelo</h3><small id="previewName">Nenhum GIF selecionado</small></div><div class="comparison"><div><div class="viewtitle">ORIGINAL <span>Arquivo recebido</span></div><div class="stage" id="originalStage"><span class="hint">Importe um GIF para visualizar</span></div></div><div><div class="viewtitle">PADRONIZADO <span>Resultado em tempo real</span></div><div class="stage" id="processedStage"><canvas id="preview" width="256" height="256" style="display:none"></canvas><span class="hint" id="resultHint">Prévia indisponível</span><div class="busyLayer" id="previewBusy"><div class="spinner"></div><span>Processando GIF...</span></div></div></div></div><div class="metarow"><div class="metric"><strong id="sourceDim">—</strong><small>Dimensão original</small></div><div class="metric"><strong id="frameCount">—</strong><small>Quadros</small></div><div class="metric"><strong id="targetDim">Aguardando modelo</strong><small>Saída em pixels</small></div></div><div class="info"><b>O GIF modelo define o padrão.</b> Você escolhe se os demais GIFs devem seguir a <b>largura visível</b>, a <b>altura visível</b> ou caber dentro da <b>caixa visível</b> da referência. A proporção do corpo é preservada e a escala é única para todos os quadros.</div><div class="preview-warning" id="previewWarning"></div></section>
+<section class="panel tool-panel"><div class="panelhead"><h3>Configurações</h3><small>Modelo manda no padrão</small></div><div class="tool-body"><div class="group"><div class="group-title">Tamanho determinado pela referência</div><div class="ref-size-readout" id="sizeReadout">Carregue primeiro o GIF de referência</div><p class="subhint">A resolução de saída será exatamente a do GIF modelo. Não é necessário inserir largura ou altura manualmente.</p></div><div class="divider"></div><div class="group"><div class="group-title">Padronização do personagem</div><div class="control"><label for="scaleMode">Escala aplicada a partir da referência</label><select id="scaleMode"><option value="height">Igualar altura visível</option><option value="width">Igualar largura visível</option><option value="fitbox" selected>Caber dentro da caixa da referência</option></select></div><div class="control" style="margin-top:12px"><label for="align">Posição em relação ao modelo</label><select id="align"><option value="bottom">Alinhar pela base (pés)</option><option value="center">Alinhar pelo centro</option><option value="top">Alinhar pelo topo</option></select></div><div class="control" style="margin-top:12px"><label for="fitMode">Se a opção for altura e o personagem exceder a largura</label><select id="fitMode"><option value="height">Manter altura exata (pode cortar laterais)</option><option value="contain">Reduzir para caber inteiro</option></select></div><p class="subhint">O corpo não será esticado. Cada GIF recebe uma única escala para todos os quadros, evitando tremores. Para o seu caso, sprites de costas mais largos funcionam melhor em <b>Caber dentro da caixa da referência</b> ou <b>Igualar largura visível</b>.</p></div><div class="divider"></div><div class="group"><div class="group-title">Remover background</div><button id="removeBg" class="remove-toggle" type="button" aria-pressed="false"><span class="toggle-light"></span><span id="removeBgText">Ativar remoção de fundo</span></button><p class="subhint">Retira fundos sólidos conectados às bordas, preservando o interior do personagem.</p><div class="options" id="bgOptions"><div class="control"><label for="bgMode">Cor do fundo</label><select id="bgMode"><option value="auto">Automática (identificar pelas bordas)</option><option value="white">Branco</option><option value="black">Preto</option><option value="green">Verde</option><option value="custom">Cor personalizada</option></select></div><div class="colorrow" id="customRow" style="display:none;margin-top:9px"><input id="customColor" type="color" value="#ffffff"><span style="font-size:11px;color:var(--muted)">Selecione a cor que deseja retirar</span></div><div style="margin-top:14px"><div class="slider-row"><span>Tolerância</span><strong id="tolLabel">42</strong></div><input id="tolerance" type="range" min="5" max="120" step="1" value="42"></div></div></div><div class="divider"></div><div class="group"><div class="group-title">Exportação</div><p class="controls-note">Os tempos de cada quadro são preservados. O ZIP contém GIFs animados e transparentes quando a remoção de fundo está ativada. Nenhuma biblioteca online é necessária.</p></div></div></section>
+</div>
+<section class="exportbar"><div><strong>Exportar GIFs no padrão da referência</strong><small id="exportInfo">Escolha uma referência e depois importe os GIFs que serão corrigidos.</small><div class="progress" id="progress"><div id="progressFill"></div></div></div><div class="actions"><label class="include-reference"><input id="includeRef" type="checkbox"> Incluir referência no ZIP</label><button class="btn ghost" id="downloadSingle" disabled>Baixar selecionado</button><button class="btn primary" id="exportZip" disabled>↓ Exportar ZIP</button></div></section>
+<p class="foot">GIF Unify Studio · Ferramenta offline em arquivo HTML · Seus GIFs permanecem no seu computador.</p>
+</div><div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+// Arquivo offline: decodificador GIF89a, codificador GIF e empacotador ZIP implementados em JavaScript puro.
+const $=id=>document.getElementById(id);
+const state={reference:null,items:[],selected:null,remove:false,exporting:false,previewTimer:0,previewRevision:0,frameIndex:0,frameTime:0,previewData:null};
+function notify(t){let el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>el.classList.remove('show'),4800)}
+function sleep(){return new Promise(r=>setTimeout(r,0))}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function readSettings(){return{scaleMode:$('scaleMode').value,align:$('align').value,fitMode:$('fitMode').value,remove:state.remove,mode:$('bgMode').value,tolerance:+$('tolerance').value,color:$('customColor').value}}
+function u16(b,p){return b[p]|b[p+1]<<8}
+function getGifFrames(bytes){
+  let p=0; const err=()=>{throw Error('GIF danificado ou formato não suportado')};
+  const str=n=>{let s='';for(let j=0;j<n;j++)s+=String.fromCharCode(bytes[p++]);return s};
+  const readPal=n=>{const colors=new Uint8Array(n*3);if(p+colors.length>bytes.length)err();colors.set(bytes.subarray(p,p+colors.length));p+=colors.length;return colors};
+  const blocks=()=>{let parts=[],size=0;while(true){if(p>=bytes.length)err();const n=bytes[p++];if(!n)break;if(p+n>bytes.length)err();parts.push(bytes.subarray(p,p+n));size+=n;p+=n}const out=new Uint8Array(size);let o=0;for(let a of parts){out.set(a,o);o+=a.length}return out};
+  const head=str(6);if(head!=='GIF89a'&&head!=='GIF87a')err();
+  const width=u16(bytes,p),height=u16(bytes,p+2),flags=bytes[p+4],bg=bytes[p+5];p+=7;
+  if(!width||!height||width>8192||height>8192)throw Error('Dimensões inválidas do GIF');
+  const globalPal=(flags&128)?readPal(1<<((flags&7)+1)):null;
+  let gce={delay:100,disposal:0,trans:-1},meta=[],loop=0;
+  while(p<bytes.length){const b=bytes[p++];if(b===0x3b)break;
+    if(b===0x21){const label=bytes[p++];if(label===0xf9){const n=bytes[p++];if(n!==4)err();const f=bytes[p++],d=u16(bytes,p);p+=2;const t=bytes[p++];p++;gce={delay:Math.max(20,(d||10)*10),disposal:(f>>2)&7,trans:(f&1)?t:-1}}
+      else if(label===0xff){const n=bytes[p++],app=str(n);const data=blocks();if(app.startsWith('NETSCAPE')&&data.length>=3)loop=u16(data,1)}
+      else blocks();
+    }else if(b===0x2c){if(p+9>bytes.length)err();const left=u16(bytes,p),top=u16(bytes,p+2),w=u16(bytes,p+4),h=u16(bytes,p+6),packed=bytes[p+8];p+=9;
+      if(!w||!h||left+w>width||top+h>height)err();const pal=(packed&128)?readPal(1<<((packed&7)+1)):globalPal;if(!pal)err();
+      const min=bytes[p++];if(min<2||min>8)err();const data=blocks();meta.push({left,top,w,h,pal,min,data,interlace:!!(packed&64),...gce});gce={delay:100,disposal:0,trans:-1};
+    }else err();
+  }
+  if(!meta.length)err();
+  const transparent=meta.some(f=>f.trans>=0);const bgColor=globalPal&&bg*3+2<globalPal.length?[globalPal[bg*3],globalPal[bg*3+1],globalPal[bg*3+2]]:[0,0,0];
+  let screen=new Uint8ClampedArray(width*height*4),prev=null,snapshot=null;
+  const fillRect=(x,y,w,h)=>{for(let yy=y;yy<y+h;yy++)for(let xx=x;xx<x+w;xx++){let at=(yy*width+xx)*4;if(transparent){screen[at]=screen[at+1]=screen[at+2]=screen[at+3]=0}else{screen[at]=bgColor[0];screen[at+1]=bgColor[1];screen[at+2]=bgColor[2];screen[at+3]=255}}};
+  fillRect(0,0,width,height);
+  const frames=[];
+  for(const f of meta){
+    if(prev?.disposal===2)fillRect(prev.left,prev.top,prev.w,prev.h);else if(prev?.disposal===3&&snapshot)screen.set(snapshot);
+    if(f.disposal===3)snapshot=new Uint8ClampedArray(screen);else snapshot=null;
+    const indices=decodeLZW(f.min,f.data,f.w*f.h),order=[];
+    if(f.interlace){for(let step of [[0,8],[4,8],[2,4],[1,2]])for(let y=step[0];y<f.h;y+=step[1])order.push(y)}
+    let k=0;for(let sy=0;sy<f.h;sy++){const yy=f.interlace?order[sy]:sy;for(let x=0;x<f.w;x++){const idx=indices[k++];if(idx===f.trans)continue;const src=idx*3;if(src+2>=f.pal.length)continue;const at=((f.top+yy)*width+f.left+x)*4;screen[at]=f.pal[src];screen[at+1]=f.pal[src+1];screen[at+2]=f.pal[src+2];screen[at+3]=255}}
+    frames.push({rgba:new Uint8ClampedArray(screen),delay:f.delay});prev=f;
+  }
+  return{width,height,frames,loop};
+}
+function decodeLZW(min,data,expected){
+  const clear=1<<min,end=clear+1,pre=new Int16Array(4096),suf=new Uint8Array(4096),stack=new Uint8Array(4097),out=new Uint8Array(expected);
+  let bit=0,size=min+1,next=end+1,old=-1,first=0,count=0;
+  const getCode=()=>{let c=0;for(let k=0;k<size;k++){const byte=data[bit>>3];if(byte===undefined)return -1;c|=((byte>>(bit&7))&1)<<k;bit++}return c};
+  while(count<expected){let code=getCode();if(code<0||code===end)break;if(code===clear){size=min+1;next=end+1;old=-1;continue}
+    const original=code;let n=0;
+    if(code>=next){if(code!==next||old<0)throw Error('Dados LZW inválidos');stack[n++]=first;code=old}
+    while(code>=clear+2){if(n>4095)throw Error('LZW excedeu limite');stack[n++]=suf[code];code=pre[code]}
+    if(code>=clear)throw Error('Código LZW inválido');first=code;stack[n++]=first;
+    while(n&&count<expected)out[count++]=stack[--n];
+    if(old>=0&&next<4096){pre[next]=old;suf[next]=first;next++;if(next===(1<<size)&&size<12)size++}
+    old=original;
+  }
+  if(count!==expected)throw Error('Quadros GIF incompletos');return out;
+}
+function bgColorOf(data,w,h){
+  let hist=new Map();const add=(x,y)=>{const i=(y*w+x)*4;if(data[i+3]<80)return;const r=data[i]>>4,g=data[i+1]>>4,b=data[i+2]>>4;const key=(r<<8)|(g<<4)|b;let ent=hist.get(key);if(!ent)hist.set(key,ent={num:0,r:0,g:0,b:0});ent.num++;ent.r+=data[i];ent.g+=data[i+1];ent.b+=data[i+2]};
+  const st=Math.max(1,Math.floor(Math.min(w,h)/100));for(let x=0;x<w;x+=st){add(x,0);add(x,h-1)}for(let y=0;y<h;y+=st){add(0,y);add(w-1,y)}
+  let best=null;for(const e of hist.values())if(!best||e.num>best.num)best=e;
+  return best?[best.r/best.num,best.g/best.num,best.b/best.num]:null;
+}
+function chosenBg(frame,w,h,cfg){switch(cfg.mode){case'white':return[255,255,255];case'black':return[0,0,0];case'green':return[0,255,0];case'custom':return[parseInt(cfg.color.slice(1,3),16),parseInt(cfg.color.slice(3,5),16),parseInt(cfg.color.slice(5,7),16)];default:return bgColorOf(frame,w,h)}}
+function removeSolidBg(frame,w,h,cfg){
+  const rgba=new Uint8ClampedArray(frame),bg=chosenBg(rgba,w,h,cfg);if(!bg)return rgba;
+  const tol=cfg.tolerance*cfg.tolerance*3,visited=new Uint8Array(w*h),queue=new Uint32Array(w*h);let head=0,tail=0;
+  function maybe(pos){if(visited[pos])return;visited[pos]=1;const i=pos*4;if(rgba[i+3]<128){rgba[i+3]=0;queue[tail++]=pos;return}const dr=rgba[i]-bg[0],dg=rgba[i+1]-bg[1],db=rgba[i+2]-bg[2];if(dr*dr+dg*dg+db*db<=tol){rgba[i+3]=0;queue[tail++]=pos}}
+  for(let x=0;x<w;x++){maybe(x);maybe((h-1)*w+x)}for(let y=0;y<h;y++){maybe(y*w);maybe(y*w+w-1)}
+  while(head<tail){let p=queue[head++],x=p%w,y=Math.floor(p/w);if(x>0)maybe(p-1);if(x<w-1)maybe(p+1);if(y>0)maybe(p-w);if(y<h-1)maybe(p+w)}
+  return rgba;
+}
+function prepareSource(source,cfg){
+  const sw=source.width,sh=source.height;
+  const frames=source.frames;
+  const data=cfg.remove?frames.map(f=>removeSolidBg(f.rgba,sw,sh,cfg)):frames.map(f=>f.rgba);
+  // Uma área combinada para todos os quadros de cada GIF: nada de pulsar ou "saltar" de tamanho.
+  let left=sw,top=sh,right=-1,bottom=-1;
+  const hasAlpha=cfg.remove||frames.some(f=>hasTransparency(f.rgba));
+  if(hasAlpha){for(const rgba of data){for(let y=0;y<sh;y++)for(let x=0;x<sw;x++){
+    if(rgba[(y*sw+x)*4+3]>=100){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+  }}}else{left=0;top=0;right=sw-1;bottom=sh-1}
+  if(right<left){left=0;top=0;right=sw-1;bottom=sh-1}
+  return{data,box:{left,top,right,bottom,width:right-left+1,height:bottom-top+1,centerX:(left+right+1)/2,centerY:(top+bottom+1)/2},isolated:hasAlpha};
+}
+function referenceMetrics(source,cfg){
+  const prep=prepareSource(source,cfg);return {width:source.width,height:source.height,box:prep.box,isolated:prep.isolated,prep};
+}
+function computeProcessed(source,cfg,reference,isReference=false){
+  if(!reference)throw Error('Escolha primeiro o GIF de referência.');
+  const prep=isReference&&reference.prep?reference.prep:prepareSource(source,cfg);
+  const sw=source.width,sh=source.height,{box}=prep;
+  const {width,height}=reference;
+  let scale=1,matchMode=cfg.scaleMode||'fitbox';
+  if(!isReference){
+    if(matchMode==='width')scale=reference.box.width/box.width;
+    else if(matchMode==='fitbox')scale=Math.min(reference.box.width/box.width,reference.box.height/box.height);
+    else scale=reference.box.height/box.height;
+  }
+  let narrowed=false;
+  if(!isReference&&matchMode==='height'&&cfg.fitMode==='contain'){
+    const widthLimit=Math.max(0.01,Math.min((reference.box.centerX*2)/box.width,((width-reference.box.centerX)*2)/box.width));
+    if(scale>widthLimit){scale=widthLimit;narrowed=true}
+  }
+  const refBox=reference.box;
+  const targetX=isReference?0:refBox.centerX-box.centerX*scale;
+  let targetY;
+  if(isReference)targetY=0;
+  else if(cfg.align==='top')targetY=refBox.top-box.top*scale;
+  else if(cfg.align==='center')targetY=refBox.centerY-box.centerY*scale;
+  else targetY=refBox.bottom+1-(box.bottom+1)*scale;
+  const originalCanvas=document.createElement('canvas');originalCanvas.width=sw;originalCanvas.height=sh;
+  const originalCtx=originalCanvas.getContext('2d');
+  const outputCanvas=document.createElement('canvas');outputCanvas.width=width;outputCanvas.height=height;
+  const outputCtx=outputCanvas.getContext('2d',{willReadFrequently:true});outputCtx.imageSmoothingEnabled=true;outputCtx.imageSmoothingQuality='high';
+  const outputFrames=[];
+  for(let i=0;i<source.frames.length;i++){
+    originalCtx.putImageData(new ImageData(prep.data[i],sw,sh),0,0);
+    outputCtx.clearRect(0,0,width,height);
+    if(isReference)outputCtx.drawImage(originalCanvas,0,0);
+    else outputCtx.drawImage(originalCanvas,targetX,targetY,sw*scale,sh*scale);
+    outputFrames.push({rgba:outputCtx.getImageData(0,0,width,height).data,delay:source.frames[i].delay});
+  }
+  const exceeds=!isReference&&(targetX+box.left*scale<-.5||targetX+(box.right+1)*scale>width+.5||targetY+box.top*scale<-.5||targetY+(box.bottom+1)*scale>height+.5);
+  return{width,height,frames:outputFrames,visibleWidth:Math.round(box.width*scale),visibleHeight:Math.round(box.height*scale),targetWidth:reference.box.width,targetHeight:reference.box.height,scale,narrowed,exceeds,isolated:prep.isolated,matchMode};
+}
+function hasTransparency(a){for(let i=3;i<a.length;i+=4)if(a[i]<128)return true;return false}
+function buildPalette(frames){
+  const hist=new Map(),total=frames.reduce((n,f)=>n+f.rgba.length/4,0),sampleStep=Math.max(1,Math.floor(total/170000));
+  for(let f of frames){const rgba=f.rgba;for(let i=0;i<rgba.length;i+=4*sampleStep){if(rgba[i+3]<128)continue;const k=((rgba[i]>>3)<<10)|((rgba[i+1]>>3)<<5)|(rgba[i+2]>>3);let e=hist.get(k);if(!e)hist.set(k,e={r:0,g:0,b:0,n:0});e.r+=rgba[i];e.g+=rgba[i+1];e.b+=rgba[i+2];e.n++}}
+  let bins=[...hist.values()].map(e=>({r:e.r/e.n,g:e.g/e.n,b:e.b/e.n,n:e.n}));if(!bins.length)bins=[{r:255,g:255,b:255,n:1}];
+  let boxes=[bins];
+  while(boxes.length<255){let chosen=-1,axis=0,best=-1;
+    for(let i=0;i<boxes.length;i++){const arr=boxes[i];if(arr.length<2)continue;let min=[255,255,255],max=[0,0,0],pop=0;for(const b of arr){min[0]=Math.min(min[0],b.r);min[1]=Math.min(min[1],b.g);min[2]=Math.min(min[2],b.b);max[0]=Math.max(max[0],b.r);max[1]=Math.max(max[1],b.g);max[2]=Math.max(max[2],b.b);pop+=b.n}const ranges=max.map((v,j)=>v-min[j]),a=ranges.indexOf(Math.max(...ranges));const score=ranges[a]*Math.pow(pop,.3);if(score>best){best=score;axis=a;chosen=i}}
+    if(chosen<0||best<=0)break;
+    const arr=boxes[chosen],key=['r','g','b'][axis];arr.sort((a,b)=>a[key]-b[key]);const sum=arr.reduce((s,v)=>s+v.n,0);let n=0,mid=1;for(let j=0;j<arr.length-1;j++){n+=arr[j].n;mid=j+1;if(n>=sum/2)break}boxes.splice(chosen,1,arr.slice(0,mid),arr.slice(mid));
+  }
+  const palette=[[0,0,0]];for(const arr of boxes){let r=0,g=0,b=0,n=0;for(const e of arr){r+=e.r*e.n;g+=e.g*e.n;b+=e.b*e.n;n+=e.n}palette.push([Math.round(r/n),Math.round(g/n),Math.round(b/n)])}return palette;
+}
+function indexFrames(frames,palette){
+  const memo=new Int16Array(32768);memo.fill(-1);const ret=[];
+  for(const f of frames){const rgba=f.rgba,idx=new Uint8Array(rgba.length/4);
+    for(let i=0,j=0;i<rgba.length;i+=4,j++){
+      if(rgba[i+3]<128){idx[j]=0;continue}
+      const r=rgba[i],g=rgba[i+1],b=rgba[i+2],key=((r>>3)<<10)|((g>>3)<<5)|(b>>3);let found=memo[key];
+      if(found<0){let best=1,dist=Infinity;for(let k=1;k<palette.length;k++){const c=palette[k],dr=r-c[0],dg=g-c[1],db=b-c[2];let d=dr*dr*0.30+dg*dg*.59+db*db*.11;if(d<dist){dist=d;best=k}}found=best;memo[key]=best}
+      idx[j]=found;
+    }ret.push({idx,delay:f.delay});
+  }return ret;
+}
+class ByteWriter{constructor(){this.a=[]}b(v){this.a.push(v&255)}w(v){this.b(v);this.b(v>>8)}str(s){for(let i=0;i<s.length;i++)this.b(s.charCodeAt(i))}bytes(a){for(let i=0;i<a.length;i++)this.b(a[i])}output(){return Uint8Array.from(this.a)}}
+function compressLZW(indices){
+  const clear=256,eof=257,dict=new Map(),bits=[];let nbits=9,next=258,acc=0,accBits=0;
+  function write(c){acc|=c<<accBits;accBits+=nbits;while(accBits>=8){bits.push(acc&255);acc>>>=8;accBits-=8}}
+  write(clear);if(indices.length){let prefix=indices[0];for(let i=1;i<indices.length;i++){
+    const val=indices[i],key=(prefix<<8)|val,entry=dict.get(key);
+    if(entry!==undefined){prefix=entry;continue}
+    write(prefix);
+    if(next<4096){dict.set(key,next++);if(next>(1<<nbits)&&nbits<12)nbits++}
+    else{write(clear);dict.clear();nbits=9;next=258}
+    prefix=val;
+  }write(prefix)}write(eof);if(accBits)bits.push(acc&255);return Uint8Array.from(bits);
+}
+function encodeGif(out){
+  const {width:w,height:h,frames}=out;const pal=buildPalette(frames),indexed=indexFrames(frames,pal),wr=new ByteWriter();
+  wr.str('GIF89a');wr.w(w);wr.w(h);wr.b(0xf7);wr.b(0);wr.b(0);
+  for(let i=0;i<256;i++){const c=pal[i]||[0,0,0];wr.b(c[0]);wr.b(c[1]);wr.b(c[2])}
+  wr.b(0x21);wr.b(0xff);wr.b(0x0b);wr.str('NETSCAPE2.0');wr.b(3);wr.b(1);wr.w(0);wr.b(0);
+  for(const f of indexed){wr.b(0x21);wr.b(0xf9);wr.b(4);wr.b(0x09);wr.w(clamp(Math.round(f.delay/10),2,65535));wr.b(0);wr.b(0);
+    wr.b(0x2c);wr.w(0);wr.w(0);wr.w(w);wr.w(h);wr.b(0);
+    wr.b(8);const stream=compressLZW(f.idx);for(let i=0;i<stream.length;i+=255){const sub=stream.subarray(i,i+255);wr.b(sub.length);wr.bytes(sub)}wr.b(0);
+  }
+  wr.b(0x3b);return wr.output();
+}
+const crcTable=(()=>{const a=new Uint32Array(256);for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;a[i]=c>>>0}return a})();
+function crc32(data){let c=0xffffffff;for(let i=0;i<data.length;i++)c=crcTable[(c^data[i])&255]^(c>>>8);return (c^0xffffffff)>>>0}
+function zipFiles(files){const enc=new TextEncoder(),chunks=[],central=[];let offset=0,centralSize=0;const now=new Date(),time=(now.getHours()<<11)|(now.getMinutes()<<5)|(Math.floor(now.getSeconds()/2)),date=((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate();
+  for(const f of files){const name=enc.encode(f.name),data=f.data,crc=crc32(data),lh=new Uint8Array(30+name.length),lv=new DataView(lh.buffer);lv.setUint32(0,0x04034b50,true);lv.setUint16(4,20,true);lv.setUint16(6,0x800,true);lv.setUint16(10,time,true);lv.setUint16(12,date,true);lv.setUint32(14,crc,true);lv.setUint32(18,data.length,true);lv.setUint32(22,data.length,true);lv.setUint16(26,name.length,true);lh.set(name,30);chunks.push(lh,data);
+    const ch=new Uint8Array(46+name.length),cv=new DataView(ch.buffer);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x800,true);cv.setUint16(12,time,true);cv.setUint16(14,date,true);cv.setUint32(16,crc,true);cv.setUint32(20,data.length,true);cv.setUint32(24,data.length,true);cv.setUint16(28,name.length,true);cv.setUint32(42,offset,true);ch.set(name,46);central.push(ch);centralSize+=ch.length;offset+=lh.length+data.length;
+  }
+  chunks.push(...central);const end=new Uint8Array(22),ev=new DataView(end.buffer);ev.setUint32(0,0x06054b50,true);ev.setUint16(8,files.length,true);ev.setUint16(10,files.length,true);ev.setUint32(12,centralSize,true);ev.setUint32(16,offset,true);chunks.push(end);return new Blob(chunks,{type:'application/zip'});
+}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+function cleanName(s){return s.replace(/\.gif$/i,'').replace(/[^\p{L}\p{N}_.-]/gu,'_').slice(0,90)||'animacao'}
+function activeItem(){return state.items.find(x=>x.id===state.selected)||(state.reference?.id===state.selected?state.reference:null)}
+function renderFiles(){const holder=$('files');holder.innerHTML='';if(!state.items.length)holder.innerHTML='<div class="empty">Depois de escolher o GIF modelo, importe aqui as animações que serão redimensionadas.</div>';
+  for(const item of state.items){const row=document.createElement('div');row.className='file'+(item.id===state.selected?' active':'');row.tabIndex=0;row.setAttribute('role','button');row.setAttribute('aria-label','Selecionar '+item.name);
+    const chk=document.createElement('input');chk.type='checkbox';chk.className='sel';chk.checked=item.include;chk.title='Incluir no ZIP';chk.onclick=e=>e.stopPropagation();chk.onchange=e=>{item.include=e.target.checked;updateExport()};
+    const th=document.createElement('div');th.className='thumb';const img=new Image();img.src=item.url;img.alt='';th.appendChild(img);
+    const txt=document.createElement('div');txt.className='filetxt';const strong=document.createElement('strong');strong.textContent=item.name;const small=document.createElement('small');small.textContent=item.source?`${item.source.width} × ${item.source.height} · ${item.source.frames.length} quadros`:'Lendo arquivo...';txt.append(strong,small);
+    const del=document.createElement('button');del.className='delete';del.title='Remover da biblioteca';del.textContent='×';del.onclick=e=>{e.stopPropagation();removeItem(item.id)};
+    row.append(chk,th,txt,del);row.onclick=()=>selectItem(item.id);row.onkeydown=e=>{if(e.key==='Enter')selectItem(item.id)};holder.appendChild(row);
+  }
+  $('count').textContent=`${state.items.length} ${state.items.length===1?'GIF para corrigir':'GIFs para corrigir'}`;
+  $('referenceDrop').classList.toggle('ready',!!state.reference);
+  $('referenceDrop').style.outline=state.reference?.id===state.selected?'2px solid #a3e8d3':'';
+  updateExport();
+}
+function updateReferenceUI(){
+  const ref=state.reference;
+  $('choose').disabled=!ref;$('fileInput').disabled=!ref;$('showRef').disabled=!ref;
+  $('drop').classList.toggle('targets-locked',!ref);
+  $('targetsTitle').textContent=ref?'Importe todos os GIFs que quer corrigir':'Depois, adicione os outros GIFs';
+  $('targetsDescription').textContent=ref?'Eles serão alinhados e redimensionados de acordo com o GIF de referência acima.':'É possível selecionar vários GIFs de uma vez. Todos seguirão o modelo definido acima.';
+  $('refThumb').innerHTML='';
+  if(ref){const img=new Image();img.src=ref.url;img.alt='GIF de referência';$('refThumb').appendChild(img);$('refTitle').textContent=ref.name;
+    const m=referenceMetrics(ref.source,readSettings());
+    $('refDescription').textContent='Modelo ativo. Para trocar, escolha outro GIF de referência.';
+    $('referenceStats').textContent=`Arquivo: ${m.width} × ${m.height} px  ·  Personagem: ${m.box.width} × ${m.box.height} px${m.isolated?'':'  ·  fundo opaco!'}`;
+    $('sizeReadout').textContent=`${m.width} × ${m.height} pixels · Altura visual: ${m.box.height} px`;
+    $('targetDim').textContent=`${m.width} × ${m.height}`;
+  }else{
+    $('refThumb').textContent='★';$('refTitle').textContent='Escolha o GIF modelo';
+    $('refDescription').textContent='A largura e a altura do arquivo, mais o tamanho visual do personagem, serão usados como padrão para todos os próximos GIFs.';
+    $('referenceStats').textContent='Aguardando GIF de referência...';$('sizeReadout').textContent='Carregue primeiro o GIF de referência';$('targetDim').textContent='Aguardando modelo';
+  }
+  renderFiles();
+}
+function updateExport(){const ref=state.reference;let count=state.items.filter(i=>i.include&&i.source).length;let total=count+(ref&&$('includeRef').checked?1:0);
+  $('exportZip').disabled=!ref||!total||state.exporting;
+  $('downloadSingle').disabled=!activeItem()?.source||!ref||state.exporting;
+  $('exportInfo').textContent=ref?`${count} ${count===1?'GIF será ajustado':'GIFs serão ajustados'} · Saída ${ref.source.width} × ${ref.source.height} px${$('includeRef').checked?' · referência incluída':''}`:'Aguardando GIF de referência para definir o padrão.';
+}
+function removeItem(id){const i=state.items.findIndex(x=>x.id===id);if(i<0)return;URL.revokeObjectURL(state.items[i].url);state.items.splice(i,1);if(state.selected===id)state.selected=state.items[0]?.id||state.reference?.id||null;renderFiles();showSelected()}
+function selectItem(id){state.selected=id;renderFiles();showSelected()}
+async function setReference(file){
+  if(!file||!(file.type==='image/gif'||/\.gif$/i.test(file.name))){notify('Escolha um arquivo GIF como referência.');return}
+  try{
+    const bytes=new Uint8Array(await file.arrayBuffer());const source=getGifFrames(bytes);
+    if(source.width*source.height>2000000)throw Error('GIF modelo muito grande. Use resolução menor.');
+    const next={id:'ref_'+Math.random().toString(36).slice(2),name:file.name,url:URL.createObjectURL(file),source,reference:true};
+    if(state.reference)URL.revokeObjectURL(state.reference.url);
+    state.reference=next;state.selected=next.id;
+    updateReferenceUI();await showSelected();
+    notify('Referência definida! Agora importe os GIFs que devem ficar no mesmo tamanho.');
+  }catch(e){console.error(e);notify('Falha ao carregar GIF de referência: '+e.message)}
+}
+async function addFiles(list){
+  if(!state.reference){notify('Primeiro carregue o GIF de referência (etapa 01).');return}
+  const input=[...list].filter(f=>f.name.toLowerCase().endsWith('.gif')||f.type==='image/gif');if(!input.length){notify('Selecione arquivos GIF válidos.');return}
+  for(let j=0;j<input.length;j++){
+    const file=input[j],item={id:Math.random().toString(36).slice(2),name:file.name,url:URL.createObjectURL(file),include:true,source:null};
+    state.items.push(item);renderFiles();
+    try{const bytes=new Uint8Array(await file.arrayBuffer());item.source=getGifFrames(bytes);if(item.source.width*item.source.height>2000000)throw Error('GIF muito grande');}
+    catch(e){console.error(e);notify(`Erro em ${file.name}: ${e.message}`);item.include=false;item.source=null}
+    renderFiles();await sleep();
+  }
+  const firstNew=state.items.find(x=>x.source&&x.include);if(firstNew)selectItem(firstNew.id);
+  notify(`${input.length} ${input.length===1?'GIF importado':'GIFs importados'} para padronizar pela referência.`);
+}
+function resetStage(){const old=$('originalStage');old.innerHTML='<span class="hint">Escolha o GIF modelo para visualizar</span>';$('preview').style.display='none';$('resultHint').style.display='block';$('previewName').textContent='Nenhum GIF selecionado';$('sourceDim').textContent='—';$('frameCount').textContent='—';$('previewWarning').classList.remove('visible');state.previewData=null}
+async function showSelected(){
+  const item=activeItem(),rev=++state.previewRevision;
+  if(!item||!item.source||!state.reference){resetStage();return}
+  const original=$('originalStage');original.innerHTML='';let im=new Image();im.src=item.url;im.alt='GIF original';original.appendChild(im);
+  $('previewName').textContent=item.reference?`${item.name} (REFERÊNCIA)`:item.name;
+  $('sourceDim').textContent=`${item.source.width} × ${item.source.height}`;$('frameCount').textContent=item.source.frames.length;
+  $('previewBusy').classList.add('show');await sleep();if(rev!==state.previewRevision)return;
+  try{
+    const cfg=readSettings(),ref=referenceMetrics(state.reference.source,cfg);
+    const result=computeProcessed(item.source,cfg,ref,!!item.reference);
+    if(rev!==state.previewRevision)return;
+    state.previewData=result;state.frameIndex=0;state.frameTime=performance.now();
+    $('preview').width=result.width;$('preview').height=result.height;$('preview').style.display='block';$('resultHint').style.display='none';renderPreviewFrame(0);
+    let warning='';
+    if(!ref.isolated)warning='O GIF modelo está com fundo opaco. Ative a remoção de background para identificar corretamente a caixa visível do personagem.';
+    else if(!result.isolated)warning='Este GIF está com fundo opaco. Ative a remoção de background para medir corretamente o personagem.';
+    else if(result.narrowed)warning=`A altura foi usada como base, mas a largura precisou ser reduzida para o personagem caber inteiro. Altura final visível: ${result.visibleHeight}px.`;
+    else if(result.exceeds)warning='Parte do personagem ultrapassa o quadro do modelo. Para evitar cortes, use “Caber dentro da caixa da referência” ou “Reduzir para caber inteiro”.';
+    else if(result.matchMode==='width')warning=`A largura visível foi igualada à referência: ${result.targetWidth}px. A altura resultante ficou em ${result.visibleHeight}px para preservar a proporção.`;
+    else if(result.matchMode==='fitbox')warning=`O personagem foi ajustado para caber dentro da caixa da referência: ${result.targetWidth}px × ${result.targetHeight}px no máximo. Resultado atual: ${result.visibleWidth}px × ${result.visibleHeight}px.`;
+    else warning=`A altura visível foi igualada à referência: ${result.targetHeight}px. A largura resultante ficou em ${result.visibleWidth}px.`;
+    const warn=$('previewWarning');warn.textContent=warning;warn.classList.toggle('visible',!!warning);
+  }catch(e){console.error(e);notify('Não foi possível gerar a prévia: '+e.message)}
+  finally{if(rev===state.previewRevision)$('previewBusy').classList.remove('show')}
+}
+function renderPreviewFrame(n){const result=state.previewData;if(!result||!result.frames.length)return;const frame=result.frames[n];$('preview').getContext('2d').putImageData(new ImageData(frame.rgba,result.width,result.height),0,0)}
+function loopPreview(t){if(state.previewData&&state.previewData.frames.length>1&&!state.exporting){let advances=0;while(t-state.frameTime>=state.previewData.frames[state.frameIndex].delay&&advances++<50){state.frameTime+=state.previewData.frames[state.frameIndex].delay;state.frameIndex=(state.frameIndex+1)%state.previewData.frames.length;renderPreviewFrame(state.frameIndex)}}requestAnimationFrame(loopPreview)}requestAnimationFrame(loopPreview);
+function schedulePreview(){clearTimeout(state.previewTimer);if(state.reference){updateReferenceUI()}else updateExport();state.previewTimer=setTimeout(showSelected,240)}
+function progress(current,total,label){$('progress').classList.add('show');$('progressFill').style.width=`${Math.round(current/total*100)}%`;$('exportInfo').textContent=label}
+async function runExport(single=false){
+  if(state.exporting)return;if(!state.reference){notify('Escolha um GIF de referência primeiro.');return}
+  const all=single?[activeItem()]:[...($('includeRef').checked?[state.reference]:[]),...state.items.filter(x=>x.include&&x.source)];
+  if(!all.length||!all[0]?.source){notify('Não há GIFs válidos para exportar.');return}
+  state.exporting=true;updateExport();const zipItems=[],cfg=readSettings(),names=new Set(),failed=[];
+  try{
+    const ref=referenceMetrics(state.reference.source,cfg);
+    for(let i=0;i<all.length;i++){
+      const item=all[i];progress(i,all.length,`Corrigindo ${i+1}/${all.length}: ${item.name}`);await sleep();
+      try{
+        const processed=computeProcessed(item.source,cfg,ref,!!item.reference);await sleep();
+        const gif=encodeGif(processed);let name=cleanName(item.name)+(item.reference?'_referencia.gif':'_padronizado.gif'),n=2;
+        while(names.has(name))name=cleanName(item.name)+`_padronizado_${n++}.gif`;
+        names.add(name);zipItems.push({name,data:gif});
+      }catch(e){console.error(e);failed.push(item.name)}
+    }
+    if(!zipItems.length)throw Error('Não foi possível exportar nenhum GIF');
+    progress(all.length,all.length,'Preparando o download...');await sleep();
+    if(single)download(new Blob([zipItems[0].data],{type:'image/gif'}),zipItems[0].name);
+    else download(zipFiles(zipItems),'GIF_Unify_Studio_Padrao_Referencia.zip');
+    notify(`${zipItems.length} GIF(s) exportado(s) usando a mesma referência${failed.length?`; ${failed.length} falharam`:''}.`);
+  }catch(e){console.error(e);notify('Falha na exportação: '+e.message)}
+  finally{state.exporting=false;$('progress').classList.remove('show');updateExport()}
+}
+$('chooseRef').onclick=()=>$('refFileInput').click();
+$('refFileInput').onchange=e=>{setReference(e.target.files[0]);e.target.value=''};
+$('showRef').onclick=()=>{if(state.reference)selectItem(state.reference.id)};
+$('choose').onclick=()=>{if(state.reference)$('fileInput').click();else notify('Escolha o GIF de referência antes de importar os demais.')};
+$('fileInput').onchange=e=>{addFiles(e.target.files);e.target.value=''};
+function handleDrop(zone,callback){
+  zone.addEventListener('dragover',e=>{e.preventDefault();if(zone.id==='drop'&&!state.reference)return;zone.classList.add('drag')});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');callback(e.dataTransfer.files)});
+}
+handleDrop($('referenceDrop'),files=>{if(files.length!==1)notify('Na referência, use apenas 1 GIF. O primeiro arquivo foi escolhido.');setReference(files[0])});
+handleDrop($('drop'),files=>addFiles(files));
+$('referenceDrop').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='referenceDrop')$('refFileInput').click()});
+$('selectAll').onclick=()=>{for(let i of state.items)i.include=true;renderFiles()};
+$('clearFiles').onclick=()=>{for(let item of state.items)URL.revokeObjectURL(item.url);state.items=[];state.selected=state.reference?.id||null;state.previewRevision++;renderFiles();showSelected()};
+$('includeRef').onchange=updateExport;
+$('removeBg').onclick=()=>{state.remove=!state.remove;$('removeBg').classList.toggle('on',state.remove);$('removeBg').setAttribute('aria-pressed',String(state.remove));$('removeBgText').textContent=state.remove?'Remoção de fundo ativada':'Ativar remoção de fundo';$('bgOptions').classList.toggle('visible',state.remove);schedulePreview()};
+$('bgMode').onchange=()=>{$('customRow').style.display=$('bgMode').value==='custom'?'flex':'none';schedulePreview()};
+$('tolerance').oninput=()=>{$('tolLabel').textContent=$('tolerance').value;schedulePreview()};
+for(const id of ['scaleMode','align','fitMode','customColor'])$(id).addEventListener('input',schedulePreview);
+$('exportZip').onclick=()=>runExport(false);$('downloadSingle').onclick=()=>runExport(true);
+updateReferenceUI();
+window.GifUnifyTest={getGifFrames,prepareSource,referenceMetrics,computeProcessed,encodeGif,zipFiles,removeSolidBg,compressLZW};
+</script></body></html>

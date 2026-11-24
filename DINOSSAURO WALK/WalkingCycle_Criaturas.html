@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walking Cycle — Criaturas</title>
+<style>
+:root{--bg:#14171c;--panel:#1c2129;--panel2:#232a34;--line:#313a47;--text:#e8ecf1;--mut:#93a0b0;--acc:#f0a53a;--acc2:#ffd08a;--ok:#63d297;--bad:#ff7a6b;--r:10px}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.app{display:grid;grid-template-columns:340px 1fr;height:100vh}
+aside{background:var(--panel);border-right:1px solid var(--line);overflow:auto;padding:16px 16px 28px}
+h1{font-size:17px;margin:0 0 2px;letter-spacing:.2px}
+h1 span{color:var(--acc)}
+.sub{color:var(--mut);font-size:12px;margin-bottom:14px}
+.step{margin:14px 0 0}
+.step>label.t{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);margin-bottom:8px}
+.num{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);color:var(--acc2);font-size:11px}
+.drop{border:1.5px dashed var(--line);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;background:var(--panel2);transition:.15s}
+.drop:hover,.drop.over{border-color:var(--acc);background:#2a2f38}
+.drop b{color:var(--acc2)}
+.drop small{display:block;color:var(--mut);margin-top:3px}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px}
+button{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;cursor:pointer;transition:.12s}
+button:hover{border-color:#4a5667}
+button.on{background:var(--acc);border-color:var(--acc);color:#1b1408;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--acc2);outline-offset:1px}
+.compass{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.compass button{padding:7px 2px;font-size:12px;line-height:1.2}
+.compass button i{display:block;font-style:normal;font-size:16px}
+.compass .mid{display:grid;place-items:center;color:var(--mut);font-size:11px;border:1px dashed var(--line);border-radius:8px}
+.hint{color:var(--mut);font-size:12px;margin-top:6px}
+.auto{margin-top:16px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2)}
+.autoT{font-weight:600;font-size:13px;margin-bottom:2px}.autoT span{color:var(--ok);font-weight:500}
+.t2{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-bottom:6px}
+.auto .seg button{padding:7px 4px;font-size:13px}
+details{margin-top:16px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2)}
+summary{cursor:pointer;padding:9px 12px;font-weight:600;font-size:13px}
+.adv{padding:2px 12px 12px;display:grid;gap:10px}
+.row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px}
+.row label{font-size:13px}
+.row output{color:var(--acc2);font-variant-numeric:tabular-nums;font-size:12px;min-width:38px;text-align:right}
+input[type=range]{width:100%;accent-color:var(--acc);grid-column:1/-1}
+input[type=number],select{font:inherit;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:5px 7px;width:92px}
+select{width:auto}
+.chk{display:flex;gap:8px;align-items:center;font-size:13px}
+.chk input{accent-color:var(--acc)}
+.exp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.exp button{padding:11px 8px;font-weight:600}
+.exp button.pri{background:var(--acc);border-color:var(--acc);color:#1b1408}
+main{display:grid;grid-template-rows:auto 1fr auto auto;min-width:0;min-height:0}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.tabs{display:flex;gap:6px}
+.sp{flex:1}
+.stage{position:relative;min-height:0;min-width:0;display:flex;overflow:auto;padding:14px}
+.stage canvas{margin:auto;flex:none;border-radius:6px;box-shadow:0 0 0 1px var(--line)}
+.stage canvas[hidden],.empty[hidden]{display:none}
+.checker{background-color:#3a414d;background-image:linear-gradient(45deg,#2c323c 25%,transparent 25%,transparent 75%,#2c323c 75%),linear-gradient(45deg,#2c323c 25%,transparent 25%,transparent 75%,#2c323c 75%);background-size:20px 20px;background-position:0 0,10px 10px}
+.bgdark{background:#0c0e11}.bglight{background:#e9edf2}.bggreen{background:#2f8f4e}
+.empty{color:var(--mut);text-align:center;max-width:460px;margin:auto}
+.empty b{color:var(--text);font-size:16px;display:block;margin-bottom:6px}
+.ctrl{display:flex;align-items:center;gap:10px;padding:8px 16px;border-top:1px solid var(--line);background:var(--panel)}
+.ctrl input[type=range]{flex:1;grid-column:auto}
+.ctrl span{color:var(--mut);font-variant-numeric:tabular-nums;font-size:12px;min-width:64px;text-align:right}
+.strip{background:var(--panel);border-top:1px solid var(--line);padding:8px 16px;overflow-x:auto;white-space:nowrap}
+.strip canvas{height:74px;border-radius:4px;display:block}
+.status{font-size:12px;color:var(--mut)}
+.status.ok{color:var(--ok)}.status.bad{color:var(--bad)}
+.warn{margin-top:10px;padding:9px 11px;border-radius:8px;background:#3a2a16;border:1px solid #6b4a1c;color:#ffd9a3;font-size:12.5px;display:none}
+.warn button{margin-top:6px;padding:5px 9px;font-size:12px}
+.prog{height:3px;background:transparent}.prog i{display:block;height:100%;width:0;background:var(--acc);transition:width .1s}
+@media (max-width:820px){.app{grid-template-columns:1fr;height:auto}aside{border-right:0;border-bottom:1px solid var(--line)}main{height:90vh}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <h1>Walking Cycle <span>· Criaturas</span></h1>
+  <div class="sub">Importe a imagem e pronto: fundo, pernas, tipo de criatura e vista são detectados sozinhos. Tudo roda neste computador, sem internet.</div>
+
+  <div class="step">
+    <label class="t"><span class="num">1</span>Imagem</label>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Importar imagem">
+      <b>Importar imagem</b><small id="fileName">Clique ou arraste um PNG, JPG ou WebP</small>
+    </div>
+    <input type="file" id="file" accept="image/png,image/jpeg,image/webp" hidden>
+  </div>
+
+  <div class="step">
+    <label class="t"><span class="num">2</span>Movimento</label>
+    <div class="seg" id="segGait">
+      <button data-v="walk" class="on">Caminhada</button>
+      <button data-v="run">Corrida</button>
+    </div>
+  </div>
+
+  <div class="step">
+    <label class="t"><span class="num">3</span>Exportar (fundo transparente)</label>
+    <div class="exp">
+      <button id="expGif" class="pri" disabled>GIF</button>
+      <button id="expSheet" class="pri" disabled>Sprite Sheet</button>
+    </div>
+    <div class="hint" id="expInfo">Importe uma imagem: o resto é automático.</div>
+  </div>
+
+  <div class="auto">
+    <div class="autoT">Detectado automaticamente <span id="detInfo"></span></div>
+    <div class="hint" style="margin:0 0 8px">Confira e clique só se algo estiver errado.</div>
+    <label class="t2">Criatura</label>
+    <div class="seg" id="segType">
+      <button data-v="auto" class="on">Automático</button>
+      <button data-v="biped">Bípede</button>
+      <button data-v="quad">Quadrúpede</button>
+    </div>
+    <label class="t2" style="margin-top:10px">Vista da imagem</label>
+    <div class="compass" id="compass">
+      <button data-v="NW"><i>↖</i>Costas-esq.</button><button data-v="N"><i>↑</i>Costas</button><button data-v="NE"><i>↗</i>Costas-dir.</button>
+      <button data-v="W"><i>←</i>Esquerda</button><div class="mid">vista</div><button data-v="E" class="on"><i>→</i>Direita</button>
+      <button data-v="SW"><i>↙</i>Frente-esq.</button><button data-v="S"><i>↓</i>Frente</button><button data-v="SE"><i>↘</i>Frente-dir.</button>
+    </div>
+    <div class="hint">Para gerar o lado oposto de uma lateral ou diagonal, clique na direção espelhada.</div>
+  </div>
+
+  <div class="warn" id="warn"></div>
+
+  <details>
+    <summary>Ajustes finos (opcional)</summary>
+    <div class="adv">
+      <div class="row"><label for="frames">Quadros por ciclo</label>
+        <select id="frames"><option>8</option><option selected>12</option><option>16</option><option>24</option></select></div>
+      <div class="row"><label for="fps">Velocidade</label><output id="fpsO"></output><input type="range" id="fps" min="6" max="30" step="1" value="12"></div>
+      <div class="row"><label>Quadro (largura × altura)</label>
+        <span><input type="number" id="fw" value="640" min="64" max="2048" step="16" aria-label="Largura do quadro"> × <input type="number" id="fh" value="640" min="64" max="2048" step="16" aria-label="Altura do quadro"></span></div>
+      <div class="row"><label for="height">Altura da criatura (px)</label><input type="number" id="height" value="230" min="16" max="2000"></div>
+      <div class="hint" style="margin-top:-4px">A altura fica fixa para todas as imagens e movimentos — assim todas as direções saem na mesma escala.</div>
+      <div class="row"><label for="stride">Tamanho do passo</label><output id="strideO"></output><input type="range" id="stride" min="60" max="130" value="100"></div>
+      <div class="row"><label for="lift">Altura do pé</label><output id="liftO"></output><input type="range" id="lift" min="50" max="160" value="100"></div>
+      <div class="row"><label for="bounce">Balanço do corpo</label><output id="bounceO"></output><input type="range" id="bounce" min="0" max="200" value="100"></div>
+      <div class="row"><label for="tail">Cauda e cabeça</label><output id="tailO"></output><input type="range" id="tail" min="0" max="200" value="100"></div>
+      <div class="row"><label for="cols">Colunas do sprite sheet</label><input type="number" id="cols" value="12" min="1" max="24"></div>
+      <div class="row"><label for="facing">Criatura olha para</label>
+        <select id="facing"><option value="auto">Automático</option><option value="R">Direita</option><option value="L">Esquerda</option></select></div>
+      <label class="chk"><input type="checkbox" id="swap"> Trocar perna da frente com a de trás</label>
+      <label class="chk"><input type="checkbox" id="autoTol" checked> Remoção de fundo automática</label>
+      <div class="row"><label for="tol">Tolerância do fundo</label><output id="tolO"></output><input type="range" id="tol" min="2" max="90" value="20" disabled></div>
+      <button id="resetCut">Desfazer limpezas manuais</button>
+    </div>
+  </details>
+  <div class="hint" style="margin-top:14px">Melhor resultado: uma imagem por direção, corpo inteiro, pernas visíveis e separadas, fundo liso ou transparente.</div>
+</aside>
+
+<main>
+  <div class="bar">
+    <div class="tabs" id="tabs">
+      <button data-v="anim" class="on">Animação</button>
+      <button data-v="cut">Recorte</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="skel"> Esqueleto</label>
+    <select id="zoom" aria-label="Zoom da prévia"><option value="fit">Ajustar à janela</option><option value="0.5">50%</option><option value="1">100%</option><option value="2">200%</option></select>
+    <select id="bg" aria-label="Fundo da prévia"><option value="checker">Xadrez</option><option value="bgdark">Escuro</option><option value="bglight">Claro</option><option value="bggreen">Verde</option></select>
+    <div class="sp"></div>
+    <div class="status" id="status">Pronto.</div>
+  </div>
+  <div class="stage checker" id="stage">
+    <div class="empty" id="empty"><b>Importe a imagem de uma criatura</b>O fundo é removido, as pernas são encontradas e o ciclo é gerado automaticamente. Depois é só escolher direção e movimento.</div>
+    <canvas id="view" hidden></canvas>
+    <canvas id="cutView" hidden title="Clique numa sobra de fundo para apagá-la"></canvas>
+  </div>
+  <div class="ctrl">
+    <button id="play" disabled>⏸ Pausar</button>
+    <input type="range" id="scrub" min="0" max="11" value="0" disabled aria-label="Quadro">
+    <span id="fcount">—</span>
+  </div>
+  <div>
+    <div class="prog"><i id="prog"></i></div>
+    <div class="strip"><canvas id="strip" height="74" width="10"></canvas></div>
+  </div>
+</main>
+</div>
+
+<script>
+/* Motor de locomoção 2D — funciona no navegador e no Node (testes). Sem dependências. */
+(function (root) {
+'use strict';
+const WC = {};
+const PI = Math.PI, TAU = Math.PI * 2;
+const clamp = (x, a, b) => (x < a ? a : x > b ? b : x);
+const sstep = (a, b, x) => { if (a === b) return x < a ? 0 : 1; const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const frac = (x) => x - Math.floor(x);
+const hyp = Math.hypot;
+
+/* ================= 1. REMOÇÃO DE FUNDO ================= */
+function borderPalette(bs, tol) {
+  const m = bs.length / 3, pal = [], used = new Uint8Array(m);
+  for (let k = 0; k < 4; k++) {
+    const r = [], g = [], b = [];
+    for (let i = 0; i < m; i++) if (!used[i]) { r.push(bs[i * 3]); g.push(bs[i * 3 + 1]); b.push(bs[i * 3 + 2]); }
+    if (r.length < Math.max(8, m * 0.03)) break;
+    const med = (a) => { a.sort((p, q) => p - q); return a[a.length >> 1]; };
+    let c = [med(r), med(g), med(b)];
+    for (let it = 0; it < 3; it++) {
+      let sr = 0, sg = 0, sb = 0, n = 0;
+      for (let i = 0; i < m; i++) { if (used[i]) continue;
+        const d = hyp(bs[i * 3] - c[0], bs[i * 3 + 1] - c[1], bs[i * 3 + 2] - c[2]);
+        if (d < tol * 1.5) { sr += bs[i * 3]; sg += bs[i * 3 + 1]; sb += bs[i * 3 + 2]; n++; } }
+      if (n) c = [sr / n, sg / n, sb / n];
+    }
+    let n = 0;
+    for (let i = 0; i < m; i++) { if (used[i]) continue;
+      if (hyp(bs[i * 3] - c[0], bs[i * 3 + 1] - c[1], bs[i * 3 + 2] - c[2]) < tol * 1.5) { used[i] = 1; n++; } }
+    if (!n) break;
+    pal.push(c);
+  }
+  return pal;
+}
+
+/* Mantém só os componentes relevantes (remove ciscos soltos). */
+function keepMainComponents(out, w, h) {
+  const n = w * h, lab = new Int32Array(n), st = new Int32Array(n);
+  const areas = [0]; let cur = 0;
+  for (let i = 0; i < n; i++) {
+    if (lab[i] || out[i * 4 + 3] < 40) continue;
+    cur++; let sp = 0, a = 0; st[sp++] = i; lab[i] = cur;
+    while (sp) { const p = st[--sp]; a++; const x = p % w, y = (p / w) | 0;
+      if (x > 0 && !lab[p - 1] && out[(p - 1) * 4 + 3] >= 40) { lab[p - 1] = cur; st[sp++] = p - 1; }
+      if (x < w - 1 && !lab[p + 1] && out[(p + 1) * 4 + 3] >= 40) { lab[p + 1] = cur; st[sp++] = p + 1; }
+      if (y > 0 && !lab[p - w] && out[(p - w) * 4 + 3] >= 40) { lab[p - w] = cur; st[sp++] = p - w; }
+      if (y < h - 1 && !lab[p + w] && out[(p + w) * 4 + 3] >= 40) { lab[p + w] = cur; st[sp++] = p + w; } }
+    areas.push(a);
+  }
+  let best = 0; for (let k = 1; k < areas.length; k++) if (areas[k] > best) best = areas[k];
+  for (let i = 0; i < n; i++) { if (out[i * 4 + 3] === 0) continue; const l = lab[i]; if (!l || areas[l] < best * 0.12) out[i * 4 + 3] = 0; }
+}
+
+WC.removeBackground = function (src, w, h, opt) {
+  opt = opt || {};
+  let tol = opt.tol == null ? 30 : opt.tol;
+  const n = w * h, out = new Uint8ClampedArray(src);
+  let transp = 0;
+  for (let i = 0; i < n; i++) if (src[i * 4 + 3] < 128) transp++;
+  const hadAlpha = transp > n * 0.02;
+  if (!hadAlpha) {
+    for (let i = 0; i < n; i++) out[i * 4 + 3] = 255;
+    const bs = [], stp = Math.max(1, Math.floor(Math.min(w, h) / 500));
+    const push = (x, y) => { const i = (y * w + x) * 4; bs.push(src[i], src[i + 1], src[i + 2]); };
+    for (let x = 0; x < w; x += stp) { push(x, 0); push(x, h - 1); push(x, 1); push(x, h - 2); }
+    for (let y = 0; y < h; y += stp) { push(0, y); push(w - 1, y); push(1, y); push(w - 2, y); }
+    const pal = borderPalette(bs, tol);
+    if (opt.tol == null) { // tolerância automática: fundos lisos pedem tolerância baixa para não comer bordas escuras/claras
+      const ds = []; for (let i = 0; i < bs.length; i += 3) { let b = 1e9; for (const c of pal) { const d = hyp(bs[i] - c[0], bs[i + 1] - c[1], bs[i + 2] - c[2]); if (d < b) b = d; } ds.push(b); }
+      ds.sort((p, q) => p - q); tol = clamp(3 * ds[Math.floor(ds.length * 0.9)] + 7, 7, 30); }
+    const dm = new Float32Array(n), pi = new Uint8Array(n);
+    for (let i = 0; i < n; i++) { let b = 1e9, bk = 0;
+      for (let k = 0; k < pal.length; k++) { const c = pal[k], d = hyp(src[i * 4] - c[0], src[i * 4 + 1] - c[1], src[i * 4 + 2] - c[2]); if (d < b) { b = d; bk = k; } }
+      dm[i] = b; pi[i] = bk; }
+    const bg = new Uint8Array(n), st = new Int32Array(n); let sp = 0;
+    const seed = (i) => { if (!bg[i] && dm[i] < tol) { bg[i] = 1; st[sp++] = i; } };
+    for (let x = 0; x < w; x++) { seed(x); seed((h - 1) * w + x); }
+    for (let y = 0; y < h; y++) { seed(y * w); seed(y * w + w - 1); }
+    const tryN = (p, q) => { if (bg[q]) return;
+      if (dm[q] < tol) { bg[q] = 1; st[sp++] = q; return; }
+      if (dm[q] < tol * 2.2) { const d = hyp(src[p * 4] - src[q * 4], src[p * 4 + 1] - src[q * 4 + 1], src[p * 4 + 2] - src[q * 4 + 2]);
+        if (d < tol * 0.22) { bg[q] = 1; st[sp++] = q; } } };
+    while (sp) { const p = st[--sp], x = p % w, y = (p / w) | 0;
+      if (x > 0) tryN(p, p - 1); if (x < w - 1) tryN(p, p + 1); if (y > 0) tryN(p, p - w); if (y < h - 1) tryN(p, p + w); }
+    // buracos fechados com a cor do fundo (ex.: vão entre pernas sem saída para a borda)
+    const seen = new Uint8Array(n), minA = Math.max(80, n * 0.0006), thr = tol * 0.45;
+    for (let i = 0; i < n; i++) {
+      if (bg[i] || seen[i] || dm[i] >= thr) continue;
+      let s2 = 0, e2 = 0; st[e2++] = i; seen[i] = 1;
+      while (s2 < e2) { const p = st[s2++], x = p % w, y = (p / w) | 0;
+        const t = (q) => { if (!bg[q] && !seen[q] && dm[q] < thr) { seen[q] = 1; st[e2++] = q; } };
+        if (x > 0) t(p - 1); if (x < w - 1) t(p + 1); if (y > 0) t(p - w); if (y < h - 1) t(p + w); }
+      if (e2 >= minA) for (let k = 0; k < e2; k++) bg[st[k]] = 1;
+    }
+    if (pal.length > 1) { // cenário com várias cores: apaga fiapos finos que sobram nas emendas (linha do horizonte etc.)
+      let m = new Uint8Array(n); for (let i = 0; i < n; i++) m[i] = bg[i] ? 0 : 1;
+      const pass = (src2, er) => { const o = new Uint8Array(n); for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = y * w + x;
+        const a = src2[i], l = x > 0 ? src2[i - 1] : a, r = x < w - 1 ? src2[i + 1] : a, u = y > 0 ? src2[i - w] : a, d = y < h - 1 ? src2[i + w] : a;
+        o[i] = er ? (a & l & r & u & d) : (a | l | r | u | d); } return o; };
+      let e = pass(pass(m, true), true); e = pass(pass(pass(e, false), false), false);
+      for (let i = 0; i < n; i++) if (m[i] && !e[i]) bg[i] = 1; }
+    for (let i = 0; i < n; i++) if (bg[i]) out[i * 4 + 3] = 0;
+    // suaviza a borda e remove a contaminação da cor do fundo
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = y * w + x; if (bg[i]) continue;
+      const nb = (x > 0 && bg[i - 1]) || (x < w - 1 && bg[i + 1]) || (y > 0 && bg[i - w]) || (y < h - 1 && bg[i + w]);
+      if (!nb) continue;
+      let dref = 0;
+      for (let yy = Math.max(0, y - 2); yy <= Math.min(h - 1, y + 2); yy++) for (let xx = Math.max(0, x - 2); xx <= Math.min(w - 1, x + 2); xx++) {
+        const j = yy * w + xx; if (!bg[j] && dm[j] > dref) dref = dm[j]; }
+      const a = clamp(dm[i] / (0.85 * dref + 1e-6), 0, 1);
+      if (a < 0.999) { const c = pal[pi[i]], ia = 1 / Math.max(a, 0.25);
+        out[i * 4] = c[0] + (src[i * 4] - c[0]) * ia; out[i * 4 + 1] = c[1] + (src[i * 4 + 1] - c[1]) * ia; out[i * 4 + 2] = c[2] + (src[i * 4 + 2] - c[2]) * ia;
+        out[i * 4 + 3] = Math.round(a * 255); }
+    }
+  }
+  keepMainComponents(out, w, h);
+  return { rgba: out, w, h, hadAlpha, tol };
+};
+
+/* Varinha: apaga a região contígua de cor parecida a partir de um ponto. */
+WC.floodErase = function (rgba, w, h, x0, y0, tol) {
+  const n = w * h, i0 = (y0 | 0) * w + (x0 | 0); if (i0 < 0 || i0 >= n || rgba[i0 * 4 + 3] === 0) return 0;
+  const c = [rgba[i0 * 4], rgba[i0 * 4 + 1], rgba[i0 * 4 + 2]], st = new Int32Array(n), seen = new Uint8Array(n);
+  let sp = 0, cnt = 0; st[sp++] = i0; seen[i0] = 1;
+  while (sp) { const p = st[--sp]; rgba[p * 4 + 3] = 0; cnt++; const x = p % w, y = (p / w) | 0;
+    const t = (q) => { if (!seen[q] && rgba[q * 4 + 3] > 0 && hyp(rgba[q * 4] - c[0], rgba[q * 4 + 1] - c[1], rgba[q * 4 + 2] - c[2]) < tol) { seen[q] = 1; st[sp++] = q; } };
+    if (x > 0) t(p - 1); if (x < w - 1) t(p + 1); if (y > 0) t(p - w); if (y < h - 1) t(p + w); }
+  return cnt;
+};
+
+WC.cropSprite = function (rgba, w, h) {
+  let x0 = w, y0 = h, x1 = -1, y1 = -1;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (rgba[(y * w + x) * 4 + 3] > 10) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  if (x1 < 0) return null;
+  x0 = Math.max(0, x0 - 1); y0 = Math.max(0, y0 - 1); x1 = Math.min(w - 1, x1 + 1); y1 = Math.min(h - 1, y1 + 1);
+  const cw = x1 - x0 + 1, ch = y1 - y0 + 1, o = new Uint8ClampedArray(cw * ch * 4);
+  for (let y = 0; y < ch; y++) o.set(rgba.subarray(((y + y0) * w + x0) * 4, ((y + y0) * w + x0 + cw) * 4), y * cw * 4);
+  return { rgba: o, w: cw, h: ch, x0, y0 };
+};
+WC.flipSprite = function (s) {
+  const o = new Uint8ClampedArray(s.rgba.length), w = s.w, h = s.h;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const a = (y * w + x) * 4, b = (y * w + (w - 1 - x)) * 4; o[b] = s.rgba[a]; o[b + 1] = s.rgba[a + 1]; o[b + 2] = s.rgba[a + 2]; o[b + 3] = s.rgba[a + 3]; }
+  return { rgba: o, w, h };
+};
+
+/* Redimensiona por média de área (redução) — devolve RGBA pré-multiplicado em Float32. */
+function resamplePremult(s, tw, th) {
+  const o = new Float32Array(tw * th * 4), sx = s.w / tw, sy = s.h / th, src = s.rgba, w = s.w, h = s.h;
+  if (sx <= 1.001 && sy <= 1.001) { // ampliação: bilinear
+    for (let y = 0; y < th; y++) { const fy = clamp((y + 0.5) * sy - 0.5, 0, h - 1), y0 = fy | 0, y1 = Math.min(h - 1, y0 + 1), wy = fy - y0;
+      for (let x = 0; x < tw; x++) { const fx = clamp((x + 0.5) * sx - 0.5, 0, w - 1), x0 = fx | 0, x1 = Math.min(w - 1, x0 + 1), wx = fx - x0;
+        const k = [(y0 * w + x0) * 4, (y0 * w + x1) * 4, (y1 * w + x0) * 4, (y1 * w + x1) * 4], ws = [(1 - wx) * (1 - wy), wx * (1 - wy), (1 - wx) * wy, wx * wy];
+        let r = 0, g = 0, b = 0, a = 0; for (let j = 0; j < 4; j++) { const al = src[k[j] + 3] / 255 * ws[j]; r += src[k[j]] * al; g += src[k[j] + 1] * al; b += src[k[j] + 2] * al; a += al * 255; }
+        const i = (y * tw + x) * 4; o[i] = r; o[i + 1] = g; o[i + 2] = b; o[i + 3] = a; } }
+    return o;
+  }
+  for (let y = 0; y < th; y++) { const ya = y * sy, yb = (y + 1) * sy;
+    for (let x = 0; x < tw; x++) { const xa = x * sx, xb = (x + 1) * sx; let r = 0, g = 0, b = 0, a = 0, ws = 0;
+      for (let yy = ya | 0; yy < yb && yy < h; yy++) { const wy = Math.min(yy + 1, yb) - Math.max(yy, ya);
+        for (let xx = xa | 0; xx < xb && xx < w; xx++) { const wx = Math.min(xx + 1, xb) - Math.max(xx, xa), wt = wx * wy, k = (yy * w + xx) * 4, al = src[k + 3] / 255 * wt;
+          r += src[k] * al; g += src[k + 1] * al; b += src[k + 2] * al; a += al * 255; ws += wt; } }
+      const i = (y * tw + x) * 4, iw = 1 / (ws || 1); o[i] = r * iw; o[i + 1] = g * iw; o[i + 2] = b * iw; o[i + 3] = a * iw; } }
+  return o;
+}
+
+/* ================= 2. ANÁLISE: PERNAS E ARTICULAÇÕES ================= */
+function makeMask(sprite, maxdim) {
+  const sc = Math.max(1, Math.max(sprite.w, sprite.h) / maxdim), aw = Math.max(8, Math.round(sprite.w / sc)), ah = Math.max(8, Math.round(sprite.h / sc));
+  const t = resamplePremult(sprite, aw, ah), m = new Uint8Array(aw * ah);
+  for (let i = 0; i < aw * ah; i++) m[i] = t[i * 4 + 3] >= 110 ? 1 : 0;
+  return { mask: m, aw, ah, sa: sprite.w / aw };
+}
+
+/* Árvore de fusão de baixo para cima: cada "ponta pendente" (pé, cauda, mão) vira um ramo. */
+function hangingBranches(mask, w, h, pmin) {
+  const n = w * h, par = new Int32Array(n).fill(-1), by = new Int32Array(n), bx = new Int32Array(n), sig = new Int32Array(n).fill(-1), res = [];
+  const find = (i) => { while (par[i] !== i) { par[i] = par[par[i]]; i = par[i]; } return i; };
+  const uni = (a, b, y) => { let ra = find(a), rb = find(b); if (ra === rb) return;
+    if (by[ra] < by[rb]) { const t = ra; ra = rb; rb = t; } // ra = mais antigo (ponta mais baixa)
+    const pers = by[rb] - y;
+    if (pers >= pmin) { res.push({ bx: bx[rb], by: by[rb], sig: sig[rb] < 0 ? y : sig[rb] }); if (sig[ra] < 0) sig[ra] = y; }
+    par[rb] = ra; };
+  for (let y = h - 1; y >= 0; y--) for (let x = 0; x < w; x++) { const i = y * w + x; if (!mask[i]) continue;
+    par[i] = i; by[i] = y; bx[i] = x;
+    if (x > 0 && mask[i - 1]) uni(i, i - 1, y);
+    if (y < h - 1) { if (mask[i + w]) uni(i, i + w, y); if (x > 0 && mask[i + w - 1]) uni(i, i + w - 1, y); if (x < w - 1 && mask[i + w + 1]) uni(i, i + w + 1, y); } }
+  const done = new Set();
+  for (let i = 0; i < n; i++) { if (!mask[i]) continue; const r = find(i); if (done.has(r)) continue; done.add(r); res.push({ bx: bx[r], by: by[r], sig: sig[r], eldest: true }); }
+  return res;
+}
+
+function extractFlap(mask, w, h, br, topRow) {
+  const n = w * h, f = new Uint8Array(n), st = new Int32Array(n); let sp = 0, area = 0;
+  const i0 = br.by * w + br.bx; st[sp++] = i0; f[i0] = 1;
+  while (sp) { const p = st[--sp]; area++; const x = p % w, y = (p / w) | 0;
+    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; const xx = x + dx, yy = y + dy;
+      if (xx < 0 || xx >= w || yy < topRow || yy >= h) continue; const q = yy * w + xx; if (mask[q] && !f[q]) { f[q] = 1; st[sp++] = q; } } }
+  return { f, area };
+}
+
+/* Apara a aba da perna: segue a perna de baixo para cima e corta onde ela se funde com outra massa (barriga etc.). */
+function trimFlap(c, w) {
+  const f = c.f, top = c.top, by = c.by, fh = by - top + 1, yS = Math.round(by - 0.28 * fh), keep = new Uint8Array(f.length);
+  const runs = (y) => { const r = []; let x = 0; while (x < w) { if (f[y * w + x]) { const a = x; while (x < w && f[y * w + x]) x++; r.push([a, x - 1]); } else x++; } return r; };
+  for (let y = yS + 1; y <= by; y++) for (let x = 0; x < w; x++) if (f[y * w + x]) keep[y * w + x] = 1;
+  let cur = null; for (const r of runs(yS)) if (!cur || r[1] - r[0] > cur[1] - cur[0]) cur = r;
+  if (!cur) return;
+  const ws = []; let newTop = top;
+  for (let y = yS; y >= top; y--) {
+    let best = null, bo = 0; for (const r of runs(y)) { const o = Math.min(r[1], cur[1]) - Math.max(r[0], cur[0]) + 1; if (o > bo) { bo = o; best = r; } }
+    if (!best) { newTop = y + 1; break; }
+    const wd = best[1] - best[0] + 1;
+    if (ws.length >= 6) { const s = ws.slice().sort((a, b) => a - b), med = s[s.length >> 1], ref = ws[Math.max(0, ws.length - 3)]; if (wd > 1.45 * med && wd > 1.3 * ref) { newTop = y + 1; break; } }
+    for (let x = best[0]; x <= best[1]; x++) keep[y * w + x] = 1; ws.push(wd); cur = best; newTop = y;
+  }
+  let area = 0; for (let i = 0; i < keep.length; i++) area += keep[i];
+  c.f = keep; c.top = newTop; c.area = area;
+}
+
+function legGeometry(fl, w, h, top, bottom, lateral) {
+  const cnt = new Float32Array(h), sum = new Float32Array(h), mn = new Float32Array(h).fill(1e9), mx = new Float32Array(h).fill(-1e9);
+  for (let y = top; y <= bottom; y++) for (let x = 0; x < w; x++) if (fl[y * w + x]) { cnt[y]++; sum[y] += x + 0.5; if (x < mn[y]) mn[y] = x; if (x + 1 > mx[y]) mx[y] = x + 1; }
+  const fh = bottom - top + 1;
+  const cAt = (y) => { y = clamp(Math.round(y), top, bottom); let s = 0, c = 0; for (let k = -1; k <= 1; k++) { const yy = clamp(y + k, top, bottom); s += sum[yy]; c += cnt[yy]; } return c ? s / c : 0; };
+  const wAt = (y) => { y = clamp(Math.round(y), top, bottom); let c = 0, k2 = 0; for (let k = -1; k <= 1; k++) { const yy = clamp(y + k, top, bottom); c += cnt[yy]; k2++; } return c / k2; };
+  let wmin = 1e9, ymin = top;
+  for (let y = Math.round(top + 0.2 * fh); y <= Math.round(top + 0.75 * fh); y++) if (cnt[y] > 0 && cnt[y] < wmin) { wmin = cnt[y]; ymin = y; }
+  let yA = -1;
+  for (let y = ymin; y <= bottom; y++) if (cnt[y] > 1.45 * wmin) { yA = y; break; }
+  const yLo = bottom - 0.32 * fh, yHi = bottom - 0.10 * fh;
+  if (yA < 0) yA = bottom - 0.18 * fh; yA = Math.round(clamp(yA, yLo, yHi));
+  const P0 = { x: cAt(top + 1), y: top }, P2 = { x: cAt(yA - 1), y: yA };
+  // articulação intermediária = ponto de maior desvio da linha reta
+  let best = 0, yb = -1; const len = hyp(P2.x - P0.x, P2.y - P0.y);
+  for (let y = Math.round(top + 0.22 * (yA - top)); y <= Math.round(top + 0.8 * (yA - top)); y++) {
+    const t = (y - top) / (yA - top), lx = P0.x + (P2.x - P0.x) * t, d = cAt(y) - lx; if (Math.abs(d) > Math.abs(best)) { best = d; yb = y; } }
+  let P1, straight = false;
+  if (yb >= 0 && Math.abs(best) > 0.07 * len) P1 = { x: cAt(yb), y: yb }; else { straight = true; P1 = { x: (P0.x + P2.x) / 2, y: Math.round((top + yA) / 2) }; }
+  let tx = -1e9, hx = 1e9, sx = 0, sc = 0;
+  for (let y = Math.round(bottom - 0.4 * (bottom - yA)); y <= bottom; y++) { if (!cnt[y]) continue; if (mx[y] > tx) tx = mx[y]; if (mn[y] < hx) hx = mn[y]; sx += sum[y]; sc += cnt[y]; }
+  const fcx = sc ? sx / sc : P2.x;
+  const g = { top, bottom, fh, yA, P0, P1, P2, straight, hwTop: Math.max(2, wAt(top + 1) / 2), hwStub: Math.max(2, wAt(top + 0.15 * fh) / 2), w1: wAt(P1.y), w2: wAt(yA), toeBias: (fcx - cAt(yA - 2)) / fh, dev: Math.abs(best) / Math.max(1, len) };
+  if (lateral) { g.Tt = { x: tx, y: bottom + 1 }; g.Ht = { x: hx, y: bottom + 1 }; }
+  else { g.Tt = { x: fcx, y: bottom + 1 }; g.Ht = { x: fcx, y: bottom + 1 }; }
+  g.C = { x: (g.Tt.x + g.Ht.x) / 2, y: bottom + 1 }; g.fcx = fcx;
+  return g;
+}
+
+/* espessura média do contorno nas duas extremidades horizontais (ponta fina = cauda) */
+function endThickness(mask, aw, ah) {
+  const n = Math.max(3, Math.round(aw * 0.04)), col = (x) => { let c = 0; for (let y = 0; y < ah; y++) c += mask[y * aw + x]; return c; };
+  let l = 0, r = 0, mx = 0; for (let i = 0; i < n; i++) { l += col(i); r += col(aw - 1 - i); } for (let x = 0; x < aw; x++) { const c = col(x); if (c > mx) mx = c; }
+  return { l: l / n, r: r / n, max: mx };
+}
+function detectLegs(mask, aw, ah, type, frontal, lowTol) {
+  const brs = hangingBranches(mask, aw, ah, Math.max(4, 0.09 * ah));
+  let low = 0; for (const b of brs) if (b.by > low) low = b.by;
+  const cands = [];
+  for (const b of brs) {
+    let top = b.sig < 0 ? Math.round(b.by - 0.3 * ah) : b.sig + 1; if (top < 0) top = 0;
+    const pers = b.by - top; if (pers < 0.09 * ah) continue;
+    const fl = extractFlap(mask, aw, ah, b, top);
+    // forma: pé (base larga) x cauda (afina até a ponta) x cabeça pendurada (pouco corpo acima)
+    const cnt = new Float32Array(ah); let mnT = 1e9, mxT = -1e9;
+    for (let y = top; y <= b.by; y++) for (let x = 0; x < aw; x++) if (fl.f[y * aw + x]) { cnt[y]++; if (y <= top + 3 && y >= top + 1) { if (x < mnT) mnT = x; if (x > mxT) mxT = x; } }
+    const fh = b.by - top + 1, mean = (a, c) => { let s2 = 0, n2 = 0; for (let y = Math.round(top + a * fh); y <= Math.min(b.by, Math.round(top + c * fh)); y++) { s2 += cnt[y]; n2++; } return n2 ? s2 / n2 : 0; };
+    const wMid = mean(0.3, 0.65), wBot = mean(0.84, 1), wTop = Math.max(1, mxT - mnT + 1), cxT = (mnT + mxT) / 2;
+    let ta = top; { const xc = clamp(Math.round(cxT), 0, aw - 1); for (let y = 0; y < top; y++) if (mask[y * aw + xc]) { ta = y; break; } }
+    cands.push({ by: b.by, bx: b.bx, top, f: fl.f, area: fl.area, pers, taper: wBot / Math.max(1, wMid), above: (top - ta) / wTop, wTop });
+  }
+  for (const c of cands) c.kind = c.taper < 0.6 ? 'tail' : (c.above < 0.9 ? 'head' : 'leg');
+  let lowLeg = 0; for (const c of cands) if (c.kind === 'leg' && c.by > lowLeg) lowLeg = c.by;
+  const elig = cands.filter((c) => c.kind === 'leg' && c.by >= lowLeg - lowTol * ah);
+  const tailC = cands.filter((c) => c.kind === 'tail');
+  const want = type === 'biped' ? 2 : 4; let legs = [], tails = [];
+  const cx = (c) => { let s = 0, n = 0; for (let y = Math.max(c.top, c.by - 3); y <= c.by; y++) for (let x = 0; x < aw; x++) if (c.f[y * aw + x]) { s += x; n++; } return n ? s / n : c.bx; };
+  for (const c of cands) c.cx = cx(c);
+  if (frontal && (type === 'biped' || elig.length < 3)) {
+    const s = elig.slice().sort((a, b) => a.cx - b.cx);
+    if (s.length >= 2) { legs = [s[0], s[s.length - 1]]; } else legs = s;
+  } else {
+    const s = elig.slice().sort((a, b) => b.by - a.by || b.pers - a.pers);
+    legs = s.slice(0, want);
+  }
+  if (frontal && legs.length >= 2) { const xa = Math.min(...legs.map((c) => c.cx)), xb = Math.max(...legs.map((c) => c.cx)); tails = tailC.filter((c) => c.cx > xa && c.cx < xb); }
+  if (typeof process !== 'undefined' && process.env && process.env.WCDBG) for (const c of cands) console.log('   cand', 'cx', c.cx.toFixed(0), 'by', c.by, 'top', c.top, 'pers', c.pers, 'taper', c.taper.toFixed(2), 'above', c.above.toFixed(2), c.kind, legs.includes(c) ? 'LEG' : '');
+  for (const c of legs) trimFlap(c, aw);
+  const arms = cands.filter((c) => !legs.includes(c) && c.above >= 0.9 && c.by < lowLeg - 0.18 * ah && c.cx > aw * 0.08 && c.cx < aw * 0.92);
+  return { legs, tails, low, cands, arms, tailC };
+}
+
+/* Palpite automático da vista da imagem (o usuário pode corrigir com um clique). */
+WC.guessDirection = function (sprite, dbg) {
+  const mk = makeMask(sprite, 240), m = mk.mask, aw = mk.aw, ah = mk.ah;
+  // eixo de simetria = centro dos pés (uma cauda aparecendo de lado não desloca o eixo)
+  let fx0 = aw, fx1 = 0; for (let y = Math.round(ah * 0.78); y < ah; y++) for (let x = 0; x < aw; x++) if (m[y * aw + x]) { if (x < fx0) fx0 = x; if (x > fx1) fx1 = x; }
+  const ax2 = fx0 + fx1; let inter = 0, uni = 0;
+  for (let y = 0; y < ah; y++) for (let x = 0; x < aw; x++) { const xm = ax2 - x, a = m[y * aw + x], b = xm >= 0 && xm < aw ? m[y * aw + xm] : 0; if (a && b) inter++; if (a || b) uni++; }
+  const sym = inter / (uni || 1);
+  const out = { sym };
+  if (sym >= 0.74) { const d = detectLegs(m, aw, ah, 'auto', true, 0.34); out.dir = d.tails.length ? 'N' : 'S'; if (dbg) out.f = { tails: d.tails.length }; return out; }
+  const d = detectLegs(m, aw, ah, 'auto', false, 0.34), ex = endThickness(m, aw, ah);
+  let toe = 0, lo = 0, hi = 1e9; for (const c of d.legs) { const g = legGeometry(c.f, aw, ah, c.top, c.by, true); toe += g.toeBias; if (c.by > lo) lo = c.by; if (c.by < hi) hi = c.by; }
+  let aL = 0, aR = 0; const bw = Math.round(aw * 0.18);
+  for (let y = 0; y < ah; y++) { for (let x = 0; x < bw; x++) aL += m[y * aw + x]; for (let x = aw - bw; x < aw; x++) aR += m[y * aw + x]; }
+  const score = toe * 2.5 + 0.5 * (aR - aL) / (aR + aL + 1) + 1.5 * (ex.r - ex.l) / (ex.r + ex.l + 1e-6), right = score >= 0;
+  const spread = d.legs.length > 1 ? (lo - hi) / ah : 0;
+  // altura média das duas pontas: cabeça mais baixa que a cauda = vindo para a câmera
+  const cy = (x0, x1) => { let s2 = 0, n2 = 0; for (let y = 0; y < ah; y++) for (let x = x0; x < x1; x++) if (m[y * aw + x]) { s2 += y; n2++; } return n2 ? s2 / n2 / ah : 0.5; };
+  const n = Math.round(aw * 0.12), yL = cy(0, n), yR = cy(aw - n, aw), yHead = right ? yR : yL, yTail = right ? yL : yR;
+  let kind = spread < 0.085 ? 'side' : (yHead > yTail ? 'front' : 'back');
+  out.dir = kind === 'side' ? (right ? 'E' : 'W') : kind === 'front' ? (right ? 'SE' : 'SW') : (right ? 'NE' : 'NW');
+  if (dbg) out.f = { score: +score.toFixed(2), spread: +spread.toFixed(3), yHead: +yHead.toFixed(2), yTail: +yTail.toFixed(2), legs: d.legs.length };
+  return out;
+};
+
+WC.DIRS = {
+  E: { a: 0, flip: false, nome: 'Direita' }, W: { a: 0, flip: true, nome: 'Esquerda' },
+  S: { a: 90, flip: false, nome: 'Frente' }, N: { a: -90, flip: false, nome: 'Costas' },
+  SE: { a: 45, flip: false, nome: 'Frente-direita' }, SW: { a: 45, flip: true, nome: 'Frente-esquerda' },
+  NE: { a: -45, flip: false, nome: 'Costas-direita' }, NW: { a: -45, flip: true, nome: 'Costas-esquerda' }
+};
+const KP = 0.38; // achatamento do chão em perspectiva
+
+/* Analisa o sprite recortado e monta o esqueleto. opt: {type:'biped'|'quad', dir, facing:'auto'|'L'|'R', swap:bool} */
+WC.buildRig = function (sprite0, opt) {
+  const D = WC.DIRS[opt.dir] || WC.DIRS.E, al = D.a * PI / 180, sig = Math.abs(Math.cos(al)), tau = Math.abs(Math.sin(al));
+  const frontal = sig < 0.3, lateral = !frontal;
+  let sprite = sprite0, mk = makeMask(sprite, 360), det = detectLegs(mk.mask, mk.aw, mk.ah, opt.type, frontal, sig > 0.9 ? 0.16 : 0.34);
+  let facing = 'R', flipped = false;
+  if (lateral) {
+    // para que lado a criatura olha: dedos dos pés + massa da cabeça
+    let toe = 0;
+    for (const c of det.legs) { const g = legGeometry(c.f, mk.aw, mk.ah, c.top, c.by, true); toe += g.toeBias; }
+    let aL = 0, aR = 0; const bw = Math.round(mk.aw * 0.18);
+    for (let y = 0; y < mk.ah; y++) { for (let x = 0; x < bw; x++) aL += mk.mask[y * mk.aw + x]; for (let x = mk.aw - bw; x < mk.aw; x++) aR += mk.mask[y * mk.aw + x]; }
+    const ex = endThickness(mk.mask, mk.aw, mk.ah);
+    const score = toe * 2.5 + 0.5 * (aR - aL) / (aR + aL + 1) + 1.5 * (ex.r - ex.l) / (ex.r + ex.l + 1e-6);
+    facing = opt.facing === 'L' || opt.facing === 'R' ? opt.facing : (score >= 0 ? 'R' : 'L');
+    if (facing === 'L') { sprite = WC.flipSprite(sprite0); flipped = true; mk = makeMask(sprite, 360); det = detectLegs(mk.mask, mk.aw, mk.ah, opt.type, frontal, sig > 0.9 ? 0.16 : 0.34); }
+  }
+  const { mask, aw, ah } = mk;
+  const autoType = opt.type !== 'biped' && opt.type !== 'quad';
+  if (autoType) opt = Object.assign({}, opt, { type: det.legs.length >= 3 ? 'quad' : 'biped' });
+  const rig = { sprite, aw, ah, sa: mk.sa, mask, dir: opt.dir, D, al, sig, tau, frontal, type: opt.type, autoType, facing, flipped, legs: [], warnings: [] };
+  rig.nArms = det.arms.length; { const ex = endThickness(mask, aw, ah); rig.hasTail = lateral ? ex.l < 0.3 * ex.max : det.tails.length > 0; }
+  const topAt = (x) => { x = clamp(Math.round(x), 0, aw - 1); for (let y = 0; y < ah; y++) if (mask[y * aw + x]) return y; return 0; };
+  // ---- pernas
+  let L = det.legs.map((c, i) => { const g = legGeometry(c.f, aw, ah, c.top, c.by, lateral); g.f = c.f; g.area = c.area; g.id = i; return g; });
+  if (L.length < (opt.type === 'quad' ? 2 : 2)) rig.warnings.push('Não encontrei todas as pernas separadas na imagem. O resultado pode ficar limitado.');
+  // pares e ordem de profundidade
+  if (opt.type === 'quad' && lateral) {
+    L.sort((a, b) => a.C.x - b.C.x);
+    let split = L.length >> 1;
+    if (L.length === 3) split = (L[1].C.x - L[0].C.x) > (L[2].C.x - L[1].C.x) ? 1 : 2;
+    L.forEach((g, i) => { g.pair = i < split ? 0 : 1; }); // 0 = traseiro (esquerda, olhando p/ direita), 1 = dianteiro
+    if (L.length === 2) { L[0].pair = 0; L[1].pair = 1; }
+  } else if (opt.type === 'quad') {
+    L.sort((a, b) => b.bottom - a.bottom); L.forEach((g, i) => { g.pair = i < 2 ? 0 : 1; });
+  } else L.forEach((g) => { g.pair = 0; });
+  const pairs = [[], []]; L.forEach((g) => pairs[g.pair].push(g));
+  for (const P of pairs) {
+    if (!P.length) continue;
+    if (lateral || (opt.type === 'quad' && frontal && P === pairs[1])) {
+      P.sort((a, b) => (Math.abs(b.bottom - a.bottom) > 0.012 * ah ? b.bottom - a.bottom : b.area - a.area));
+      if (opt.swap && P.length > 1 && lateral) P.reverse();
+      P.forEach((g, i) => { g.far = lateral ? i > 0 : false; g.slot = i; });
+    } else { P.sort((a, b) => a.C.x - b.C.x); P.forEach((g, i) => { g.far = false; g.slot = i; }); }
+    if (frontal && opt.type === 'quad' && P === pairs[1]) P.forEach((g) => { g.far = true; });
+  }
+  // ---- direção do passo (f) e lateral (l) projetadas na tela
+  const gx = Math.cos(al), gy = Math.sin(al) * KP, lx = -Math.sin(al), ly = Math.cos(al) * KP;
+  rig.gvec = { x: gx, y: gy };
+  const dec = (dx, dy) => [(dx * ly - dy * lx) / KP, (gx * dy - gy * dx) / KP];
+  let maxS = 0;
+  for (const P of pairs) { if (!P.length) continue;
+    let mx = 0, my = 0; for (const g of P) { mx += g.C.x; my += g.C.y; } mx /= P.length; my /= P.length;
+    for (const g of P) { g.restS = dec(g.C.x - mx, g.C.y - my)[0]; g.nAdj = 0; if (Math.abs(g.restS) * 2 > maxS) maxS = Math.abs(g.restS) * 2; } }
+  rig.restStride = maxS;
+  // ---- quadril virtual, comprimentos
+  let unit = 0, nn = 0;
+  for (const g of L) {
+    const up = 0.52 * Math.max(4, g.P0.y - topAt(g.P0.x));
+    g.H = { x: g.P0.x - 0.10 * up * sig, y: g.P0.y - up };
+    g.L1 = hyp(g.P1.x - g.P0.x, g.P1.y - g.P0.y); g.L2 = hyp(g.P2.x - g.P1.x, g.P2.y - g.P1.y);
+    g.dRest = hyp(g.P2.x - g.P0.x, g.P2.y - g.P0.y);
+    let cr = (g.P1.x - g.P0.x) * (g.P2.y - g.P1.y) - (g.P1.y - g.P0.y) * (g.P2.x - g.P1.x);
+    if (g.straight || Math.abs(cr) < 1e-3) { // sem dobra visível: escolhe o lado natural
+      const back = !(opt.type === 'quad' && g.pair === 1); cr = back ? -1 : 1;
+      // desloca P1 um mínimo para definir a dobra
+    }
+    g.bend = cr >= 0 ? 1 : -1;
+    g.bw0 = Math.max(1.5, 0.55 * g.hwTop); g.bw1 = Math.max(1.5, 0.45 * g.w1); g.bw2 = Math.max(1.2, 0.30 * g.w2);
+    g.sep = false;
+    g.thick = g.w1 / Math.max(1, g.L1 + g.L2 + g.bottom - g.yA);
+    g.str = Math.max(clamp(1 - (g.dev - 0.10) / 0.10, 0, 1), clamp((g.thick - 0.36) / 0.08, 0, 1)); // perna reta/grossa, tipo coluna (elefante, saurópode)
+    g.pitchK = clamp(Math.abs(g.toeBias) / 0.12, 0.35, 1);     // pé redondo quase não dobra
+    g.legLen = hyp(g.C.x - g.H.x, g.C.y - g.H.y);
+  }
+  // perna de trás em camada separada só quando o topo dela fica "embutido" sob o corpo (há massa do corpo do lado de fora)
+  const botBody = (x) => { if (x < 0 || x >= aw) return -1; for (let y = ah - 1; y >= 0; y--) { const i = y * aw + x; if (mask[i]) { let inLeg = false; for (const q of L) if (q.f[i]) { inLeg = true; break; } if (!inLeg) return y; } } return -1; };
+  for (const P of pairs) { const near = P.find((g) => !g.far) || P[0];
+    for (const g of P) { g.ref = g; g.depth = { x: 0, y: 0 };
+      if (!g.far || !near || near === g || !lateral) continue;
+      const od = (g.C.x - near.C.x) >= 0 ? 1 : -1; let fo = od > 0 ? -1e9 : 1e9;
+      for (let y = g.top; y <= Math.min(ah - 1, g.top + 2); y++) for (let x = 0; x < aw; x++) if (g.f[y * aw + x]) { if (od > 0 ? x > fo : x < fo) fo = x; }
+      // âncora: ponto do contorno inferior do corpo um pouco para fora da perna (ex.: parte de baixo da cauda)
+      const xo = fo + od * Math.max(3, Math.round(1.5 * g.hwTop)); let ok = 0, tot = 0;
+      for (let x = fo + od; od > 0 ? x <= xo : x >= xo; x += od) { tot++; const b = botBody(x); if (b >= 0 && b <= g.top + 1 && b >= g.top - 0.7 * g.fh) ok++; }
+      const yo = botBody(xo);
+      g.sep = ok >= 0.6 * tot && yo >= 0 && yo <= g.top + 1 && yo >= g.top - 0.7 * g.fh; g.fo = fo; g.od = od; g.anchor = null;
+      if (g.sep) { // canto côncavo entre o corpo/cauda e a coxa de trás: só aí existe um "coto" a recortar
+        let best = Math.max(1.5, 0.025 * g.fh), K = null;
+        for (let x = fo + od; od > 0 ? x <= xo : x >= xo; x += od) { const b = botBody(x); if (b < 0 || b > g.top + 1) continue;
+          const cy = yo + (g.top - yo) * ((x - xo) / ((fo - xo) || 1)); if (cy - b > best) { best = cy - b; K = { x, y: b }; } }
+        g.anchor = K; }
+      if (g.sep) { g.ref = near; const d2 = dec(g.C.x - near.C.x, g.C.y - near.C.y); g.depth = { x: d2[1] * lx, y: d2[1] * ly }; } } }
+  for (const g of L) if (!g.sep) { unit += g.C.y - g.H.y; nn++; }
+  if (!nn) for (const g of L) { unit += g.C.y - g.H.y; nn++; }
+  rig.unit = nn ? unit / nn : ah * 0.5;
+  rig.legs = L; rig.pairs = pairs; rig.strAvg = L.length ? L.reduce((a, g) => a + g.str, 0) / L.length : 0;
+  let hx = 0, hy = 0, hn = 0; for (const g of L) if (!g.sep) { hx += g.H.x; hy += g.H.y; hn++; }
+  if (!hn) { hx = aw / 2; hy = ah / 2; hn = 1; }
+  rig.Hc = { x: hx / hn, y: hy / hn };
+  rig.ground = L.length ? Math.max.apply(null, L.map((g) => g.bottom)) + 1 : ah;
+  // ---- rótulos: 0 = corpo, k+1 = perna k; propaga para o fundo próximo
+  const lab = new Int8Array(aw * ah).fill(-1);
+  for (let i = 0; i < aw * ah; i++) if (mask[i]) lab[i] = 0;
+  L.forEach((g, k) => { for (let i = 0; i < aw * ah; i++) if (g.f[i]) lab[i] = k + 1; });
+  { const cl = new Int32Array(aw * ah), st = new Int32Array(aw * ah), areas = [0]; let cur = 0;
+    for (let i = 0; i < aw * ah; i++) { if (lab[i] !== 0 || cl[i]) continue; cur++; let sp = 0, a = 0; st[sp++] = i; cl[i] = cur;
+      while (sp) { const p = st[--sp]; a++; const x = p % aw, y = (p / aw) | 0;
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= aw || yy >= ah) continue; const q = yy * aw + xx; if (lab[q] === 0 && !cl[q]) { cl[q] = cur; st[sp++] = q; } } }
+      areas.push(a); }
+    let bi = 1; for (let k = 2; k < areas.length; k++) if (areas[k] > areas[bi]) bi = k;
+    const loose = []; for (let i = 0; i < aw * ah; i++) if (lab[i] === 0 && cl[i] !== bi) { lab[i] = -1; loose.push(i); }
+    for (let it = 0; it < 40 && loose.length; it++) { const prev = lab.slice(); let left = 0;
+      for (const i of loose) { if (prev[i] >= 0) continue; const x = i % aw, y = (i / aw) | 0; let b = -1;
+        for (let dy = -1; dy <= 1 && b < 0; dy++) for (let dx = -1; dx <= 1; dx++) { const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= aw || yy >= ah) continue; if (prev[yy * aw + xx] >= 0) { b = prev[yy * aw + xx]; break; } }
+        if (b >= 0) lab[i] = b; else left++; }
+      if (!left) break; }
+    for (const i of loose) if (lab[i] < 0) lab[i] = 0; }
+  for (let it = 0; it < 7; it++) { const prev = lab.slice();
+    for (let y = 0; y < ah; y++) for (let x = 0; x < aw; x++) { const i = y * aw + x; if (prev[i] >= 0) continue; let b = -1;
+      if (x > 0 && prev[i - 1] >= 0) b = prev[i - 1]; else if (x < aw - 1 && prev[i + 1] >= 0) b = prev[i + 1]; else if (y > 0 && prev[i - aw] >= 0) b = prev[i - aw]; else if (y < ah - 1 && prev[i + aw] >= 0) b = prev[i + aw];
+      if (b >= 0) lab[i] = b; } }
+  for (let k = 0; k < L.length; k++) { const g = L[k]; if (!g.sep || !g.anchor) continue;
+    const od = g.od; let fi = od > 0 ? 1e9 : -1e9;
+    for (let y = g.top; y <= Math.min(ah - 1, g.top + 2); y++) for (let x = 0; x < aw; x++) if (g.f[y * aw + x]) { if (od > 0 ? x < fi : x > fi) fi = x; }
+    // tudo que fica abaixo da linha âncora → canto interno da perna pertence à perna de trás (remove o "coto" do corpo)
+    const A = g.anchor, cand = new Uint8Array(aw * ah), x0 = Math.min(A.x, fi), x1 = Math.max(A.x, fi);
+    g.cut = { x0, x1, ax: A.x + 0.5, ay: A.y, fi: fi + 0.5, top: g.top };
+    for (let x = Math.max(0, x0); x <= Math.min(aw - 1, x1); x++) { const yl = Math.ceil(cutY(g.cut, x + 0.5) - 0.5); for (let y = Math.max(0, yl); y < g.top; y++) { const i = y * aw + x; if (lab[i] === 0) cand[i] = 1; } }
+    const st = []; for (let x = 0; x < aw; x++) { const i = (g.top - 1) * aw + x; if (g.top > 0 && cand[i] && g.f[g.top * aw + x]) { cand[i] = 2; st.push(i); } }
+    while (st.length) { const p = st.pop(), x = p % aw, y = (p / aw) | 0; lab[p] = k + 1;
+      const t = (q) => { if (cand[q] === 1) { cand[q] = 2; st.push(q); } };
+      if (x > 0) t(p - 1); if (x < aw - 1) t(p + 1); if (y > 0) t(p - aw); if (y < g.top - 1) t(p + aw); }
+  }
+  rig.lab = lab;
+  // ---- cauda pendente (vista de costas): pontas centrais que não são pernas
+  rig.tails = (det.tails || []).map((c) => { let mn = 1e9, mx = -1e9; for (let x = 0; x < aw; x++) if (c.f[c.top * aw + x] || c.f[Math.min(ah - 1, c.top + 1) * aw + x]) { if (x < mn) mn = x; if (x > mx) mx = x; }
+    return { top: c.top, bottom: c.by, cx: (mn + mx) / 2 + 0.5, hw: Math.max(2, (mx - mn) / 2 + 1) }; });
+  // ---- campos de cabeça e cauda (vistas lateral/diagonal)
+  const fx = Math.cos(al), fy = Math.sin(al) * 0.55, fl = hyp(fx, fy); rig.fdir = { x: fx / fl, y: fy / fl };
+  let uT = 1, uH = 1, ytop = ah;
+  for (let y = 0; y < ah; y++) for (let x = 0; x < aw; x++) if (mask[y * aw + x]) { const u = (x - rig.Hc.x) * rig.fdir.x + (y - rig.Hc.y) * rig.fdir.y; if (-u > uT) uT = -u; if (u > uH) uH = u; if (y < ytop) ytop = y; }
+  const hwN = L.length ? L.reduce((s, g) => s + g.hwTop, 0) / L.length : aw * 0.05;
+  rig.field = { uT, uH, mT: Math.min(uT * 0.4, hwN * 0.9), mH: Math.min(uH * 0.5, hwN * 1.6), ytop };
+  if (opt.type === 'quad' && lateral && pairs[1].length) { const fN = pairs[1].find((g) => !g.far) || pairs[1][0]; rig.field.mH = Math.min(uH * 0.8, (fN.H.x - rig.Hc.x) * rig.fdir.x + hwN * 1.2); }
+  buildParts(rig);
+  return rig;
+};
+
+/* Partes (camadas): pernas de trás → corpo → pernas da frente. Cada uma com malha e máscara própria. */
+const cutY = (c, X) => c.ay + 1 + (c.top - c.ay - 1) * Math.pow(clamp((X - c.ax) / ((c.fi - c.ax) || 1), 0, 1), 2.6);
+function buildParts(rig) {
+  const { aw, ah, lab, mask, legs } = rig, n = aw * ah, parts = [];
+  const mem = (fn) => { const m = new Uint8Array(n); for (let i = 0; i < n; i++) if (fn(i)) m[i] = 255; return m; };
+  // corpo: tudo menos pernas de trás; avança 2 px por baixo das pernas da frente (sem costura)
+  const nearLab = new Set(); legs.forEach((g, k) => { if (!g.sep) nearLab.add(k + 1); });
+  let body = mem((i) => lab[i] === 0);
+  for (let it = 0; it < 2; it++) { const p = body.slice();
+    for (let y = 0; y < ah; y++) for (let x = 0; x < aw; x++) { const i = y * aw + x; if (p[i] || !nearLab.has(lab[i])) continue;
+      if ((x > 0 && p[i - 1]) || (x < aw - 1 && p[i + 1]) || (y > 0 && p[i - aw]) || (y < ah - 1 && p[i + aw])) body[i] = 255; } }
+  const cuts = [];
+  legs.forEach((g, k) => { if (!g.sep) return;
+    const m = mem((i) => lab[i] === k + 1);
+    if (g.cut) { g.cut.mem = m; cuts.push(g.cut); for (let y = 0; y < Math.min(ah, g.top + 2); y++) for (let x = Math.max(0, g.cut.x0 - 1); x <= Math.min(aw - 1, g.cut.x1 + 1); x++) { const i = y * aw + x; if (lab[i] === k + 1) body[i] = 255; } }
+    for (let it = 0; it < 2; it++) { const p = m.slice(); for (let y = 0; y < g.top; y++) for (let x = 0; x < aw; x++) { const i = y * aw + x; if (p[i] || !mask[i]) continue;
+      if ((x > 0 && p[i - 1]) || (x < aw - 1 && p[i + 1]) || (y > 0 && p[i - aw]) || p[i + aw]) m[i] = 255; } }
+    // toco escondido atrás do corpo: prolonga a perna para cima
+    let dxs = g.P0.x - g.P1.x, dys = g.P0.y - g.P1.y; const dl = hyp(dxs, dys) || 1; dxs /= dl; dys /= dl;
+    const len = Math.max(3, (g.P0.y - g.H.y) * 0.25), hw = g.hwStub, ax = g.P0.x - dxs * 2, ay = g.P0.y - dys * 2, bx = g.P0.x + dxs * len, by = g.P0.y + dys * len;
+    for (let y = Math.max(0, Math.floor(Math.min(ay, by) - hw - 1)); y < g.top; y++) for (let x = Math.max(0, Math.floor(Math.min(ax, bx) - hw - 1)); x <= Math.min(aw - 1, Math.ceil(Math.max(ax, bx) + hw + 1)); x++) {
+      const i = y * aw + x; if (!mask[i]) continue; const px = x + 0.5 - ax, py = y + 0.5 - ay, t = clamp((px * (bx - ax) + py * (by - ay)) / ((bx - ax) * (bx - ax) + (by - ay) * (by - ay)), 0, 1);
+      const dd = hyp(px - t * (bx - ax), py - t * (by - ay)), e = clamp(hw - dd + 0.5, 0, 1); if (e > 0) m[i] = Math.max(m[i], Math.round(255 * e)); }
+    parts.push({ kind: 'far', leg: k, mem: m }); });
+  legs.forEach((g, k) => { if (g.far && !g.sep) parts.push({ kind: 'near', leg: k, mem: mem((i) => lab[i] === k + 1) }); });
+  parts.push({ kind: 'body', leg: -1, mem: body, cuts });
+  legs.forEach((g, k) => { if (g.far) return; parts.push({ kind: 'near', leg: k, mem: mem((i) => lab[i] === k + 1) }); });
+  // malha em grade
+  const st = 2, gw = Math.ceil(aw / st) + 1, gh = Math.ceil(ah / st) + 1;
+  for (const p of parts) {
+    const used = new Int32Array(gw * gh).fill(-1), vx = [], vy = [], tris = [];
+    const vid = (i, j) => { const k = j * gw + i; if (used[k] < 0) { used[k] = vx.length; vx.push(Math.min(i * st, aw)); vy.push(Math.min(j * st, ah)); } return used[k]; };
+    for (let j = 0; j < gh - 1; j++) for (let i = 0; i < gw - 1; i++) {
+      let any = false;
+      for (let y = Math.max(0, j * st - 1); y <= Math.min(ah - 1, j * st + st) && !any; y++) for (let x = Math.max(0, i * st - 1); x <= Math.min(aw - 1, i * st + st); x++) if (p.mem[y * aw + x]) { any = true; break; }
+      if (!any) continue;
+      const a = vid(i, j), b = vid(i + 1, j), c = vid(i, j + 1), d = vid(i + 1, j + 1); tris.push(a, b, c, b, d, c);
+    }
+    p.vx = Float32Array.from(vx); p.vy = Float32Array.from(vy); p.tris = Int32Array.from(tris);
+  }
+  rig.parts = parts;
+}
+
+/* ================= 3. CICLOS DE MOVIMENTO ================= */
+WC.GAITS = {
+  walk: { beta: 0.62, stride: 1.0, lift: 0.11, bob: 0.020, crouch: 0.035, lean: 0.0, pitchA: 0.006, psiA: 0.13, thOff: 0.20, thDroop: 0.55, thUp: 0.16, tail: 0.022, wag: 0.028, sway: 0.030, roll: 0.022, fps: 12 },
+  run: { beta: 0.36, stride: 1.32, lift: 0.20, bob: 0.045, crouch: 0.07, lean: 0.07, pitchA: 0.018, psiA: 0.19, thOff: 0.30, thDroop: 0.85, thUp: 0.20, tail: 0.04, wag: 0.04, sway: 0.022, roll: 0.03, fps: 18 }
+};
+function legOffsets(rig, gait) {
+  const o = {};
+  for (const g of rig.legs) {
+    if (rig.type !== 'quad') o[g.id] = g.slot ? 0.5 : 0;
+    else if (gait === 'walk') o[g.id] = (g.pair === 0 ? 0 : 0.25) + (g.slot ? 0.5 : 0);
+    else o[g.id] = (g.pair === 0 ? 0 : 0.5) + (g.slot ? 0.5 : 0); // trote rápido (diagonais juntas)
+  }
+  return o;
+}
+function footState(q, G) {
+  const b = G.beta; let s, lift, th;
+  if (q < b) { const f = q / b; s = 0.5 - f; lift = 0; th = -G.thUp * (1 - sstep(0, 0.16, f)) + G.thOff * sstep(0.6, 1, f); }
+  else { const u = (q - b) / (1 - b), e = u * u * (3 - 2 * u); s = -0.5 + e;
+    lift = Math.pow(Math.sin(PI * Math.pow(u, 0.9)), 1.6);
+    const bump = Math.pow(Math.sin(PI * clamp(u / 0.7, 0, 1)), 2);
+    th = G.thOff * (1 - sstep(0, 0.35, u)) + G.thDroop * bump - G.thUp * sstep(0.62, 1, u); }
+  return { s, lift, th };
+}
+const rot = (x, y, a) => { const c = Math.cos(a), s = Math.sin(a); return [x * c - y * s, x * s + y * c]; };
+/* transformação de osso: mantém a largura, estica só ao longo do osso */
+function boneMat(ax, ay, bx, by, ax2, ay2, bx2, by2) {
+  const l = hyp(bx - ax, by - ay) || 1, ex = (bx - ax) / l, ey = (by - ay) / l, l2 = hyp(bx2 - ax2, by2 - ay2), e2x = l2 ? (bx2 - ax2) / l2 : ex, e2y = l2 ? (by2 - ay2) / l2 : ey, s = l2 / l;
+  // T(v) = A' + s*((v-A)·e) e' + ((v-A)·n) n'
+  const m00 = s * ex * e2x + ey * e2y, m01 = s * ey * e2x - ex * e2y, m10 = s * ex * e2y - ey * e2x, m11 = s * ey * e2y + ex * e2x;
+  return [m00, m01, ax2 - m00 * ax - m01 * ay, m10, m11, ay2 - m10 * ax - m11 * ay];
+}
+
+WC.computePose = function (rig, p, gaitName, user) {
+  if (rig.nAdjFit && rig.nAdjFit[gaitName]) rig.legs.forEach((g, j) => { g.nAdj = rig.nAdjFit[gaitName][j]; });
+  const G = WC.GAITS[gaitName], u = rig.unit, sig = rig.sig, tau = rig.tau, off = legOffsets(rig, gaitName), U = user || {};
+  const kS = U.stride == null ? 1 : U.stride, kB = U.bounce == null ? 1 : U.bounce, kT = U.tail == null ? 1 : U.tail;
+  const b2 = G.beta / 2, c2 = Math.cos(2 * TAU * (p - b2)), c1 = Math.cos(TAU * (p - b2));
+  const bobUp = (gaitName === 'walk' ? 1 : -1) * G.bob * u * kB * c2 * (1 - 0.4 * rig.strAvg);
+  const side0 = rig.frontal && rig.legs.length > 1 ? Math.sign(rig.legs[0].C.x - rig.legs[1].C.x) || -1 : 0;
+  const pose = { p, gait: gaitName, bobUp };
+  const ang = (G.lean + G.pitchA * Math.sin(2 * TAU * (p - b2))) * sig + G.roll * kB * c1 * side0 * tau;
+  const tx = G.sway * u * kB * c1 * side0 * tau, ty = G.crouch * u * (1 - 0.7 * rig.strAvg) - bobUp;
+  const Hc = rig.Hc, ca = Math.cos(ang), sa = Math.sin(ang);
+  pose.B = [ca, -sa, Hc.x + tx - ca * Hc.x + sa * Hc.y, sa, ca, Hc.y + ty - sa * Hc.x - ca * Hc.y]; pose.ang = ang;
+  const Bp = (x, y) => [pose.B[0] * x + pose.B[1] * y + pose.B[2], pose.B[3] * x + pose.B[4] * y + pose.B[5]];
+  const baseS = clamp(rig.restStride, 0.42 * u, 0.62 * u) * (0.8 + 0.2 * sig);
+  const S = baseS * G.stride * kS * (rig.strideFit && rig.strideFit[gaitName] || 1);
+  pose.S = S; pose.legs = []; pose.maxStretch = 1;
+  for (const g of rig.legs) {
+    const q = frac(p + off[g.id]), fs = footState(q, G), r = g.ref;
+    // pé: alvo no chão
+    const chainLen = g.L1 + g.L2 + (g.bottom - g.yA), liftPx = Math.min(G.lift * u, 0.30 * chainLen) * (U.lift == null ? 1 : U.lift) * (1 - 0.4 * g.str);
+    const rs = clamp((r.restS - r.nAdj) / (S || 1), -0.5, 0.5);
+    // pernas retas balançam como pêndulo a partir do quadril; pernas dobradas (aves, terópodes) movem mais a parte de baixo
+    const psiPend = Math.asin(clamp(0.5 * S * Math.abs(rig.gvec.x) / Math.max(1, r.legLen), 0, 0.42)) * 0.9;
+    const dpsi = -2 * (fs.s - rs) * (G.psiA * sig * (1 - r.str) + Math.max(G.psiA * sig, psiPend) * r.str);
+    const Hp = Bp(r.H.x, r.H.y), rv = rot(r.P0.x - r.H.x, r.P0.y - r.H.y, ang + dpsi);
+    const hx = Hp[0] + g.depth.x, hy = Hp[1] + g.depth.y;
+    let rx = hx + rv[0], ry = hy + rv[1];
+    if (g.sep) { const rsg = clamp((g.restS - g.nAdj) / (S || 1), -0.5, 0.5), wr = 1 - sstep(0.05, 0.6, Math.abs(fs.s - rsg)), at = Bp(g.P0.x, g.P0.y);
+      rx += (at[0] - rx) * wr; ry += (at[1] - ry) * wr; }
+    let th = fs.th * sig * g.pitchK, F, p2x, p2y, p1x, p1y, l1, l2, ex = 1;
+    const rest2 = Math.atan2(g.P2.y - g.P1.y, g.P2.x - g.P1.x);
+    const stF = (sv, t, pv) => { const cT = Math.cos(t), sT = Math.sin(t), ftx = rig.gvec.x * (S * sv - g.restS + g.nAdj), fty = rig.gvec.y * (S * sv - g.restS + g.nAdj);
+      return [cT, -sT, pv.x + ftx - cT * pv.x + sT * pv.y, sT, cT, pv.y + fty - sT * pv.x - cT * pv.y]; };
+    const swing = q >= G.beta; let ax = 0, ay = 0;
+    if (swing) { // no ar: o tornozelo segue um arco entre o ponto de saída e o de chegada; o pé gira em torno dele
+      const Fo = stF(-0.5, G.thOff * sig * g.pitchK, g.Tt), Fn = stF(0.5, -G.thUp * sig * g.pitchK, g.Ht), e = fs.s + 0.5;
+      const ox = Fo[0] * g.P2.x + Fo[1] * g.P2.y + Fo[2], oy = Fo[3] * g.P2.x + Fo[4] * g.P2.y + Fo[5], nx = Fn[0] * g.P2.x + Fn[1] * g.P2.y + Fn[2], ny = Fn[3] * g.P2.x + Fn[4] * g.P2.y + Fn[5];
+      ax = ox + (nx - ox) * e; ay = oy + (ny - oy) * e - fs.lift * liftPx; }
+    for (let pass = 0; pass < 2; pass++) {
+      if (swing) { const cT = Math.cos(th), sT = Math.sin(th); F = [cT, -sT, ax - cT * g.P2.x + sT * g.P2.y, sT, cT, ay - sT * g.P2.x - cT * g.P2.y]; }
+      else F = stF(fs.s, th, th >= 0 ? g.Tt : g.Ht);
+      p2x = F[0] * g.P2.x + F[1] * g.P2.y + F[2]; p2y = F[3] * g.P2.x + F[4] * g.P2.y + F[5];
+      let d = hyp(p2x - rx, p2y - ry);
+      // escala axial (vista frontal: encurtamento em perspectiva) + dobra (vista lateral)
+      // pernas retas: pequenas diferenças de comprimento viram compressão invisível, não um joelho saltando para fora
+      const rho = d / g.dRest, cB = clamp(1 + (1 - sig * sig * sig) * (rho - 1), 0.5, 1.12), cS = clamp(d / ((g.L1 + g.L2) * 0.985), 0.88 - 0.3 * (1 - sig * sig * sig), 1.06), c = cB + (cS - cB) * g.str;
+      l1 = g.L1 * c; l2 = g.L2 * c; const maxR = (l1 + l2) * 0.992;
+      if (d > maxR) {
+        if (g.sep || swing) { if (g.sep) { rx = p2x + (rx - p2x) * maxR / d; ry = p2y + (ry - p2y) * maxR / d; } else { const k = maxR / d, nx = rx + (p2x - rx) * k, ny = ry + (p2y - ry) * k; F[2] += nx - p2x; F[5] += ny - p2y; ax += nx - p2x; ay += ny - p2y; p2x = nx; p2y = ny; } d = maxR; }
+        else { const st = Math.min(d / maxR, 1.06); l1 *= st; l2 *= st; if (d / maxR > ex) ex = d / maxR; if (d / maxR > pose.maxStretch) pose.maxStretch = d / maxR;
+          const m2 = (l1 + l2) * 0.992; if (d > m2) { const k = m2 / d, nx = rx + (p2x - rx) * k, ny = ry + (p2y - ry) * k; F[2] += nx - p2x; F[5] += ny - p2y; ax += nx - p2x; ay += ny - p2y; p2x = nx; p2y = ny; d = m2; } }
+      }
+      const minR = Math.max(Math.abs(l1 - l2) * 1.05, (l1 + l2) * (0.74 + (0.12 + 0.08 * (1 - sig * sig * sig)) * g.str)); // nunca dobra a perna sobre si mesma
+      if (d < minR) { const k = minR / Math.max(d, 1e-3), nx = rx + (p2x - rx) * k, ny = ry + (p2y - ry) * k; F[2] += nx - p2x; F[5] += ny - p2y; ax += nx - p2x; ay += ny - p2y; p2x = nx; p2y = ny; d = minR; }
+      const base = Math.atan2(p2y - ry, p2x - rx), cosA = clamp((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d), -1, 1), A = Math.acos(cosA);
+      p1x = rx + l1 * Math.cos(base + A); p1y = ry + l1 * Math.sin(base + A);
+      const cr = (p1x - rx) * (p2y - p1y) - (p1y - ry) * (p2x - p1x);
+      if ((cr >= 0 ? 1 : -1) !== g.bend) { p1x = rx + l1 * Math.cos(base - A); p1y = ry + l1 * Math.sin(base - A); }
+      if (!swing) break;
+      let r2 = Math.atan2(p2y - p1y, p2x - p1x) - rest2; while (r2 > PI) r2 -= TAU; while (r2 < -PI) r2 += TAU;
+      const tc = clamp(th, r2 - 0.75, r2 + 0.75); if (Math.abs(tc - th) < 1e-4) break; th = tc;
+    }
+    const M1 = boneMat(g.P0.x, g.P0.y, g.P1.x, g.P1.y, rx, ry, p1x, p1y);
+    const MU = g.sep ? M1 : boneMat(g.H.x, g.H.y, g.P0.x, g.P0.y, hx, hy, rx, ry);
+    pose.legs.push({ MU, M1, M2: boneMat(g.P1.x, g.P1.y, g.P2.x, g.P2.y, p1x, p1y, p2x, p2y), MF: F,
+      R: [rx, ry], P1: [p1x, p1y], P2: [p2x, p2y], Hh: [hx, hy], q, stance: q < G.beta, ex, s: fs.s });
+  }
+  // campos secundários
+  pose.fT = { a: G.tail * u * kT * sig, w: G.wag * u * kT, ph2: 2 * TAU * (p - b2), ph1: TAU * (p - b2) };
+  pose.fH = { bob: 0.55 * bobUp, ang: ang, roll: G.roll * kB * c1 * side0 * tau, tx };
+  return pose;
+};
+
+function ap(M, x, y, o) { o[0] = M[0] * x + M[1] * y + M[2]; o[1] = M[3] * x + M[4] * y + M[5]; }
+const _t = [0, 0], _c = [0, 0];
+function chainPos(g, lp, x, y, out) {
+  const a0 = sstep(g.P0.y - g.bw0, g.P0.y + g.bw0, y), a1 = sstep(g.P1.y - g.bw1, g.P1.y + g.bw1, y), a2 = sstep(g.yA - g.bw2, g.yA + g.bw2, y);
+  let X = 0, Y = 0, w;
+  w = 1 - a0; if (w > 0) { ap(lp.MU, x, y, _t); X += w * _t[0]; Y += w * _t[1]; }
+  w = a0 * (1 - a1); if (w > 0) { ap(lp.M1, x, y, _t); X += w * _t[0]; Y += w * _t[1]; }
+  w = a0 * a1 * (1 - a2); if (w > 0) { ap(lp.M2, x, y, _t); X += w * _t[0]; Y += w * _t[1]; }
+  w = a0 * a1 * a2; if (w > 0) { ap(lp.MF, x, y, _t); X += w * _t[0]; Y += w * _t[1]; }
+  out[0] = X; out[1] = Y;
+}
+function bodyPos(rig, pose, x, y, out) {
+  const f = rig.field, fd = rig.fdir, Hc = rig.Hc; let dx = 0, dy = 0;
+  if (!rig.frontal) {
+    const uu = (x - Hc.x) * fd.x + (y - Hc.y) * fd.y;
+    if (-uu > f.mT) { const w = Math.pow(clamp((-uu - f.mT) / Math.max(1, f.uT - f.mT), 0, 1), 1.5);
+      dy -= pose.fT.a * w * Math.cos(pose.fT.ph2 - 2.4 * w);
+      const wag = pose.fT.w * rig.tau * w * Math.sin(pose.fT.ph1 - 2.0 * w); dx += -fd.y * wag; dy += fd.x * wag; }
+    else if (uu > f.mH) { const w = Math.pow(clamp((uu - f.mH) / Math.max(1, f.uH - f.mH), 0, 1), 1.3);
+      dy += pose.fH.bob * w * rig.sig; }
+  } else {
+    const yN = Hc.y - 0.25 * (Hc.y - f.ytop);
+    if (y < yN) { const w = Math.pow(clamp((yN - y) / Math.max(1, yN - f.ytop), 0, 1), 1.2); dx += -0.6 * pose.fH.tx * w + 0.8 * pose.fH.roll * (y - yN) * w; dy += pose.fH.bob * 0.5 * w; }
+    for (const t of rig.tails) { const ext = 0.7 * (t.bottom - t.top), y0 = t.top - ext; if (y <= y0) continue;
+      const lat = 1 - sstep(t.hw * 1.0, t.hw * 2.0, Math.abs(x - t.cx)); if (lat <= 0) continue;
+      const w = Math.pow(clamp((y - y0) / (t.bottom - y0), 0, 1), 1.6) * lat; dx += pose.fT.w * 1.6 * w * Math.sin(pose.fT.ph1 - 1.0 - 1.6 * w); }
+  }
+  ap(pose.B, x + dx, y + dy, out);
+}
+function legInfluence(rig, k, x, y, inFlap) {
+  const g = rig.legs[k], ex = g.P0.x - g.H.x, ey = g.P0.y - g.H.y, l = hyp(ex, ey) || 1, t = ((x - g.H.x) * ex + (y - g.H.y) * ey) / (l * l), dl = Math.abs((x - g.H.x) * (-ey) + (y - g.H.y) * ex) / l;
+  let L = (1 - sstep(0.75 * g.hwTop, 2.75 * g.hwTop, dl)) * sstep(0.05, 0.9, t);
+  if (y > g.top && !inFlap) L *= 1 - sstep(g.top, g.top + g.bw0 * 1.5, y);
+  return L;
+}
+/* posição deformada de um vértice da parte */
+function deform(rig, pose, part, x, y, out) {
+  const xi = clamp(Math.round(x), 0, rig.aw - 1), yi = clamp(Math.round(y), 0, rig.ah - 1), lb = rig.lab[yi * rig.aw + xi];
+  if (part.kind === 'far') { chainPos(rig.legs[part.leg], pose.legs[part.leg], x, y, out); return; }
+  bodyPos(rig, pose, x, y, out);
+  let bx = out[0], by = out[1], X = 0, Y = 0, sum = 0;
+  for (let k = 0; k < rig.legs.length; k++) { const g = rig.legs[k]; if (g.sep) continue;
+    let L;
+    if (part.kind === 'near' && part.leg === k) L = y >= g.top ? 1 : legInfluence(rig, k, x, y, true);
+    else if (part.kind === 'near') L = 0;
+    else L = (lb === k + 1 && y >= g.top) ? 1 : legInfluence(rig, k, x, y, lb === k + 1);
+    if (L <= 0.0005) continue;
+    chainPos(g, pose.legs[k], x, y, _c); X += L * _c[0]; Y += L * _c[1]; sum += L; }
+  if (sum > 1) { X /= sum; Y /= sum; sum = 1; }
+  out[0] = X + (1 - sum) * bx; out[1] = Y + (1 - sum) * by;
+}
+
+/* ================= 4. RENDERIZAÇÃO ================= */
+function drawTri(fb, W, H, x0, y0, u0, v0, x1, y1, u1, v1, x2, y2, u2, v2, tex, tw, th) {
+  const area = (x1 - x0) * (y2 - y0) - (x2 - x0) * (y1 - y0); if (Math.abs(area) < 1e-9) return;
+  const minx = Math.max(0, Math.floor(Math.min(x0, x1, x2))), maxx = Math.min(W - 1, Math.ceil(Math.max(x0, x1, x2)));
+  const miny = Math.max(0, Math.floor(Math.min(y0, y1, y2))), maxy = Math.min(H - 1, Math.ceil(Math.max(y0, y1, y2)));
+  const inv = 1 / area, E = -1e-6;
+  for (let y = miny; y <= maxy; y++) { const py = y + 0.5;
+    for (let x = minx; x <= maxx; x++) { const px = x + 0.5;
+      const w0 = ((x1 - px) * (y2 - py) - (x2 - px) * (y1 - py)) * inv, w1 = ((x2 - px) * (y0 - py) - (x0 - px) * (y2 - py)) * inv, w2 = 1 - w0 - w1;
+      if (w0 < E || w1 < E || w2 < E) continue;
+      let u = w0 * u0 + w1 * u1 + w2 * u2 - 0.5, v = w0 * v0 + w1 * v1 + w2 * v2 - 0.5;
+      if (u < 0) u = 0; else if (u > tw - 1.001) u = tw - 1.001; if (v < 0) v = 0; else if (v > th - 1.001) v = th - 1.001;
+      const ui = u | 0, vi = v | 0, fu = u - ui, fv = v - vi, k = (vi * tw + ui) * 4, k2 = k + tw * 4;
+      const a00 = (1 - fu) * (1 - fv), a10 = fu * (1 - fv), a01 = (1 - fu) * fv, a11 = fu * fv;
+      const sa = tex[k + 3] * a00 + tex[k + 7] * a10 + tex[k2 + 3] * a01 + tex[k2 + 7] * a11; if (sa < 0.3) continue;
+      const o = (y * W + x) * 4, ia = 1 - sa / 255;
+      fb[o] = tex[k] * a00 + tex[k + 4] * a10 + tex[k2] * a01 + tex[k2 + 4] * a11 + fb[o] * ia;
+      fb[o + 1] = tex[k + 1] * a00 + tex[k + 5] * a10 + tex[k2 + 1] * a01 + tex[k2 + 5] * a11 + fb[o + 1] * ia;
+      fb[o + 2] = tex[k + 2] * a00 + tex[k + 6] * a10 + tex[k2 + 2] * a01 + tex[k2 + 6] * a11 + fb[o + 2] * ia;
+      fb[o + 3] = sa + fb[o + 3] * ia; } }
+}
+/* opt: {frameW, frameH, height (altura da criatura em px), margin, frames, ss, user} */
+WC.prepare = function (rig, opt) {
+  const ss = opt.ss || 2, k = opt.height * ss / rig.ground; // análise → px do buffer (altura = do chão ao topo)
+  const tw = Math.max(8, Math.round(rig.aw * k)), th = Math.max(8, Math.round(rig.ah * k));
+  const key = tw + 'x' + th;
+  if (rig.texKey !== key) {
+    const base = resamplePremult(rig.sprite, tw, th), aw = rig.aw, ah = rig.ah;
+    for (const p of rig.parts) { const t = new Float32Array(tw * th * 4);
+      for (let y = 0; y < th; y++) { const fy = clamp((y + 0.5) * ah / th - 0.5, 0, ah - 1), y0 = fy | 0, y1 = Math.min(ah - 1, y0 + 1), wy = fy - y0;
+        for (let x = 0; x < tw; x++) { const fx = clamp((x + 0.5) * aw / tw - 0.5, 0, aw - 1), x0 = fx | 0, x1 = Math.min(aw - 1, x0 + 1), wx = fx - x0;
+          const m = (p.mem[y0 * aw + x0] * (1 - wx) + p.mem[y0 * aw + x1] * wx) * (1 - wy) + (p.mem[y1 * aw + x0] * (1 - wx) + p.mem[y1 * aw + x1] * wx) * wy;
+          if (m <= 0) continue; const i = (y * tw + x) * 4; let f = m / 255;
+          if (p.cuts) for (const c of p.cuts) { const X = (x + 0.5) * aw / tw, Y = (y + 0.5) * ah / th; if (X < c.x0 - 1 || X > c.x1 + 2 || Y > c.top + 4) continue;
+            const wm = ((c.mem[y0 * aw + x0] * (1 - wx) + c.mem[y0 * aw + x1] * wx) * (1 - wy) + (c.mem[y1 * aw + x0] * (1 - wx) + c.mem[y1 * aw + x1] * wx) * wy) / 255;
+            f *= 1 - wm * clamp((Y - cutY(c, X)) * th / ah + 0.5, 0, 1); }
+          if (f <= 0) continue; t[i] = base[i] * f; t[i + 1] = base[i + 1] * f; t[i + 2] = base[i + 2] * f; t[i + 3] = base[i + 3] * f; } }
+      p.tex = t; }
+    rig.texKey = key; rig.tw = tw; rig.th = th;
+  }
+  const fk = JSON.stringify(opt.user || {});
+  if (rig.fitKey !== fk) { rig.fitKey = fk; rig.strideFit = { walk: 1, run: 1 }; rig.nAdjFit = { walk: null, run: null };
+    for (const gn of ['walk', 'run']) { for (const g of rig.legs) g.nAdj = 0;
+      for (let it = 0; it < 90; it++) { const F = rig.legs.map(() => 1), Bk = rig.legs.map(() => 1);
+        for (let i = 0; i < 24; i++) { const ps = WC.computePose(rig, i / 24, gn, opt.user); ps.legs.forEach((lp, j) => { if (lp.s > 0) { if (lp.ex > F[j]) F[j] = lp.ex; } else if (lp.ex > Bk[j]) Bk[j] = lp.ex; }); }
+        let shrink = false, moved = false; const lim = 1.03, stp = 0.03 * rig.unit;
+        rig.legs.forEach((g, j) => { if (g.sep) return; const f = F[j] > lim, b = Bk[j] > lim; if (f && b) { if (F[j] - Bk[j] > 0.04) { g.nAdj -= stp; moved = true; } else if (Bk[j] - F[j] > 0.04) { g.nAdj += stp; moved = true; } else shrink = true; } else if (f) { g.nAdj -= stp; moved = true; } else if (b) { g.nAdj += stp; moved = true; } });
+        if (shrink) rig.strideFit[gn] *= 0.95; else if (!moved) break; }
+      rig.nAdjFit[gn] = rig.legs.map((g) => g.nAdj); } }
+  return k;
+};
+WC.renderFrame = function (rig, p, gaitName, opt) {
+  const ss = opt.ss || 2, W = opt.frameW * ss, H = opt.frameH * ss, k = WC.prepare(rig, opt);
+  const margin = WC.baseMargin(opt) * ss;
+  const ox = (W - rig.aw * k) / 2, oy = H - margin - rig.ground * k, tw = rig.tw, th = rig.th, tu = tw / rig.aw, tv = th / rig.ah;
+  const fb = new Float32Array(W * H * 4), pose = WC.computePose(rig, p, gaitName, opt.user), o = [0, 0];
+  for (const part of rig.parts) { const n = part.vx.length, px = new Float32Array(n), py = new Float32Array(n);
+    for (let i = 0; i < n; i++) { deform(rig, pose, part, part.vx[i], part.vy[i], o); px[i] = ox + o[0] * k; py[i] = oy + o[1] * k; }
+    const T = part.tris, vx = part.vx, vy = part.vy;
+    for (let i = 0; i < T.length; i += 3) { const a = T[i], b = T[i + 1], c = T[i + 2];
+      drawTri(fb, W, H, px[a], py[a], vx[a] * tu, vy[a] * tv, px[b], py[b], vx[b] * tu, vy[b] * tv, px[c], py[c], vx[c] * tu, vy[c] * tv, part.tex, tw, th); } }
+  // redução (anti-serrilhado) + espelho final + alfa reto
+  const fw = opt.frameW, fh = opt.frameH, out = new Uint8ClampedArray(fw * fh * 4), flip = rig.D.flip, n2 = ss * ss;
+  for (let y = 0; y < fh; y++) for (let x = 0; x < fw; x++) { let r = 0, g = 0, b = 0, a = 0;
+    for (let yy = 0; yy < ss; yy++) for (let xx = 0; xx < ss; xx++) { const i = ((y * ss + yy) * W + x * ss + xx) * 4; r += fb[i]; g += fb[i + 1]; b += fb[i + 2]; a += fb[i + 3]; }
+    a /= n2; const xo = flip ? fw - 1 - x : x, j = (y * fw + xo) * 4;
+    if (a > 0.5) { const ia = 255 / (a * n2); out[j] = r * ia; out[j + 1] = g * ia; out[j + 2] = b * ia; out[j + 3] = a; } }
+  return { rgba: out, pose, k, ox, oy };
+};
+WC.renderCycle = function (rig, gaitName, opt, onProgress) {
+  const n = opt.frames || 12, frames = [];
+  for (let i = 0; i < n; i++) { frames.push(WC.renderFrame(rig, i / n, gaitName, opt).rgba); if (onProgress) onProgress((i + 1) / n); }
+  return frames;
+};
+WC.baseMargin = function (opt) { return opt.margin == null ? Math.round(opt.frameH * 0.14) : opt.margin; };
+/* altura máxima da criatura (px, do chão ao topo) que cabe no quadro com folga para o movimento */
+WC.fitHeight = function (rig, opt) {
+  const m = WC.baseMargin(opt); let k = Math.min(0.92 * opt.frameW / rig.aw, (opt.frameH - m) * 0.95 / rig.ground);
+  if (rig.ah > rig.ground + 1) k = Math.min(k, (m - 2) / (rig.ah - rig.ground));
+  return Math.max(8, Math.floor(k * rig.ground));
+};
+
+/* ================= 5. GIF ANIMADO COM TRANSPARÊNCIA ================= */
+WC.encodeGIF = function (frames, w, h, fps) {
+  // paleta global por corte mediano (255 cores + 1 transparente)
+  const total = frames.length * w * h, step = Math.max(1, Math.floor(total / 150000)), smp = [];
+  for (let f = 0; f < frames.length; f++) { const d = frames[f]; for (let i = (f * 7) % step; i < w * h; i += step) if (d[i * 4 + 3] >= 128) smp.push(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]); }
+  const n = smp.length / 3; let boxes = [{ idx: Uint32Array.from({ length: n }, (_, i) => i) }];
+  const range = (b) => { let mn = [255, 255, 255], mx = [0, 0, 0]; for (const i of b.idx) for (let c = 0; c < 3; c++) { const v = smp[i * 3 + c]; if (v < mn[c]) mn[c] = v; if (v > mx[c]) mx[c] = v; }
+    b.ch = 0; b.r = 0; for (let c = 0; c < 3; c++) if (mx[c] - mn[c] > b.r) { b.r = mx[c] - mn[c]; b.ch = c; } b.score = b.r * Math.sqrt(b.idx.length); };
+  if (n) range(boxes[0]);
+  while (n && boxes.length < 255) { let bi = -1, bs = 0; for (let i = 0; i < boxes.length; i++) if (boxes[i].idx.length > 1 && boxes[i].score > bs) { bs = boxes[i].score; bi = i; }
+    if (bi < 0) break; const b = boxes[bi], c = b.ch; b.idx.sort((p, q) => smp[p * 3 + c] - smp[q * 3 + c]); const mid = b.idx.length >> 1;
+    const b1 = { idx: b.idx.slice(0, mid) }, b2 = { idx: b.idx.slice(mid) }; range(b1); range(b2); boxes.splice(bi, 1, b1, b2); }
+  const pal = new Uint8Array(768); let pc = 1;
+  for (const b of boxes) { if (!n) break; let r = 0, g = 0, bl = 0; for (const i of b.idx) { r += smp[i * 3]; g += smp[i * 3 + 1]; bl += smp[i * 3 + 2]; } const m = b.idx.length || 1; pal[pc * 3] = r / m; pal[pc * 3 + 1] = g / m; pal[pc * 3 + 2] = bl / m; pc++; }
+  const cache = new Int16Array(32768).fill(-1);
+  const nearest = (r, g, b) => { const key = (r >> 3) << 10 | (g >> 3) << 5 | (b >> 3); let v = cache[key]; if (v >= 0) return v; let bd = 1e9; v = 1;
+    for (let i = 1; i < pc; i++) { const dr = pal[i * 3] - r, dg = pal[i * 3 + 1] - g, db = pal[i * 3 + 2] - b, d = dr * dr * 0.9 + dg * dg * 1.2 + db * db * 0.7; if (d < bd) { bd = d; v = i; } } cache[key] = v; return v; };
+  const out = []; const u16 = (v) => out.push(v & 255, (v >> 8) & 255), str = (s) => { for (let i = 0; i < s.length; i++) out.push(s.charCodeAt(i)); };
+  str('GIF89a'); u16(w); u16(h); out.push(0xF7, 0, 0); for (let i = 0; i < 768; i++) out.push(pal[i]);
+  out.push(0x21, 0xFF, 11); str('NETSCAPE2.0'); out.push(3, 1, 0, 0, 0);
+  const delay = Math.max(2, Math.round(100 / fps));
+  for (const d of frames) {
+    out.push(0x21, 0xF9, 4, 0x09, delay & 255, delay >> 8, 0, 0); // descarte: restaurar fundo; índice 0 transparente
+    out.push(0x2C); u16(0); u16(0); u16(w); u16(h); out.push(0);
+    const px = new Uint8Array(w * h); for (let i = 0; i < w * h; i++) px[i] = d[i * 4 + 3] >= 128 ? nearest(d[i * 4], d[i * 4 + 1], d[i * 4 + 2]) : 0;
+    // LZW
+    const minCode = 8, clear = 256, eoi = 257; out.push(minCode);
+    let codeSize = 9, next = 258, cur = 0, bits = 0, table = new Map(); let blk = [];
+    const flush = () => { if (blk.length) { out.push(blk.length); for (let i = 0; i < blk.length; i++) out.push(blk[i]); blk = []; } };
+    const emit = (c) => { cur |= c << bits; bits += codeSize; while (bits >= 8) { blk.push(cur & 255); cur >>>= 8; bits -= 8; if (blk.length === 255) flush(); } };
+    emit(clear); let ib = px[0];
+    for (let i = 1; i < px.length; i++) { const kk = px[i], key = ib << 8 | kk, c = table.get(key);
+      if (c === undefined) { emit(ib); if (next === 4096) { emit(clear); next = 258; codeSize = 9; table = new Map(); } else { if (next >= (1 << codeSize)) codeSize++; table.set(key, next++); } ib = kk; } else ib = c; }
+    emit(ib); emit(eoi); if (bits > 0) blk.push(cur & 255); flush(); out.push(0);
+  }
+  out.push(0x3B);
+  return Uint8Array.from(out);
+};
+
+root.WC = WC;
+if (typeof module !== 'undefined' && module.exports) module.exports = WC;
+})(typeof self !== 'undefined' ? self : globalThis);
+
+</script>
+<script>
+(function () {
+'use strict';
+const $ = (id) => document.getElementById(id);
+const S = { orig: null, cut: null, sprite: null, rig: null, frames: null, ov: null, gait: 'walk', type: 'auto', dir: 'E', autoDir: true, tab: 'anim', playing: true, fi: 0, seeds: [], hLock: false, job: 0, name: 'criatura', fpsTouched: false, last: 0 };
+const GN = { walk: 'caminhada', run: 'corrida' }, DN = { E: 'direita', W: 'esquerda', S: 'frente', N: 'costas', SE: 'frente-direita', SW: 'frente-esquerda', NE: 'costas-direita', NW: 'costas-esquerda' };
+const tick = () => new Promise((r) => setTimeout(r, 0));
+function status(t, cls) { const s = $('status'); s.textContent = t; s.className = 'status' + (cls ? ' ' + cls : ''); }
+function warn(html) { const w = $('warn'); if (!html) { w.style.display = 'none'; w.innerHTML = ''; return; } w.innerHTML = html; w.style.display = 'block'; }
+const num = (id, lo, hi, def) => { let v = parseInt($(id).value, 10); if (!isFinite(v)) v = def; v = Math.min(hi, Math.max(lo, v)); return v; };
+function opts() {
+  return { frameW: num('fw', 64, 2048, 640), frameH: num('fh', 64, 2048, 640), height: num('height', 16, 2000, 230), frames: +$('frames').value, ss: 2,
+    user: { stride: $('stride').value / 100, lift: $('lift').value / 100, bounce: $('bounce').value / 100, tail: $('tail').value / 100 } };
+}
+function outs() { $('fpsO').textContent = $('fps').value + ' qps'; for (const k of ['stride', 'lift', 'bounce', 'tail']) $(k + 'O').textContent = $(k).value + '%'; $('tolO').textContent = $('autoTol').checked ? 'auto' : $('tol').value; }
+
+/* ---------- importar ---------- */
+async function loadFile(file) {
+  if (!file || !/^image\//.test(file.type)) { status('Arquivo não é uma imagem.', 'bad'); return; }
+  status('Lendo imagem…');
+  try {
+    const url = URL.createObjectURL(file), img = new Image();
+    await new Promise((res, rej) => { img.onload = res; img.onerror = () => rej(new Error('Não foi possível abrir a imagem.')); img.src = url; });
+    const mx = 2000, sc = Math.min(1, mx / Math.max(img.naturalWidth, img.naturalHeight)), w = Math.max(1, Math.round(img.naturalWidth * sc)), h = Math.max(1, Math.round(img.naturalHeight * sc));
+    const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(img, 0, 0, w, h); URL.revokeObjectURL(url);
+    S.orig = { rgba: x.getImageData(0, 0, w, h).data, w, h }; S.seeds = []; S.autoDir = true;
+    S.name = (file.name || 'criatura').replace(/\.[^.]+$/, '').replace(/[^\w\-]+/g, '_').slice(0, 40) || 'criatura';
+    $('fileName').textContent = file.name + ' — ' + img.naturalWidth + '×' + img.naturalHeight;
+    $('empty').hidden = true; pipeline(0);
+  } catch (e) { status(e.message || 'Erro ao abrir a imagem.', 'bad'); }
+}
+const drop = $('drop');
+drop.onclick = () => $('file').click();
+drop.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('file').click(); } };
+$('file').onchange = (e) => { loadFile(e.target.files[0]); e.target.value = ''; };
+['dragenter', 'dragover'].forEach((t) => document.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach((t) => document.addEventListener(t, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+document.addEventListener('drop', (e) => { const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) loadFile(f); });
+document.addEventListener('paste', (e) => { const it = [...(e.clipboardData ? e.clipboardData.items : [])].find((i) => i.type.startsWith('image/')); if (it) loadFile(it.getAsFile()); });
+
+/* ---------- processamento ---------- */
+async function pipeline(from) {
+  const job = ++S.job; if (!S.orig) return;
+  $('expGif').disabled = $('expSheet').disabled = true; $('prog').style.width = '2%';
+  status(from <= 0 ? 'Removendo o fundo…' : from === 1 ? 'Encontrando as pernas…' : 'Gerando quadros…'); await tick();
+  try {
+    if (from <= 0) {
+      const r = WC.removeBackground(S.orig.rgba, S.orig.w, S.orig.h, { tol: $('autoTol').checked ? null : +$('tol').value });
+      for (const sd of S.seeds) WC.floodErase(r.rgba, r.w, r.h, sd.x, sd.y, sd.tol);
+      S.cut = r; S.sprite = WC.cropSprite(r.rgba, r.w, r.h);
+      if (!S.sprite || S.sprite.w < 12 || S.sprite.h < 12) throw new Error('Não sobrou criatura depois de remover o fundo. Ajuste a tolerância do fundo.');
+      if (S.autoDir) { S.dir = WC.guessDirection(S.sprite).dir; mark('compass', S.dir); }
+      drawCut(); await tick(); if (job !== S.job) return; status('Encontrando as pernas…'); await tick();
+    }
+    if (from <= 1) S.rig = WC.buildRig(S.sprite, { type: S.type, dir: S.dir, facing: $('facing').value, swap: $('swap').checked });
+    const o = opts(), fit = WC.fitHeight(S.rig, o);
+    if (!S.hLock) { o.height = Math.min(fit, Math.round(0.36 * o.frameH)); $('height').value = o.height; S.hLock = true; }
+    const ws = S.rig.warnings.slice();
+    const R = S.rig, tipo = R.type === 'quad' ? 'quadrúpede' : (R.frontal && S.type === 'auto' ? 'vista de frente/costas' : 'bípede');
+    if (R.legs.length < (S.type === 'quad' ? 3 : 2)) ws.push('Encontrei só ' + R.legs.length + ' perna(s) separada(s). Confira o tipo de criatura e se as pernas aparecem separadas na imagem.');
+    if (o.height > fit) ws.push('Com ' + o.height + ' px de altura a criatura não cabe no quadro (máximo ' + fit + ' px nesta vista).<br><button id="fitBtn">Ajustar altura para ' + fit + ' px</button>');
+    warn(ws.join('<br>')); const fb = $('fitBtn'); if (fb) fb.onclick = () => { $('height').value = fit; pipeline(2); };
+    status('Gerando quadros…'); await tick();
+    const frames = [], ov = [];
+    for (let i = 0; i < o.frames; i++) {
+      const r = WC.renderFrame(S.rig, i / o.frames, S.gait, o); frames.push(r.rgba);
+      ov.push({ k: r.k / o.ss, ox: r.ox / o.ss, oy: r.oy / o.ss, legs: r.pose.legs.map((l) => ({ H: l.Hh, R: l.R, P1: l.P1, P2: l.P2 })) });
+      $('prog').style.width = Math.round((i + 1) / o.frames * 100) + '%'; await tick(); if (job !== S.job) return;
+    }
+    S.frames = frames; S.ov = ov; S.fw = o.frameW; S.fh = o.frameH; S.fi = 0;
+    if (!S.fpsTouched) { $('fps').value = Math.round(WC.GAITS[S.gait].fps * o.frames / 12); outs(); }
+    const v = $('view'); v.width = o.frameW; v.height = o.frameH; $('scrub').max = o.frames - 1; $('scrub').disabled = false; $('play').disabled = false;
+    if (!S.colsTouched) $('cols').value = o.frames;
+    drawStrip(); showTab(S.tab); draw();
+    $('expGif').disabled = $('expSheet').disabled = false; $('prog').style.width = '0';
+    $('expInfo').textContent = o.frames + ' quadros de ' + o.frameW + '×' + o.frameH + ' px · ' + GN[S.gait] + ' · ' + DN[S.dir];
+    const det = tipo + ' · ' + R.legs.length + ' pernas visíveis · ' + (R.hasTail ? 'cauda' : 'sem cauda visível') + ' · ' + (R.nArms ? 'braços pequenos' : 'sem braços');
+    $('detInfo').textContent = '✓'; $('detInfo').title = det;
+    status('Pronto — ' + det + ' · ' + GN[S.gait] + ' para ' + DN[S.dir] + '.', 'ok');
+  } catch (e) { console.error(e); $('prog').style.width = '0'; status(e.message || 'Erro ao processar.', 'bad'); }
+}
+let deb = 0; const later = (from) => { clearTimeout(deb); deb = setTimeout(() => pipeline(from), 180); };
+
+/* ---------- prévia ---------- */
+function draw() {
+  if (!S.frames) return; const v = $('view'), x = v.getContext('2d'), f = S.frames[S.fi];
+  x.putImageData(new ImageData(f, S.fw, S.fh), 0, 0);
+  if ($('skel').checked) { const o = S.ov[S.fi], fl = S.rig.D.flip, P = (p) => [fl ? S.fw - (o.ox + p[0] * o.k) : o.ox + p[0] * o.k, o.oy + p[1] * o.k];
+    x.lineWidth = Math.max(1.5, S.fw / 320); x.lineCap = 'round';
+    o.legs.forEach((l, i) => { const far = S.rig.legs[i].far; x.strokeStyle = far ? 'rgba(90,200,255,.95)' : 'rgba(255,220,60,.95)'; x.beginPath(); const a = P(l.H), b = P(l.R), c = P(l.P1), d = P(l.P2); x.moveTo(a[0], a[1]); x.lineTo(b[0], b[1]); x.lineTo(c[0], c[1]); x.lineTo(d[0], d[1]); x.stroke();
+      x.fillStyle = '#fff'; for (const p of [b, c, d]) { x.beginPath(); x.arc(p[0], p[1], x.lineWidth * 1.4, 0, 6.3); x.fill(); } });
+    const by = S.fh - WC.baseMargin(opts()); x.strokeStyle = 'rgba(255,255,255,.35)'; x.lineWidth = 1; x.beginPath(); x.moveTo(0, by + .5); x.lineTo(S.fw, by + .5); x.stroke(); }
+  $('scrub').value = S.fi; $('fcount').textContent = (S.fi + 1) + ' / ' + S.frames.length;
+}
+function loop(t) { requestAnimationFrame(loop); if (!S.frames || !S.playing || S.tab !== 'anim') return; const dt = 1000 / (+$('fps').value || 12); if (t - S.last >= dt) { S.last = t; S.fi = (S.fi + 1) % S.frames.length; draw(); } }
+requestAnimationFrame(loop);
+function drawStrip() { const c = $('strip'), n = S.frames.length, h = 74, w = Math.round(h * S.fw / S.fh); c.width = w * n; c.height = h; const x = c.getContext('2d'), t = document.createElement('canvas'); t.width = S.fw; t.height = S.fh; const tx = t.getContext('2d');
+  S.frames.forEach((f, i) => { tx.putImageData(new ImageData(f, S.fw, S.fh), 0, 0); x.fillStyle = i % 2 ? '#262d38' : '#2c3441'; x.fillRect(i * w, 0, w, h); x.drawImage(t, i * w, 0, w, h); }); }
+$('strip').onclick = (e) => { if (!S.frames) return; const r = e.target.getBoundingClientRect(); S.fi = Math.min(S.frames.length - 1, Math.floor((e.clientX - r.left) / r.width * S.frames.length)); setPlay(false); draw(); };
+function drawCut() { const c = $('cutView'); c.width = S.cut.w; c.height = S.cut.h; c.getContext('2d').putImageData(new ImageData(S.cut.rgba, S.cut.w, S.cut.h), 0, 0); fitView(); }
+function showTab(t) { S.tab = t; [...$('tabs').children].forEach((b) => b.classList.toggle('on', b.dataset.v === t)); $('view').hidden = !(t === 'anim' && S.frames); $('cutView').hidden = !(t === 'cut' && S.cut);
+  if (t === 'cut' && S.cut) status('Recorte: clique numa sobra de fundo para apagá-la.'); fitView(); }
+$('tabs').onclick = (e) => { const b = e.target.closest('button'); if (b) showTab(b.dataset.v); };
+$('cutView').onclick = (e) => { const c = e.target, r = c.getBoundingClientRect(), x = Math.floor((e.clientX - r.left) / r.width * c.width), y = Math.floor((e.clientY - r.top) / r.height * c.height);
+  if (S.cut.rgba[(y * S.cut.w + x) * 4 + 3] === 0) return; S.seeds.push({ x, y, tol: Math.max(18, +$('tol').value) }); pipeline(0); };
+$('resetCut').onclick = () => { S.seeds = []; pipeline(0); };
+function fitView() { const st = $('stage'), aw = st.clientWidth - 28, ah = st.clientHeight - 28, z = $('zoom').value;
+  for (const c of [$('view'), $('cutView')]) { if (!c.width) continue; const sc = z === 'fit' ? Math.max(0.05, Math.min(aw / c.width, ah / c.height, 3)) : +z; c.style.width = Math.round(c.width * sc) + 'px'; c.style.height = Math.round(c.height * sc) + 'px'; } }
+$('zoom').onchange = fitView; window.addEventListener('resize', fitView);
+if (window.ResizeObserver) new ResizeObserver(() => { if ($('zoom').value === 'fit') fitView(); }).observe($('stage'));
+function setPlay(p) { S.playing = p; $('play').textContent = p ? '⏸ Pausar' : '▶ Reproduzir'; }
+$('play').onclick = () => setPlay(!S.playing);
+$('scrub').oninput = (e) => { S.fi = +e.target.value; setPlay(false); draw(); };
+$('skel').onchange = draw;
+$('bg').onchange = (e) => { $('stage').className = 'stage ' + e.target.value; };
+$('stage').classList.add('checker');
+
+/* ---------- controles ---------- */
+function mark(id, v) { [...$(id).querySelectorAll('button')].forEach((x) => x.classList.toggle('on', x.dataset.v === v)); }
+function seg(id, key, from) { $(id).onclick = (e) => { const b = e.target.closest('button'); if (!b || !b.dataset.v) return; mark(id, b.dataset.v); S[key] = b.dataset.v; if (key === 'gait') S.fpsTouched = false; if (key === 'dir') S.autoDir = false; pipeline(from); }; }
+seg('segType', 'type', 1); seg('compass', 'dir', 1); seg('segGait', 'gait', 2);
+$('fps').oninput = () => { S.fpsTouched = true; outs(); };
+$('cols').onchange = () => { S.colsTouched = true; };
+for (const k of ['stride', 'lift', 'bounce', 'tail']) $(k).oninput = () => { outs(); later(2); };
+for (const k of ['frames', 'fw', 'fh', 'height']) $(k).onchange = () => { if (k === 'frames') S.fpsTouched = false; pipeline(2); };
+$('facing').onchange = () => pipeline(1); $('swap').onchange = () => pipeline(1);
+$('autoTol').onchange = () => { $('tol').disabled = $('autoTol').checked; outs(); pipeline(0); };
+$('tol').oninput = () => { outs(); later(0); };
+outs();
+
+/* ---------- exportar ---------- */
+function save(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+const base = () => S.name + '_' + GN[S.gait] + '_' + DN[S.dir];
+$('expGif').onclick = async () => { if (!S.frames) return; status('Montando o GIF…'); await tick(); await tick();
+  try { const g = WC.encodeGIF(S.frames, S.fw, S.fh, +$('fps').value); save(new Blob([g], { type: 'image/gif' }), base() + '.gif'); status('GIF exportado: ' + base() + '.gif (' + (g.length / 1024).toFixed(0) + ' KB).', 'ok'); }
+  catch (e) { console.error(e); status('Erro ao exportar o GIF.', 'bad'); } };
+$('expSheet').onclick = () => { if (!S.frames) return; const n = S.frames.length, cols = Math.min(n, Math.max(1, +$('cols').value || n)), rows = Math.ceil(n / cols), c = document.createElement('canvas'); c.width = cols * S.fw; c.height = rows * S.fh; const x = c.getContext('2d');
+  S.frames.forEach((f, i) => x.putImageData(new ImageData(f, S.fw, S.fh), (i % cols) * S.fw, Math.floor(i / cols) * S.fh));
+  const nm = base() + '_' + n + 'q_' + S.fw + 'x' + S.fh + '.png';
+  c.toBlob((b) => { if (!b) { status('Erro ao exportar o sprite sheet.', 'bad'); return; } save(b, nm); status('Sprite sheet exportado: ' + cols + ' colunas × ' + rows + ' linhas, quadro de ' + S.fw + '×' + S.fh + ' px.', 'ok'); }, 'image/png'); };
+window.__wc = S;
+})();
+</script>
+</body>
+</html>
