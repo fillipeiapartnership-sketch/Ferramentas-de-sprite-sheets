@@ -1,0 +1,40 @@
+DINOMOTION STUDIO v1.1
+WALK COM APOIO PLANTAR
+=====================
+
+O QUE MUDOU
+
+Esta versão substitui o ciclo anterior, que usava oscilações senoidais simples e deixava os pés quase sempre próximos do chão. O novo WALK separa a passada em apoio e balanço.
+
+Durante o apoio, o ponto mais baixo dos três dedos/claws é mantido próximo ao piso. Durante o balanço, o pé sobe aproximadamente 12 cm, o joelho flexiona e a perna avança para a próxima passada. O tronco recebe uma oscilação vertical pequena, há transferência lateral de peso e a cauda faz um contrabalanço discreto.
+
+O ciclo dura 1,20 segundo e exporta 73 amostras por canal. O deslocamento de raiz avança aproximadamente 0,24 m no eixo +Z por ciclo. A câmera acompanha a raiz durante a pré-visualização para que o modelo permaneça enquadrado enquanto a grade mostra o deslocamento.
+
+COMO ABRIR
+
+OPÇÃO RECOMENDADA
+Extraia toda a pasta do ZIP. Mantenha os arquivos juntos e execute Iniciar_DinoMotion.bat. O navegador abrirá o servidor local em http://127.0.0.1:8765 e carregará Velociraptor_WALK.glb automaticamente. O servidor serve apenas arquivos locais; não é uma API e não exige internet.
+
+ABRIR O HTML DIRETAMENTE
+Execute Abrir_DinoMotion_Direto.bat ou abra index.html. Depois clique em Importar modelo e selecione Velociraptor_WALK.glb ou Velociraptor_Original_Sem_Rig.glb.
+
+TESTAR O RIGGING AUTOMÁTICO
+Importe Velociraptor_Original_Sem_Rig.glb e clique em Aplicar esqueleto automático. O rig automático é heurístico e especializado em terópodes bípedes. Revise sempre a posição dos ossos e os pesos antes de usar o resultado em produção.
+
+ARQUIVOS INCLUÍDOS
+
+index.html contém a aplicação completa. Velociraptor_WALK.glb contém o modelo com rig e o primeiro ciclo WALK. Velociraptor_Rig_Base.glb contém o mesmo rig sem a animação. Velociraptor_Original_Sem_Rig.glb é a malha original sem esqueleto. AUDITORIA_WALK.txt registra as medições e limitações conhecidas.
+
+FORMATOS E LIMITAÇÕES
+
+Esta versão importa GLB 2.0 com uma malha/primitiva principal. Arquivos FBX e arquivos .gltf que dependem de buffers externos ainda não são suportados diretamente. O visualizador exige um navegador com WebGL 2.
+
+O auto-rig assume Y como eixo vertical e foi pensado para terópodes bípedes. Modelos muito diferentes, em poses extremas ou com geometria muito assimétrica podem precisar de ajuste manual. A detecção automática não garante pesos perfeitos em qualquer criatura.
+
+ROOT MOTION E GODOT
+
+O clip exportado inclui deslocamento de raiz no eixo +Z. A raiz avança cerca de 0,24 m por ciclo. Para locomover o personagem continuamente no Godot, use/extrai o root motion do clip. Se simplesmente repetir o GLB como uma animação comum sem acumular o deslocamento de raiz, o personagem pode voltar ao ponto inicial no fim do ciclo. Uma versão WALK estritamente in-place ainda não está incluída.
+
+AUDITORIA
+
+A caminhada agora tem fases de apoio e balanço, com elevação mensurável dos pés. Mesmo assim, a auditoria numérica ainda detecta uma pequena penetração localizada na malha do pé, por isso este ciclo não deve ser considerado aprovado para produção antes da inspeção visual no navegador, Blender ou Godot. Confira principalmente a sola, os dedos, joelhos, tornozelos, penas e cauda.

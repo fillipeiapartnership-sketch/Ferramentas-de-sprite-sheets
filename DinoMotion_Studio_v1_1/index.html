@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DinoMotion Studio</title>
+<style>
+:root{--bg:#0c1722;--panel:#132433;--panel2:#1b3142;--line:#2c4b60;--text:#e8f1f7;--muted:#9db2c1;--cyan:#49d5d0;--violet:#a855f7;--green:#2fc27a;--amber:#f4b64a;--red:#ff6969}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.4 Inter,Segoe UI,Arial,sans-serif;overflow:hidden}
+button,input,select{font:inherit}button{border:1px solid var(--line);background:#203b50;color:var(--text);border-radius:8px;padding:9px 12px;cursor:pointer;transition:.15s}button:hover{border-color:var(--cyan);background:#294b62}button:disabled{opacity:.45;cursor:not-allowed}button.primary{background:linear-gradient(135deg,#087e89,#275d83);border-color:#2aa8b4}button.accent{background:#6234a0;border-color:#8b55ce}button.ghost{background:transparent}button.small{padding:6px 9px;font-size:12px}
+#app{height:100%;display:grid;grid-template-rows:58px 1fr 28px}.topbar{display:flex;align-items:center;gap:22px;padding:0 20px;background:#102333;border-bottom:1px solid var(--line)}.brand{font-weight:800;letter-spacing:.5px;font-size:18px;white-space:nowrap}.brand b{color:var(--cyan)}.topnav{display:flex;align-items:center;gap:7px}.topnav button{border:0;background:transparent;color:#b9cbd7}.topnav button.active{background:#1c394e;color:white}.topright{margin-left:auto;display:flex;align-items:center;gap:10px}.badge{border:1px solid #326178;color:#9ee7e3;background:#12313e;padding:5px 9px;border-radius:99px;font-size:11px;letter-spacing:.3px}
+.workspace{min-height:0;display:grid;grid-template-columns:220px minmax(400px,1fr) 320px}.sidebar,.inspector{background:var(--panel);min-height:0;overflow:auto}.sidebar{border-right:1px solid var(--line);padding:16px 13px}.inspector{border-left:1px solid var(--line);padding:16px}.section-label{color:#7f9aaa;font-size:10px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin:4px 8px 10px}.category{display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;margin-bottom:6px;text-align:left;border-color:transparent;background:transparent;color:#b9cbd7}.category .ico{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;background:#233e51;color:var(--cyan);font-size:15px}.category.active{background:#1d3c50;border-color:#2d6375;color:white}.category.active .ico{background:#146a72;color:white}.side-card{margin-top:20px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#102231}.side-card p{margin:5px 0;color:var(--muted);font-size:12px}.main{position:relative;min-width:0;min-height:0;display:grid;grid-template-rows:48px minmax(0,1fr) 78px;background:#0d1a25}.toolbar{display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid var(--line);background:#102333}.toolbar .divider{height:24px;width:1px;background:var(--line);margin:0 4px}.toolbar .spacer{flex:1}.viewtag{font-size:12px;color:var(--muted)}#viewport{position:relative;min-height:0;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#1d3b50 0%,#142b3e 42%,#0c1b28 100%)}#glcanvas{width:100%;height:100%;display:block;touch-action:none}.viewport-hint{position:absolute;left:14px;top:12px;color:#a9bfcd;font-size:11px;pointer-events:none;background:#0d1a25a8;border:1px solid #345267;padding:6px 9px;border-radius:7px}.viewport-bottom{position:absolute;right:14px;bottom:12px;display:flex;gap:6px}.viewbtn{padding:6px 9px;font-size:11px;background:#102333d9}.transport{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:#102333}.playbtn{width:42px;height:42px;border-radius:50%;font-size:17px;padding:0}.transport-main{flex:1;min-width:0}.transport-title{display:flex;justify-content:space-between;color:#cfe0e9;font-size:12px;margin-bottom:8px}.timeline{width:100%;accent-color:var(--cyan)}.time{font-variant-numeric:tabular-nums;color:#8fa8b8;font-size:11px}.panel-title{font-size:15px;font-weight:700;margin:0 0 13px}.model-box{border:1px solid var(--line);background:#102333;border-radius:10px;padding:12px;margin-bottom:16px}.model-head{display:flex;align-items:center;gap:10px}.model-icon{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#1e7c83,#34507a);display:grid;place-items:center;font-size:20px}.model-meta{min-width:0;flex:1}.model-meta strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.model-meta span{color:var(--muted);font-size:11px}.status{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:#b6d2df}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px #2fc27a66}.dot.warn{background:var(--amber);box-shadow:0 0 8px #f4b64a66}.dropzone{border:1px dashed #42647a;border-radius:9px;padding:13px;text-align:center;color:var(--muted);font-size:11px;margin-top:10px}.dropzone strong{display:block;color:#dceaf1;font-size:12px;margin-bottom:4px}.field{margin:13px 0}.field label{display:flex;justify-content:space-between;color:#b9cbd7;font-size:12px;margin-bottom:7px}.field input[type=range]{width:100%;accent-color:var(--cyan)}.field select{width:100%;padding:9px;background:#0f2230;border:1px solid var(--line);border-radius:7px;color:var(--text)}.checkrow{display:flex;align-items:center;gap:8px;color:#b9cbd7;font-size:12px;margin:10px 0}.checkrow input{accent-color:var(--cyan)}.actionrow{display:flex;gap:7px;margin-top:10px}.actionrow button{flex:1}.anim-card{border:1px solid #2b566b;border-radius:9px;background:#102b3a;padding:12px;margin:12px 0}.anim-card strong{display:block;font-size:13px}.anim-card span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.anim-card.selected{border-color:var(--cyan);box-shadow:inset 0 0 0 1px #49d5d044}.progress{height:6px;background:#20394a;border-radius:9px;overflow:hidden;margin-top:10px}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#29aeb3,#9b5be8);transition:width .2s}.notice{border-left:3px solid var(--amber);background:#302a1b;padding:9px 10px;color:#d6c69e;border-radius:5px;font-size:11px;margin-top:13px}.notice.good{border-color:var(--green);background:#132f2b;color:#a9d7c7}.footer{display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#0a1520;border-top:1px solid #20394b;color:#718b9c;font-size:10px}.hidden{display:none!important}#fileInput{display:none}
+@media(max-width:1050px){.workspace{grid-template-columns:180px minmax(360px,1fr) 285px}.sidebar{padding:12px 8px}.inspector{padding:12px}.topbar{gap:10px;padding:0 12px}.topnav button{padding:8px}}
+@media(max-width:780px){html,body{overflow:auto}#app{height:auto;min-height:100%;grid-template-rows:58px auto 28px}.workspace{grid-template-columns:1fr;grid-template-rows:auto 65vh auto}.sidebar{display:none}.main{grid-row:1}.inspector{border-left:0;border-top:1px solid var(--line)}.topnav{display:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="topbar"><div class="brand">DINO<b>MOTION</b> <span style="font-weight:400;color:#86a1b3">STUDIO</span></div><nav class="topnav"><button class="active">Estúdio</button><button id="navRig">Rigging</button><button id="navAnim">Animações</button></nav><div class="topright"><span class="badge">100% LOCAL · SEM API</span><button id="exportBtn" class="primary">⇩ Exportar GLB</button></div></header>
+<div class="workspace">
+<aside class="sidebar"><div class="section-label">Biblioteca de criaturas</div><button class="category active"><span class="ico">🦖</span><span>Terópodes</span></button><button class="category" disabled title="Próxima etapa"><span class="ico">🦕</span><span>Quadrúpedes</span></button><button class="category" disabled title="Próxima etapa"><span class="ico">🐉</span><span>Dragões</span></button><div class="side-card"><strong style="font-size:12px">Perfil de rigging</strong><p>Terópode bípede</p><p>Orientação principal: Y para cima, Z para frente.</p><p>Estrutura de referência: 49 articulações.</p></div><div class="side-card"><strong style="font-size:12px">Fluxo de trabalho</strong><p>1. Importar modelo GLB</p><p>2. Detectar ou aplicar esqueleto</p><p>3. Testar WALK</p><p>4. Auditar deformações</p><p>5. Exportar GLB animado</p></div></aside>
+<main class="main">
+<div class="toolbar"><button id="importBtn" class="primary">＋ Importar modelo</button><button id="sampleBtn">Abrir exemplo</button><span class="divider"></span><button id="resetCamera" class="ghost small">Centralizar câmera</button><span class="spacer"></span><span class="viewtag" id="viewStatus">Aguardando modelo</span></div>
+<div id="viewport"><canvas id="glcanvas"></canvas><div class="viewport-hint">Arraste para girar · Scroll para zoom · Botão direito para deslocar</div><div class="viewport-bottom"><button id="bonesBtn" class="viewbtn">◎ Esqueleto: oculto</button><button id="gridBtn" class="viewbtn">▦ Grade: ligada</button></div></div>
+<div class="transport"><button id="playBtn" class="playbtn primary" disabled>▶</button><div class="transport-main"><div class="transport-title"><strong id="transportName">WALK · Caminhada normal</strong><span class="time" id="timeLabel">00:00,00 / 00:01,20</span></div><input id="timeline" class="timeline" type="range" min="0" max="1.2" step="0.01" value="0" disabled></div><button id="loopBtn" class="small">↻ Loop</button></div>
+</main>
+<aside class="inspector"><h2 class="panel-title">Personagem e rigging</h2><div class="model-box"><div class="model-head"><div class="model-icon">🦖</div><div class="model-meta"><strong id="modelName">Nenhum modelo carregado</strong><span id="modelInfo">Importe um arquivo GLB</span></div></div><div class="status"><i class="dot warn" id="statusDot"></i><span id="rigStatus">Aguardando detecção</span></div><div class="dropzone" id="dropzone"><strong>Solte seu arquivo GLB aqui</strong>ou clique em “Importar modelo”</div></div>
+<div class="section-label">Detecção automática</div><div class="field"><label>Orientação frontal <span id="axisLabel">+Z</span></label><select id="forwardAxis"><option value="+Z">+Z · Frente</option><option value="-Z">-Z · Frente</option><option value="+X">+X · Frente</option><option value="-X">-X · Frente</option></select></div><button id="autoRigBtn" class="primary" style="width:100%" disabled>✦ Aplicar esqueleto automático</button><div class="progress"><i id="progressBar"></i></div><div id="rigNote" class="notice">O sistema identificará a malha e verificará se já existe um esqueleto.</div>
+<div class="section-label" style="margin-top:20px">Biblioteca de animações</div><div class="anim-card selected"><strong>① WALK · Caminhada normal</strong><span>Fase de apoio com pé no chão · joelho absorve impacto · balanço com elevação · cauda contrabalança.</span><div style="display:flex;justify-content:space-between;margin-top:9px"><span>Loop · 1,20 s · root motion +Z</span><span style="color:var(--cyan)">Primeira animação</span></div></div>
+<div class="field"><label>Velocidade <b id="speedValue">1,00×</b></label><input id="speedRange" type="range" min="0.25" max="1.75" step="0.05" value="1"></div>
+<label class="checkrow"><input id="showBones" type="checkbox"> Exibir articulações e ossos</label><label class="checkrow"><input id="showGround" type="checkbox" checked> Exibir grade do chão</label>
+<div class="actionrow"><button id="auditBtn" disabled>⌕ Auditar pose</button><button id="resetPoseBtn" disabled>↺ Pose inicial</button></div><div id="auditResult" class="notice">A auditoria ficará disponível após carregar um personagem.</div>
+<div class="notice" style="margin-top:15px">Rigging automático especializado em terópodes bípedes. Modelos muito diferentes podem exigir ajuste manual dos pontos anatômicos.</div>
+</aside>
+</div>
+<footer class="footer"><span>DinoMotion Studio · Motor 3D local · Nenhuma conexão externa</span><span id="footerStatus">Pronto para importar · GLB 2.0</span></footer>
+</div>
+<input id="fileInput" type="file" accept=".glb,model/gltf-binary">
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const DURATION=1.2, MAX_JOINTS=52, STATIC_SHOT=new URLSearchParams(location.search).has('shot');
+let model=null, gl=null, program=null, gridProgram=null, boneProgram=null, raf=0, lastTime=0, elapsed=0, playing=false, speed=1, showBones=false, showGround=true;
+let camera={yaw:0.75,pitch:0.22,distance:3.0,target:[0,0.48,0],drag:false,button:0,lastX:0,lastY:0};
+const canvas=$('glcanvas');
+const vertexShader=`#version 300 es
+precision highp float; precision highp int;
+layout(location=0) in vec3 aPosition; layout(location=1) in vec3 aNormal; layout(location=2) in vec2 aUV; layout(location=3) in uvec4 aJoints; layout(location=4) in vec4 aWeights;
+uniform mat4 uMVP; uniform mat4 uModel; uniform mat4 uBones[52];
+out vec3 vNormal; out vec2 vUV; out float vHeight;
+void main(){ mat4 skin=aWeights.x*uBones[int(aJoints.x)]+aWeights.y*uBones[int(aJoints.y)]+aWeights.z*uBones[int(aJoints.z)]+aWeights.w*uBones[int(aJoints.w)]; vec4 p=skin*vec4(aPosition,1.0); gl_Position=uMVP*uModel*p; vNormal=normalize(mat3(uModel)*mat3(skin)*aNormal); vUV=aUV; vHeight=p.y; }
+`;
+const fragmentShader=`#version 300 es
+precision highp float; in vec3 vNormal; in vec2 vUV; in float vHeight; uniform sampler2D uColor; uniform bool uHasTexture; out vec4 outColor;
+void main(){ vec4 base=uHasTexture?texture(uColor,vUV):vec4(0.67,0.76,0.73,1.0); vec3 n=normalize(vNormal); vec3 light=normalize(vec3(-0.35,0.8,0.5)); float d=max(dot(n,light),0.0); float shade=0.40+0.68*d; vec3 col=base.rgb*shade; col=mix(col,col*vec3(0.84,0.95,1.08),0.12); outColor=vec4(col,base.a); }
+`;
+const lineVS=`#version 300 es
+precision highp float; layout(location=0) in vec3 aPosition; layout(location=1) in vec3 aColor; uniform mat4 uVP; out vec3 vColor; void main(){gl_Position=uVP*vec4(aPosition,1.0);vColor=aColor;}`;
+const lineFS=`#version 300 es
+precision highp float; in vec3 vColor; out vec4 outColor; void main(){outColor=vec4(vColor,1.0);}`;
+function compileShader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+function makeProgram(vs,fs){const p=gl.createProgram();gl.attachShader(p,compileShader(gl.VERTEX_SHADER,vs));gl.attachShader(p,compileShader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));return p;}
+function mat4Identity(){return new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);}
+function mat4Mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o;}
+function quatFromEulerXYZ(x,y,z){const c1=Math.cos(x/2),c2=Math.cos(y/2),c3=Math.cos(z/2),s1=Math.sin(x/2),s2=Math.sin(y/2),s3=Math.sin(z/2);return new Float32Array([s1*c2*c3+c1*s2*s3,c1*s2*c3-s1*c2*s3,c1*c2*s3+s1*s2*c3,c1*c2*c3-s1*s2*s3]);}
+function compose(t,q,s){const x=q[0],y=q[1],z=q[2],w=q[3],x2=x+x,y2=y+y,z2=z+z,xx=x*x2,xy=x*y2,xz=x*z2,yy=y*y2,yz=y*z2,zz=z*z2,wx=w*x2,wy=w*y2,wz=w*z2;return new Float32Array([(1-(yy+zz))*s[0],(xy+wz)*s[0],(xz-wy)*s[0],0,(xy-wz)*s[1],(1-(xx+zz))*s[1],(yz+wx)*s[1],0,(xz+wy)*s[2],(yz-wx)*s[2],(1-(xx+yy))*s[2],0,t[0],t[1],t[2],1]);}
+function mat4Invert(a){const out=new Float32Array(16),a00=a[0],a01=a[1],a02=a[2],a03=a[3],a10=a[4],a11=a[5],a12=a[6],a13=a[7],a20=a[8],a21=a[9],a22=a[10],a23=a[11],a30=a[12],a31=a[13],a32=a[14],a33=a[15],b00=a00*a11-a01*a10,b01=a00*a12-a02*a10,b02=a00*a13-a03*a10,b03=a01*a12-a02*a11,b04=a01*a13-a03*a11,b05=a02*a13-a03*a12,b06=a20*a31-a21*a30,b07=a20*a32-a22*a30,b08=a20*a33-a23*a30,b09=a21*a32-a22*a31,b10=a21*a33-a23*a31,b11=a22*a33-a23*a32,det=b00*b11-b01*b10+b02*b09+b03*b08-b04*b07+b05*b06;if(!det)return mat4Identity();det=1/det;out[0]=(a11*b11-a12*b10+a13*b09)*det;out[1]=(a02*b10-a01*b11-a03*b09)*det;out[2]=(a31*b05-a32*b04+a33*b03)*det;out[3]=(a22*b04-a21*b05-a23*b03)*det;out[4]=(a12*b08-a10*b11-a13*b07)*det;out[5]=(a00*b11-a02*b08+a03*b07)*det;out[6]=(a32*b02-a30*b05-a33*b01)*det;out[7]=(a20*b05-a22*b02+a23*b01)*det;out[8]=(a10*b10-a11*b08+a13*b06)*det;out[9]=(a01*b08-a00*b10-a03*b06)*det;out[10]=(a30*b04-a31*b02+a33*b00)*det;out[11]=(a21*b02-a20*b04-a23*b00)*det;out[12]=(a11*b07-a10*b09-a12*b06)*det;out[13]=(a00*b09-a01*b07+a02*b06)*det;out[14]=(a31*b01-a30*b03-a32*b00)*det;out[15]=(a20*b03-a21*b01+a22*b00)*det;return out;}
+function perspective(fovy,aspect,near,far){const f=1/Math.tan(fovy/2),nf=1/(near-far),o=new Float32Array(16);o[0]=f/aspect;o[5]=f;o[10]=(far+near)*nf;o[11]=-1;o[14]=2*far*near*nf;return o;}
+function lookAt(eye,center,up){let zx=eye[0]-center[0],zy=eye[1]-center[1],zz=eye[2]-center[2],l=Math.hypot(zx,zy,zz)||1;zx/=l;zy/=l;zz/=l;let xx=up[1]*zz-up[2]*zy,xy=up[2]*zx-up[0]*zz,xz=up[0]*zy-up[1]*zx;l=Math.hypot(xx,xy,xz)||1;xx/=l;xy/=l;xz/=l;const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;return new Float32Array([xx,yx,zx,0,xy,yy,zy,0,xz,yz,zz,0,-(xx*eye[0]+xy*eye[1]+xz*eye[2]),-(yx*eye[0]+yy*eye[1]+yz*eye[2]),-(zx*eye[0]+zy*eye[1]+zz*eye[2]),1]);}
+function readGLB(buf){const dv=new DataView(buf);if(dv.getUint32(0,true)!==0x46546c67)throw new Error('Arquivo não é um GLB válido.');let off=12,json=null,bin=null;while(off<buf.byteLength){const len=dv.getUint32(off,true),type=dv.getUint32(off+4,true);off+=8;if(type===0x4e4f534a)json=JSON.parse(new TextDecoder().decode(new Uint8Array(buf,off,len)).trim());else if(type===0x004e4942)bin=new Uint8Array(buf,off,len);off+=len;}if(!json||!bin)throw new Error('GLB incompleto: JSON ou BIN ausente.');return {gltf:json,bin};}
+const CT={5120:Int8Array,5121:Uint8Array,5122:Int16Array,5123:Uint16Array,5125:Uint32Array,5126:Float32Array};
+function readAccessor(gltf,bin,index){const a=gltf.accessors[index],view=gltf.bufferViews[a.bufferView],C=CT[a.componentType],n=({SCALAR:1,VEC2:2,VEC3:3,VEC4:4,MAT4:16})[a.type],stride=view.byteStride||C.BYTES_PER_ELEMENT*n,base=(view.byteOffset||0)+(a.byteOffset||0),out=new C(a.count*n);const src=new DataView(bin.buffer,bin.byteOffset,bin.byteLength);const get=(o)=>a.componentType===5126?src.getFloat32(o,true):a.componentType===5125?src.getUint32(o,true):a.componentType===5123?src.getUint16(o,true):a.componentType===5122?src.getInt16(o,true):a.componentType===5121?src.getUint8(o):src.getInt8(o);for(let i=0;i<a.count;i++)for(let k=0;k<n;k++)out[i*n+k]=get(base+i*stride+k*C.BYTES_PER_ELEMENT);return out;}
+function attrData(gltf,bin,primitive,key){const idx=primitive.attributes[key];return idx===undefined?null:readAccessor(gltf,bin,idx);}
+function getBounds(pos){const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];for(let i=0;i<pos.length;i+=3)for(let k=0;k<3;k++){if(pos[i+k]<min[k])min[k]=pos[i+k];if(pos[i+k]>max[k])max[k]=pos[i+k];}return {min,max};}
+function makeParentMap(nodes){const p=new Int32Array(nodes.length).fill(-1);nodes.forEach((n,i)=>(n.children||[]).forEach(c=>p[c]=i));return p;}
+function nodeLocal(n,override){if(n.matrix)return new Float32Array(n.matrix);const t=override&&override.t?override.t:(n.translation||[0,0,0]),q=override&&override.q?override.q:(n.rotation||[0,0,0,1]),s=n.scale||[1,1,1];return compose(t,q,s);}
+function calcGlobals(nodes,parentMap,overrides){const globals=new Array(nodes.length),done=new Uint8Array(nodes.length);function calc(i){if(done[i])return globals[i];const o=overrides&&overrides.get(i),local=nodeLocal(nodes[i],o),p=parentMap[i];globals[i]=p>=0?mat4Mul(calc(p),local):local;done[i]=1;return globals[i];}for(let i=0;i<nodes.length;i++)calc(i);return globals;}
+
+function smooth01(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);}
+function wrapAngle(a){return (a+Math.PI)%(Math.PI*2)-Math.PI;}
+function buildGaitData(m){
+ const by=m.nodeByName,rest=calcGlobals(m.gltf.nodes,m.parentMap,new Map());
+ const idx=n=>by.get(n);
+ const pos=i=>[rest[i][12],rest[i][13],rest[i][14]];
+ const rootIdx=idx('Root_Pelvis'),headIdx=idx('Head'),tailIdx=idx('Tail_Tip')??idx('Tail_Base');
+ if(rootIdx===undefined||headIdx===undefined||tailIdx===undefined)return null;
+ const rootPos=pos(rootIdx),headPos=pos(headIdx),tailPos=pos(tailIdx);
+ const forwardSign=(headPos[2]-tailPos[2])>=0?1:-1;
+ const sides={};
+ for(const side of ['L','R']){
+  const hip=idx(side+'_Hip'),knee=idx(side+'_Knee'),hock=idx(side+'_Hock'),ankle=idx(side+'_Ankle'),foot=idx(side+'_Foot'),toe=idx(side+'_Toe_Middle_Claw');
+  if([hip,knee,hock,ankle,foot,toe].some(v=>v===undefined))return null;
+  const footInv=mat4Invert(rest[foot]),toeLocal=mat4Mul(footInv,rest[toe]);
+  const offset=[toeLocal[12],toeLocal[13],toeLocal[14]],toeNames=[side+'_Toe_Inner_Claw',side+'_Toe_Middle_Claw',side+'_Toe_Outer_Claw'];
+  const toeIndices=toeNames.map(n=>idx(n)).filter(v=>v!==undefined),toeOffsets=toeIndices.map(ti=>{const local=mat4Mul(footInv,rest[ti]);return [local[12],local[13],local[14]];});
+  const hipPos=pos(hip),toePos=pos(toe);
+  const probe=new Map(),kn=m.gltf.nodes[knee];
+  probe.set(knee,{t:(kn.translation||[0,0,0]).slice(),q:quatFromEulerXYZ(.1,0,0)});
+  const probeGlobals=calcGlobals(m.gltf.nodes,m.parentMap,probe);
+  const kneeLiftDelta=probeGlobals[toe][13]-rest[toe][13];
+  const kneeSign=kneeLiftDelta>0?1:-1;
+  sides[side]={hip,knee,hock,ankle,foot,toe,toeIndices,toeOffsets,offset,offsetLength:Math.hypot(offset[1],offset[2]),
+   toePos,hipPos,kneeSign,phaseOffset:0,hipAmplitude:0,kneeSwing:0,hockSign:1,ankleSign:-1};
+ }
+ const leadSide=(sides.L.toePos[2]-rootPos[2])*forwardSign >= (sides.R.toePos[2]-rootPos[2])*forwardSign?'L':'R';
+ const trailSide=leadSide==='L'?'R':'L';
+ for(const side of ['L','R']){
+  const d=sides[side],lead=side===leadSide;
+  d.phaseOffset=lead ? 0.85 : 0.35;
+  d.hipAmplitude=lead ? 0.188 : 0.14;
+  d.kneeSwing=lead ? 0.55 : 0.70;
+  d.hockSign=-1;
+  d.ankleSign=lead ? 1 : -1;
+  d.hockSwing=lead ? .20 : .30;
+  d.ankleSwing=lead ? .12 : .30;
+  d.stanceKnee=.03;
+  d.impactKnee=.14;
+  d.stanceHock=.02;
+  d.stanceAnkle=.02;
+ }
+ const b=m.bounds,height=Math.max(.1,b.max[1]-b.min[1]);
+ return {sides,leadSide,forwardSign,duty:.62,stride:height*.225,lift:height*.112,
+  groundY:b.min[1]+.005,rootBob:height*.0056,rootSway:height*.0113,rootBaseY:0};
+}
+function makeWalkPose(m,t){
+ const gd=m.gaitData;
+ if(!gd)return makeFallbackWalkPose(m,t);
+ const g=t/DURATION,phase=g*Math.PI*2,pose=new Map(),states={};
+ const rootIdx=m.nodeByName.get('Root_Pelvis'),rootNode=m.gltf.nodes[rootIdx],rt=(rootNode.translation||[0,0,0]).slice();
+ rt[0]+=gd.rootSway*Math.cos(phase);
+ rt[1]+=gd.rootBaseY+gd.rootBob*(.5-.5*Math.cos(phase*2));
+ rt[2]+=gd.forwardSign*gd.stride*g;
+ pose.set(rootIdx,{t:rt,q:quatFromEulerXYZ(0,0,0)});
+ const set=(name,x=0,y=0,z=0)=>{
+  const i=m.nodeByName.get(name);if(i===undefined)return;
+  const n=m.gltf.nodes[i];pose.set(i,{t:(n.translation||[0,0,0]).slice(),q:quatFromEulerXYZ(x,y,z)});
+ };
+ set('Spine_01',.016*Math.sin(phase+.12));
+ set('Spine_02',-.012*Math.sin(phase+.32));
+ set('Chest',.009*Math.sin(phase+.48));
+ set('Neck_Base',-.012*Math.sin(phase+.48));
+ set('Neck_Mid',-.008*Math.sin(phase+.64));
+ set('Neck_Top',.006*Math.sin(phase+.80));
+ set('Head',-.005*Math.sin(phase+.92));
+ for(const side of ['L','R']){
+  const d=gd.sides[side],p=((g+d.phaseOffset)%1+1)%1;
+  let hip,knee,hock,ankle,toeY;
+  if(p<gd.duty){
+   const u=p/gd.duty;
+   hip=-d.hipAmplitude+2*d.hipAmplitude*u;
+   const flex=d.stanceKnee+d.impactKnee*Math.exp(-Math.pow((u-.10)/.12,2))*(1-u);
+   knee=d.kneeSign*flex;
+   hock=d.hockSign*d.stanceHock*flex;
+   ankle=d.ankleSign*d.stanceAnkle*flex;
+   toeY=gd.groundY;
+  }else{
+   const u=(p-gd.duty)/(1-gd.duty),wave=Math.pow(Math.sin(Math.PI*u),1.2);
+   hip=d.hipAmplitude-2*d.hipAmplitude*smooth01(u);
+   knee=d.kneeSign*d.kneeSwing*wave;
+   hock=d.hockSign*d.hockSwing*wave;
+   ankle=d.ankleSign*d.ankleSwing*wave;
+   toeY=gd.groundY+gd.lift*Math.pow(Math.sin(Math.PI*u),1.15);
+  }
+  states[side]={hip,knee,hock,ankle,toeY};
+  for(const [suffix,value] of [['Hip',hip],['Knee',knee],['Hock',hock],['Ankle',ankle]]){
+   const i=d[suffix.toLowerCase()];const n=m.gltf.nodes[i];
+   pose.set(i,{t:(n.translation||[0,0,0]).slice(),q:quatFromEulerXYZ(value,0,0)});
+  }
+ }
+ for(const side of ['L','R']){
+  const d=gd.sides[side],s=states[side],pre=calcGlobals(m.gltf.nodes,m.parentMap,pose),footY=pre[d.foot][13],offsets=d.toeOffsets?.length?d.toeOffsets:[d.offset];
+  const minTipY=totalRot=>Math.min(...offsets.map(o=>footY+Math.cos(totalRot)*o[1]-Math.sin(totalRot)*o[2]*gd.forwardSign));
+  let lo=-1.0,hi=1.0,flo=minTipY(lo)-s.toeY,fhi=minTipY(hi)-s.toeY,totalRot;
+  if(flo===0)totalRot=lo;else if(fhi===0)totalRot=hi;else if(flo*fhi<0){const loPositive=flo>0;for(let it=0;it<28;it++){const mid=(lo+hi)*.5,fm=minTipY(mid)-s.toeY;if((fm>0)===loPositive)lo=mid;else hi=mid;}totalRot=(lo+hi)*.5;}else{totalRot=Math.abs(flo)<Math.abs(fhi)?lo:hi;}
+  const cumulative=gd.forwardSign*(s.hip+s.knee+s.hock+s.ankle),footRot=gd.forwardSign*(totalRot-cumulative);
+  const fn=m.gltf.nodes[d.foot];
+  pose.set(d.foot,{t:(fn.translation||[0,0,0]).slice(),q:quatFromEulerXYZ(footRot,0,0)});
+ }
+ for(const side of ['L','R']){
+  const off=side==='L'?0:Math.PI;
+  set(side+'_Shoulder',.035*Math.sin(phase+off));
+  set(side+'_Elbow',.075+.025*Math.sin(phase+off+.35));
+  set(side+'_Wrist',-.018*Math.sin(phase+off+.55));
+  set(side+'_Hand',.012*Math.sin(phase+off+.65));
+ }
+ const tailNames=['Tail_Base','Tail_01','Tail_02','Tail_03','Tail_04','Tail_Tip'];
+ for(let i=0;i<tailNames.length;i++){
+  const amp=.012+.004*i;
+  set(tailNames[i],-amp*Math.sin(phase+.18-i*.16),.004*(1+.25*i)*Math.sin(phase-i*.22),0);
+ }
+ return pose;
+}
+function makeFallbackWalkPose(m,t){
+ const phase=(t/DURATION)*Math.PI*2,pose=new Map(),nodeByName=m.nodeByName;
+ const set=(name,x=0,y=0,z=0,ty=null)=>{const idx=nodeByName.get(name);if(idx===undefined)return;const node=m.gltf.nodes[idx],baseT=(node.translation||[0,0,0]).slice();if(ty!==null)baseT[1]+=ty;pose.set(idx,{t:baseT,q:quatFromEulerXYZ(x,y,z)});};
+ set('Root_Pelvis',0,0,0,.008*(.5-.5*Math.cos(phase*2)));
+ for(const side of ['L','R']){const ph=phase+(side==='R'?Math.PI:0),swing=Math.max(0,-Math.sin(ph));set(side+'_Hip',-.22*Math.sin(ph));set(side+'_Knee',-.10-.45*swing);set(side+'_Hock',.08*Math.sin(ph)-.16*swing);set(side+'_Ankle',-.06*Math.sin(ph));set(side+'_Foot',.10*Math.sin(ph));}
+ return pose;
+}
+function setStatus(text,ok=true){$('rigStatus').textContent=text;$('statusDot').className='dot'+(ok?'':' warn');}
+function setProgress(v){$('progressBar').style.width=Math.max(0,Math.min(100,v))+'%';}
+function showError(e){console.error(e);$('rigNote').className='notice';$('rigNote').textContent='Não foi possível concluir: '+(e&&e.message?e.message:String(e));$('footerStatus').textContent='Falha na operação';}
+function buildTexture(gltf,bin){const info=gltf.materials?.[0]?.pbrMetallicRoughness?.baseColorTexture;if(!info)return Promise.resolve(null);const img=gltf.images?.[gltf.textures?.[info.index]?.source];if(!img||img.bufferView===undefined)return Promise.resolve(null);const v=gltf.bufferViews[img.bufferView],bytes=bin.slice(v.byteOffset||0,(v.byteOffset||0)+v.byteLength),blob=new Blob([bytes],{type:img.mimeType||'image/jpeg'});return createImageBitmap(blob).then(bitmap=>{const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,bitmap);gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);bitmap.close();return tex;}).catch(e=>{console.warn('Textura ignorada',e);return null;});}
+function createBuffers(m){const prim=m.gltf.meshes[0].primitives[0],pos=attrData(m.gltf,m.bin,prim,'POSITION'),norm=attrData(m.gltf,m.bin,prim,'NORMAL'),uv=attrData(m.gltf,m.bin,prim,'TEXCOORD_0')||new Float32Array(pos.length/3*2),joints=attrData(m.gltf,m.bin,prim,'JOINTS_0'),weights=attrData(m.gltf,m.bin,prim,'WEIGHTS_0'),indices=readAccessor(m.gltf,m.bin,prim.indices);m.pos=pos;m.norm=norm;m.uv=uv;m.joints=joints;m.weights=weights;m.indices=indices;m.bounds=getBounds(pos);m.gpu={};const bind=(name,data,target)=>{const b=gl.createBuffer();gl.bindBuffer(target,b);gl.bufferData(target,data,gl.STATIC_DRAW);m.gpu[name]=b;};const fallbackJ=joints||new Uint16Array(pos.length/3*4),fallbackW=weights||new Float32Array(pos.length/3*4);if(!weights)for(let i=0;i<fallbackW.length;i+=4)fallbackW[i]=1;bind('pos',pos,gl.ARRAY_BUFFER);bind('norm',norm,gl.ARRAY_BUFFER);bind('uv',uv,gl.ARRAY_BUFFER);bind('joints',fallbackJ,gl.ARRAY_BUFFER);bind('weights',fallbackW,gl.ARRAY_BUFFER);bind('indices',indices,gl.ELEMENT_ARRAY_BUFFER);m.indexType=indices instanceof Uint32Array?gl.UNSIGNED_INT:indices instanceof Uint16Array?gl.UNSIGNED_SHORT:gl.UNSIGNED_BYTE;m.indexCount=indices.length;}
+function bindMesh(m){gl.bindBuffer(gl.ARRAY_BUFFER,m.gpu.pos);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.gpu.norm);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.gpu.uv);gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,2,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.gpu.joints);gl.enableVertexAttribArray(3);gl.vertexAttribIPointer(3,4,gl.UNSIGNED_SHORT,0,0);gl.bindBuffer(gl.ARRAY_BUFFER,m.gpu.weights);gl.enableVertexAttribArray(4);gl.vertexAttribPointer(4,4,gl.FLOAT,false,0,0);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.gpu.indices);}
+function initRenderer(){gl=canvas.getContext('webgl2',{antialias:true,alpha:false,powerPreference:'high-performance'});if(!gl)throw new Error('Este navegador não disponibilizou WebGL 2.');program=makeProgram(vertexShader,fragmentShader);gridProgram=makeProgram(lineVS,lineFS);boneProgram=gridProgram;gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);grid=createGrid();boneBuf=createLineBuffer();}
+function createGrid(){const arr=[];for(let i=-10;i<=10;i++){arr.push(-2,0,i*.2, .24,.39,.48, 2,0,i*.2,.24,.39,.48);arr.push(i*.2,0,-2,.24,.39,.48,i*.2,0,2,.24,.39,.48);}const data=new Float32Array(arr),b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);return {buffer:b,count:data.length/6};}
+let grid=null;
+function createLineBuffer(){const b=gl.createBuffer();return b;}
+let boneBuf=null;
+function drawLines(buffer,data,mode,count){gl.useProgram(gridProgram);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,24,0);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,24,12);gl.uniformMatrix4fv(gl.getUniformLocation(gridProgram,'uVP'),false,viewProj);gl.drawArrays(mode,0,count);}
+function drawStaticGrid(){const arr=[],step=.2,half=2,centerX=Math.floor(camera.target[0]/step)*step,centerZ=Math.floor(camera.target[2]/step)*step;for(let i=-10;i<=10;i++){const z=centerZ+i*step,x=centerX+i*step;arr.push(centerX-half,0,z,.24,.39,.48,centerX+half,0,z,.24,.39,.48);arr.push(x,0,centerZ-half,.24,.39,.48,x,0,centerZ+half,.24,.39,.48);}const data=new Float32Array(arr);gl.useProgram(gridProgram);gl.bindBuffer(gl.ARRAY_BUFFER,grid.buffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,24,0);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,24,12);gl.uniformMatrix4fv(gl.getUniformLocation(gridProgram,'uVP'),false,viewProj);gl.drawArrays(gl.LINES,0,data.length/6);}
+let viewProj=mat4Identity();
+function resize(){const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.max(1,Math.floor(canvas.clientWidth*dpr)),h=Math.max(1,Math.floor(canvas.clientHeight*dpr));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}}
+function cameraMatrices(){const cp=Math.cos(camera.pitch),sp=Math.sin(camera.pitch),sy=Math.sin(camera.yaw),cy=Math.cos(camera.yaw),eye=[camera.target[0]+camera.distance*cp*sy,camera.target[1]+camera.distance*sp,camera.target[2]+camera.distance*cp*cy],view=lookAt(eye,camera.target,[0,1,0]),proj=perspective(Math.PI/4,canvas.width/Math.max(1,canvas.height),.01,100);return {view,proj,vp:mat4Mul(proj,view)};}
+function buildBoneLines(m,globals){const out=[];const skin=m.gltf.skins?.[0];if(!skin)return new Float32Array();const jointSet=new Set(skin.joints);for(const ni of skin.joints){const p=m.parentMap[ni];if(p<0||!jointSet.has(p))continue;const a=globals[p],b=globals[ni],pa=[a[12],a[13],a[14]],pb=[b[12],b[13],b[14]];out.push(...pa,.18,.9,.7,...pb,.18,.9,.7);}return new Float32Array(out);}
+function render(){if(!gl)return;resize();gl.clearColor(.045,.095,.14,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);let pose=null,globals=null;if(model){pose=playing?makeWalkPose(model,elapsed):model.currentPose||new Map();globals=calcGlobals(model.gltf.nodes,model.parentMap,pose);const ri=model.nodeByName.get('Root_Pelvis');if(ri!==undefined&&model.baseCameraTarget&&model.restRootPos){camera.target[2]=model.baseCameraTarget[2]+(globals[ri][14]-model.restRootPos[2]);}}const {view,proj,vp}=cameraMatrices();viewProj=vp;if(showGround)drawStaticGrid();if(model){const meshNode=model.meshNodeIndex??0,meshInv=mat4Invert(globals[meshNode]);const skin=model.gltf.skins?.[0],bones=new Float32Array(MAX_JOINTS*16);bones.set(mat4Identity(),0);if(skin){for(let i=0;i<skin.joints.length;i++){const j=skin.joints[i],mat=mat4Mul(mat4Mul(meshInv,globals[j]),model.inverseBind.subarray(i*16,i*16+16));bones.set(mat,i*16);}}const mvp=mat4Mul(vp,globals[meshNode]);gl.useProgram(program);bindMesh(model);gl.uniformMatrix4fv(gl.getUniformLocation(program,'uMVP'),false,mvp);gl.uniformMatrix4fv(gl.getUniformLocation(program,'uModel'),false,mat4Identity());gl.uniformMatrix4fv(gl.getUniformLocation(program,'uBones[0]'),false,bones);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,model.texture||null);gl.uniform1i(gl.getUniformLocation(program,'uColor'),0);gl.uniform1i(gl.getUniformLocation(program,'uHasTexture'),model.texture?1:0);gl.drawElements(gl.TRIANGLES,model.indexCount,model.indexType,0);if(showBones&&skin){const lines=buildBoneLines(model,globals);gl.disable(gl.DEPTH_TEST);drawLines(boneBuf,lines,gl.LINES,lines.length/6);gl.enable(gl.DEPTH_TEST);}}if(!STATIC_SHOT)raf=requestAnimationFrame(render);}function updateCameraTarget(m){const b=m.bounds;camera.target=[(b.min[0]+b.max[0])/2,b.min[1]+(b.max[1]-b.min[1])*.48,(b.min[2]+b.max[2])/2];m.baseCameraTarget=camera.target.slice();const rest=calcGlobals(m.gltf.nodes,m.parentMap,new Map()),ri=m.nodeByName.get('Root_Pelvis');m.restRootPos=ri===undefined?[0,0,0]:[rest[ri][12],rest[ri][13],rest[ri][14]];camera.distance=Math.max(.9,Math.max(b.max[0]-b.min[0],b.max[1]-b.min[1],b.max[2]-b.min[2])*1.55);}
+function setupModelState(m){m.parentMap=makeParentMap(m.gltf.nodes);m.nodeByName=new Map(m.gltf.nodes.map((n,i)=>[n.name,i]));m.meshNodeIndex=m.gltf.nodes.findIndex(n=>n.mesh!==undefined);if(m.meshNodeIndex<0)m.meshNodeIndex=0;const skin=m.gltf.skins?.[0];m.inverseBind=skin?readAccessor(m.gltf,m.bin,skin.inverseBindMatrices):[];m.currentPose=new Map();}
+async function loadModelBuffer(buffer,name){$('footerStatus').textContent='Lendo arquivo GLB…';const parsed=readGLB(buffer),gltf=parsed.gltf,bin=parsed.bin;if(!gltf.meshes?.length)throw new Error('O arquivo não contém uma malha 3D.');const prim=gltf.meshes[0].primitives[0];if(!prim.attributes.POSITION||prim.indices===undefined)throw new Error('A primeira malha não possui POSITION ou índices.');const m={gltf,bin,name:name||'Modelo GLB'};setupModelState(m);createBuffers(m);m.gaitData=buildGaitData(m);m.texture=await buildTexture(gltf,bin);model=m;updateCameraTarget(m);const hasRig=!!(gltf.skins?.length&&prim.attributes.JOINTS_0!==undefined&&prim.attributes.WEIGHTS_0!==undefined),walkReady=hasRig&&['L_Hip','L_Knee','R_Hip','R_Knee'].every(n=>m.nodeByName.has(n)),contactReady=!!m.gaitData;$('modelName').textContent=m.name;$('modelInfo').textContent=`${(m.pos.length/3).toLocaleString('pt-BR')} vértices · ${(m.indices.length/3).toLocaleString('pt-BR')} triângulos`;
+if(walkReady&&contactReady){setStatus(`Rig detectado · ${gltf.skins[0].joints.length} articulações · pés com apoio`,true);$('rigNote').className='notice good';$('rigNote').textContent='Rig compatível. WALK usa fase de apoio com contato do pé no chão, balanço com elevação e deslocamento de raiz para reduzir a patinação.';$('autoRigBtn').disabled=true;}else if(walkReady){setStatus('Rig detectado · WALK básico',false);$('rigNote').className='notice';$('rigNote').textContent='O esqueleto foi reconhecido, mas faltam marcadores de pé/dedos para travar o contato plantar. A animação precisa de revisão manual.';$('autoRigBtn').disabled=true;}else if(hasRig){setStatus('Esqueleto encontrado · perfil incompatível',false);$('rigNote').className='notice';$('rigNote').textContent='Há um esqueleto, mas os nomes das articulações não correspondem ao perfil WALK de terópodes desta versão.';$('autoRigBtn').disabled=true;}else{setStatus('Malha detectada · sem esqueleto',false);$('rigNote').className='notice';$('rigNote').textContent='Nenhum esqueleto foi encontrado. Aplique o rig automático para terópodes bípedes.';$('autoRigBtn').disabled=false;}
+$('auditBtn').disabled=!hasRig;$('resetPoseBtn').disabled=!hasRig;$('playBtn').disabled=!walkReady;$('timeline').disabled=!walkReady;$('viewStatus').textContent=walkReady?(contactReady?'WALK · apoio plantar + root motion':'WALK básico · revisar pés'):hasRig?'Rig encontrado · sem mapeamento WALK':'Modelo sem rig · aguardando rigging';$('footerStatus').textContent='Modelo carregado localmente';$('auditResult').textContent=walkReady?(contactReady?'WALK com apoio plantar carregado. Execute a auditoria para medir contato, elevação e deformação.':'Rig reconhecido, mas sem marcadores suficientes para travar os pés.'):hasRig?'O esqueleto foi encontrado, mas não é compatível com o mapeamento WALK atual.':'Aguardando aplicação do esqueleto para iniciar a auditoria.';elapsed=0;playing=walkReady;lastTime=playing?performance.now():0;$('playBtn').textContent=playing?'Ⅱ':'▶';$('timeline').value=0;if(STATIC_SHOT)render();}
+function addBone(list,name,parent,pos,group){list.push({name,parent,pos,group});return list.length-1;}
+function fitLateralCenter(pos,axis,y,forward,fallback,radius){const vals=[],r2=radius*radius,sideAxis=(axis==='+Z'||axis==='-Z')?0:2,forwardAxis=(axis==='+Z'||axis==='-Z')?2:0;for(let i=0;i<pos.length;i+=3){const dy=pos[i+1]-y,df=pos[i+forwardAxis]-forward;if(dy*dy+df*df<r2)vals.push(pos[i+sideAxis]);}if(vals.length<16)return fallback;vals.sort((a,b)=>a-b);const lo=vals[Math.floor((vals.length-1)*.10)],hi=vals[Math.floor((vals.length-1)*.90)];return (lo+hi)*.5;}
+function buildTheropodTemplate(bounds,axis,pos){
+const mn=bounds.min,mx=bounds.max,c=(mn[0]+mx[0])/2,w=mx[0]-mn[0],h=mx[1]-mn[1],l=mx[2]-mn[2],cz=(mn[2]+mx[2])/2,latExtent=(axis==='+X'||axis==='-X')?l:w,fwdExtent=(axis==='+X'||axis==='-X')?w:l;
+const P=(lat,y,fwd)=>{switch(axis){case '-Z':return[c+lat,y,cz-fwd];case '+X':return[c+fwd,y,cz-lat];case '-X':return[c-fwd,y,cz+lat];default:return[c+lat,y,cz+fwd];}},Y=f=>mn[1]+h*f,Z=f=>fwdExtent*(f-.5),X=f=>latExtent*f;
+const b=[];
+const root=addBone(b,'Root_Pelvis',null,P(0,Y(.508),Z(.705)),'pelvis');
+const sp1=addBone(b,'Spine_01',root,P(0,Y(.566),Z(.757)),'spine');
+const sp2=addBone(b,'Spine_02',sp1,P(0,Y(.623),Z(.814)),'spine');
+const chest=addBone(b,'Chest',sp2,P(0,Y(.600),Z(.869)),'chest');
+const nb=addBone(b,'Neck_Base',chest,P(0,Y(.662),Z(.934)),'neck');
+const nm=addBone(b,'Neck_Mid',nb,P(0,Y(.728),Z(.953)),'neck');
+const nt=addBone(b,'Neck_Top',nm,P(0,Y(.821),Z(.972)),'neck');
+const head=addBone(b,'Head',nt,P(0,Y(.923),Z(.965)),'head');
+addBone(b,'Skull_Top',head,P(0,Y(.998),Z(.944)),'head');
+addBone(b,'Jaw',head,P(0,Y(.795),Z(.966)),'jaw');
+let parent=root;
+const tail=[['Tail_Base',.645,.524],['Tail_01',.562,.533],['Tail_02',.455,.552],['Tail_03',.344,.582],['Tail_04',.231,.606],['Tail_05',.114,.644],['Tail_Tip',.015,.684]];
+for(const [name,zf,yf] of tail){const idx=addBone(b,name,parent,P(0,Y(yf),Z(zf)),'tail');parent=idx;}
+for(const [side,s] of [['L',1],['R',-1]]){
+ const shoulder=addBone(b,side+'_Shoulder',chest,P(X(s*.27),Y(.600),Z(.868)),'arm');
+ const elbow=addBone(b,side+'_Elbow',shoulder,P(X(s*.30),Y(.470),Z(.899)),'arm');
+ const wrist=addBone(b,side+'_Wrist',elbow,P(X(s*.32),Y(.390),Z(.923)),'arm');
+ const hand=addBone(b,side+'_Hand',wrist,P(X(s*.33),Y(.370),Z(.933)),'hand');
+ addBone(b,side+'_Claws',hand,P(X(s*.34),Y(.360),Z(.947)),'claw');
+}
+const legs=[
+ {side:'L',x:.19,pts:[[.389,.679],[.319,.638],[.232,.624],[.127,.599],[.030,.667]],toeZ:.667},
+ {side:'R',x:-.26,pts:[[.443,.747],[.356,.736],[.263,.724],[.188,.721],[.083,.721]],toeZ:.721}
+];
+for(const leg of legs){const side=leg.side;const hip=addBone(b,side+'_Hip',root,P(X(leg.x),Y(leg.pts[0][0]),Z(leg.pts[0][1])),'leg');const knee=addBone(b,side+'_Knee',hip,P(X(leg.x),Y(leg.pts[1][0]),Z(leg.pts[1][1])),'leg');const hock=addBone(b,side+'_Hock',knee,P(X(leg.x),Y(leg.pts[2][0]),Z(leg.pts[2][1])),'leg');const ankle=addBone(b,side+'_Ankle',hock,P(X(leg.x),Y(leg.pts[3][0]),Z(leg.pts[3][1])),'leg');const foot=addBone(b,side+'_Foot',ankle,P(X(leg.x),Y(leg.pts[4][0]),Z(leg.pts[4][1])),'foot');for(const [label,dx,dz] of [['Toe_Inner',-1,.020],['Toe_Middle',0,.050],['Toe_Outer',1,.020]]){const toe=addBone(b,side+'_'+label,foot,P(X(leg.x+dx*.075),Y(.025),Z(leg.toeZ+dz)),'toe');addBone(b,side+'_'+label+'_Claw',toe,P(X(leg.x+dx*.082),Y(.014),Z(leg.toeZ+dz+.020)),'claw');}}
+const axial=new Set(['pelvis','spine','chest','neck','head','jaw','tail']);const fallback=(axis==='+Z'||axis==='-Z')?c:cz;for(const bone of b){if(axial.has(bone.group)){const fwd=(axis==='+Z'||axis==='-Z')?bone.pos[2]:bone.pos[0],lat=fitLateralCenter(pos,axis,bone.pos[1],fwd,fallback,Math.max(.022,h*.035));if(axis==='+Z'||axis==='-Z')bone.pos[0]=lat;else bone.pos[2]=lat;}}return b;
+}
+async function autoRig(){if(!model)return;const m=model,prim=m.gltf.meshes[0].primitives[0];if(m.gltf.skins?.length&&prim.attributes.JOINTS_0!==undefined&&prim.attributes.WEIGHTS_0!==undefined){setStatus('Esqueleto já existente',true);return;}$('autoRigBtn').disabled=true;$('footerStatus').textContent='Aplicando rig automático…';$('rigNote').textContent='Calculando pontos anatômicos e pesos de influência. Não feche esta janela.';setProgress(2);await new Promise(r=>setTimeout(r,30));try{const bounds=m.bounds,bones=buildTheropodTemplate(bounds,$('forwardAxis').value,m.pos),n=bones.length,segments=[];for(let i=0;i<n;i++){const b=bones[i];if(b.parent!==null){const a=bones[b.parent].pos,c=b.pos,d=[c[0]-a[0],c[1]-a[1],c[2]-a[2]],l2=d[0]*d[0]+d[1]*d[1]+d[2]*d[2];segments.push({p:b.parent,c:i,a,d,l2:Math.max(l2,1e-9),sigma:({tail:.11,spine:.14,chest:.14,pelvis:.12,neck:.10,head:.085,jaw:.06,arm:.07,hand:.06,claw:.04,leg:.09,foot:.07,toe:.045}[b.group]||.08)});}}
+const count=m.pos.length/3,joints=new Uint16Array(count*4),weights=new Float32Array(count*4);const chunk=3000;for(let start=0;start<count;start+=chunk){const end=Math.min(count,start+chunk);for(let vi=start;vi<end;vi++){const x=m.pos[vi*3],y=m.pos[vi*3+1],z=m.pos[vi*3+2],best=[];for(let si=0;si<segments.length;si++){const s=segments[si],rx=x-s.a[0],ry=y-s.a[1],rz=z-s.a[2],t=Math.max(0,Math.min(1,(rx*s.d[0]+ry*s.d[1]+rz*s.d[2])/s.l2)),dx=rx-s.d[0]*t,dy=ry-s.d[1]*t,dz=rz-s.d[2]*t,d2=dx*dx+dy*dy+dz*dz;let insert=best.length;for(let k=0;k<best.length;k++)if(d2<best[k].d2){insert=k;break;}if(insert<4){best.splice(insert,0,{s,t,d2});if(best.length>4)best.pop();}}
+const accum=new Map();for(const q of best){const s=q.s,w=Math.exp(-q.d2/(2*s.sigma*s.sigma));accum.set(s.p,(accum.get(s.p)||0)+w*(1-q.t));accum.set(s.c,(accum.get(s.c)||0)+w*q.t);}const vals=[...accum.entries()].sort((a,b)=>b[1]-a[1]).slice(0,4);let sum=vals.reduce((a,v)=>a+v[1],0);if(sum<1e-9){joints[vi*4]=0;weights[vi*4]=1;}else{for(let k=0;k<vals.length;k++){joints[vi*4+k]=vals[k][0];weights[vi*4+k]=vals[k][1]/sum;}}}setProgress(5+90*end/count);await new Promise(r=>setTimeout(r,0));}
+// Build node hierarchy and bind matrices.
+const nodeStart=m.gltf.nodes.length;const children=Array.from({length:n},()=>[]);for(let i=0;i<n;i++)if(bones[i].parent!==null)children[bones[i].parent].push(i);const newNodes=bones.map((b,i)=>{const parent=b.parent,local=parent===null?b.pos:b.pos.map((v,k)=>v-bones[parent].pos[k]);const node={name:b.name,translation:local,extras:{rig_group:b.group,rest_position_model_space:b.pos,joint_reference:'automatic_theropod_template'}};if(children[i].length)node.children=children[i].map(c=>nodeStart+c);return node;});m.gltf.nodes.push(...newNodes);const scene=m.gltf.scenes?.[m.gltf.scene||0];if(scene){scene.nodes=scene.nodes||[];scene.nodes.push(nodeStart);}else{m.gltf.scenes=[{nodes:[m.meshNodeIndex,nodeStart]}];m.gltf.scene=0;}m.gltf.nodes[m.meshNodeIndex].skin=0;
+const ibm=new Float32Array(n*16);for(let i=0;i<n;i++){const p=bones[i].pos;const mat=mat4Identity();mat[12]=-p[0];mat[13]=-p[1];mat[14]=-p[2];ibm.set(mat,i*16);}
+// Append binary accessors for skin data.
+function appendTyped(arr,componentType,type,count,target){const bytes=new Uint8Array(arr.buffer,arr.byteOffset,arr.byteLength);const offset=(m.bin.length+3)&~3,newBin=new Uint8Array(offset+bytes.length);newBin.set(m.bin);newBin.set(bytes,offset);m.bin=newBin;const view={buffer:0,byteOffset:offset,byteLength:bytes.length};if(target)view.target=target;const viewIndex=m.gltf.bufferViews.push(view)-1;const acc={bufferView:viewIndex,componentType,count,type};const accIndex=m.gltf.accessors.push(acc)-1;return accIndex;}
+const jAcc=appendTyped(joints,5123,'VEC4',count,34962),wAcc=appendTyped(weights,5126,'VEC4',count,34962),ibmAcc=appendTyped(ibm,5126,'MAT4',n,null);m.gltf.meshes[0].primitives[0].attributes.JOINTS_0=jAcc;m.gltf.meshes[0].primitives[0].attributes.WEIGHTS_0=wAcc;m.gltf.skins=[{name:'Theropod_AutoRig_49',inverseBindMatrices:ibmAcc,skeleton:nodeStart,joints:Array.from({length:n},(_,i)=>nodeStart+i),extras:{rig_type:'theropod_biped_auto',joint_count:n,automatic:true}}];m.gltf.buffers[0].byteLength=m.bin.length;
+// Refresh model state and GPU buffers.
+setupModelState(m);createBuffers(m);m.gaitData=buildGaitData(m);m.texture=await buildTexture(m.gltf,m.bin);updateCameraTarget(m);setProgress(100);setStatus(`Rig automático aplicado · ${n} articulações`,true);$('rigNote').className='notice good';$('rigNote').textContent='Esqueleto criado. A malha recebeu pesos de influência normalizados. A qualidade das deformações ainda deve ser inspecionada visualmente.';$('playBtn').disabled=false;$('timeline').disabled=false;$('auditBtn').disabled=false;$('resetPoseBtn').disabled=false;$('viewStatus').textContent=m.gaitData?'Rig aplicado · apoio plantar ativo':'Rig aplicado · WALK básico';$('footerStatus').textContent='Rigging automático concluído';$('auditResult').textContent=m.gaitData?'Rig criado. WALK com apoio plantar iniciado. Use “Auditar pose” para medir o contato dos pés, a elevação e a deformação.':'Rig criado. WALK básico iniciado, mas faltam marcadores de pé para travar o contato.';elapsed=0;playing=true;lastTime=performance.now();$('playBtn').textContent='Ⅱ';}catch(e){showError(e);$('autoRigBtn').disabled=false;}}
+
+function appendAnimationToGLB(m){
+ const gltf=JSON.parse(JSON.stringify(m.gltf));let bin=new Uint8Array(m.bin);
+ function append(arr,componentType,type,count){const bytes=new Uint8Array(arr.buffer,arr.byteOffset,arr.byteLength),offset=(bin.length+3)&~3,out=new Uint8Array(offset+bytes.length);out.set(bin);out.set(bytes,offset);bin=out;const vi=gltf.bufferViews.push({buffer:0,byteOffset:offset,byteLength:bytes.length})-1;return gltf.accessors.push({bufferView:vi,componentType,count,type})-1;}
+ const frameCount=73,times=new Float32Array(frameCount);for(let i=0;i<frameCount;i++)times[i]=DURATION*i/(frameCount-1);
+ const timeAcc=append(times,5126,'SCALAR',frameCount),samplers=[],channels=[],poses=Array.from(times,t=>makeWalkPose(m,t));
+ const allNames=['Root_Pelvis','Spine_01','Spine_02','Chest','Neck_Base','Neck_Mid','Neck_Top','Head','L_Shoulder','L_Elbow','L_Wrist','L_Hand','R_Shoulder','R_Elbow','R_Wrist','R_Hand','L_Hip','L_Knee','L_Hock','L_Ankle','L_Foot','R_Hip','R_Knee','R_Hock','R_Ankle','R_Foot','Tail_Base','Tail_01','Tail_02','Tail_03','Tail_04','Tail_Tip'];
+ for(const name of allNames){const ni=m.nodeByName.get(name);if(ni===undefined)continue;const vals=new Float32Array(frameCount*4);for(let f=0;f<frameCount;f++){const o=poses[f].get(ni),q=o?o.q:(gltf.nodes[ni].rotation||[0,0,0,1]);vals.set(q,f*4);}const acc=append(vals,5126,'VEC4',frameCount),si=samplers.push({input:timeAcc,output:acc,interpolation:'LINEAR'})-1;channels.push({sampler:si,target:{node:ni,path:'rotation'}});}
+ const rootIndex=m.nodeByName.get('Root_Pelvis');if(rootIndex!==undefined){const vals=new Float32Array(frameCount*3);for(let f=0;f<frameCount;f++){const o=poses[f].get(rootIndex),v=o?o.t:(gltf.nodes[rootIndex].translation||[0,0,0]);vals.set(v,f*3);}const acc=append(vals,5126,'VEC3',frameCount),si=samplers.push({input:timeAcc,output:acc,interpolation:'LINEAR'})-1;channels.push({sampler:si,target:{node:rootIndex,path:'translation'}});}
+ const gd=m.gaitData;gltf.animations=gltf.animations||[];gltf.animations.push({name:'WALK_Normal_FootPlant_RootMotion',samplers,channels,extras:{duration_seconds:DURATION,loop:true,root_motion:!!gd,root_motion_axis:gd&&gd.forwardSign<0?'-Z':'+Z',stride_length_m:gd?gd.stride:null,foot_contact_aware:!!gd,stance_ratio:gd?gd.duty:null,swing_foot_lift_m:gd?gd.lift:null,notes:gd?'Foot-contact walk cycle. Extract root translation for continuous locomotion when looping in a game engine.':'Basic procedural walk without automatic foot-contact markers.'}});
+ gltf.buffers[0].byteLength=bin.length;const jsonBytes=new TextEncoder().encode(JSON.stringify(gltf)),jsonPad=(4-jsonBytes.length%4)%4,binPad=(4-bin.length%4)%4,total=12+8+jsonBytes.length+jsonPad+8+bin.length+binPad,out=new ArrayBuffer(total),dv=new DataView(out);dv.setUint32(0,0x46546c67,true);dv.setUint32(4,2,true);dv.setUint32(8,total,true);dv.setUint32(12,jsonBytes.length+jsonPad,true);dv.setUint32(16,0x4e4f534a,true);new Uint8Array(out,20,jsonBytes.length).set(jsonBytes);new Uint8Array(out,20+jsonBytes.length,jsonPad).fill(0x20);const binOff=20+jsonBytes.length+jsonPad;dv.setUint32(binOff,bin.length+binPad,true);dv.setUint32(binOff+4,0x004e4942,true);new Uint8Array(out,binOff+8,bin.length).set(bin);return out;
+}
+function downloadGLB(){if(!model)return;try{const out=appendAnimationToGLB(model),blob=new Blob([out],{type:'model/gltf-binary'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=(model.name.replace(/\.glb$/i,'')||'dinomotion')+'_WALK.glb';a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);$('footerStatus').textContent='GLB animado exportado';}catch(e){showError(e);}}
+
+function audit(){
+ if(!model)return;const m=model,skin=m.gltf.skins?.[0];
+ if(!skin||!m.joints||!m.weights){$('auditResult').textContent='A auditoria de deformação exige um esqueleto com pesos de influência.';return;}
+ let bad=0;for(let i=0;i<m.weights.length;i+=4){const sum=m.weights[i]+m.weights[i+1]+m.weights[i+2]+m.weights[i+3];if(Math.abs(sum-1)>.015)bad++;}
+ const vertexCount=m.pos.length/3,step=Math.max(1,Math.floor(vertexCount/40000));let minY=Infinity,maxY=-Infinity,maxDisp=0,samples=0;
+ for(let frame=0;frame<24;frame++){
+  const t=DURATION*frame/24,pose=makeWalkPose(m,t),rootIdx=m.nodeByName.get('Root_Pelvis');
+  if(rootIdx!==undefined&&m.gaitData){const rp=pose.get(rootIdx),rt=rp.t.slice();rt[2]-=m.gaitData.forwardSign*m.gaitData.stride*(t/DURATION);pose.set(rootIdx,{t:rt,q:rp.q});}
+  const globals=calcGlobals(m.gltf.nodes,m.parentMap,pose),meshInv=mat4Invert(globals[m.meshNodeIndex]),boneMats=skin.joints.map((node,i)=>mat4Mul(mat4Mul(meshInv,globals[node]),m.inverseBind.subarray(i*16,i*16+16)));
+  for(let vi=0;vi<vertexCount;vi+=step){const x=m.pos[vi*3],y=m.pos[vi*3+1],z=m.pos[vi*3+2];let tx=0,ty=0,tz=0;for(let k=0;k<4;k++){const w=m.weights[vi*4+k];if(w<=0)continue;const mat=boneMats[m.joints[vi*4+k]];tx+=(mat[0]*x+mat[4]*y+mat[8]*z+mat[12])*w;ty+=(mat[1]*x+mat[5]*y+mat[9]*z+mat[13])*w;tz+=(mat[2]*x+mat[6]*y+mat[10]*z+mat[14])*w;}minY=Math.min(minY,ty);maxY=Math.max(maxY,ty);maxDisp=Math.max(maxDisp,Math.hypot(tx-x,ty-y,tz-z));samples++;}
+ }
+ const penetration=Math.max(0,m.bounds.min[1]-minY),penetrationText=penetration.toFixed(3).replace('.',',')+' m',dispText=maxDisp.toFixed(3).replace('.',',')+' m';
+ let contactText='Contato plantar indisponível neste rig.',contactGood=false,maxSlip=Infinity,maxVerticalError=Infinity,maxSwingLift=0;
+ if(m.gaitData){
+  maxSlip=0;maxVerticalError=0;const groups={L:{},R:{}};
+  for(let frame=0;frame<=240;frame++){
+   const g=2*frame/240,t=DURATION*g,pose=makeWalkPose(m,t),globals=calcGlobals(m.gltf.nodes,m.parentMap,pose);
+   for(const side of ['L','R']){
+    const d=m.gaitData.sides[side],p=((g+d.phaseOffset)%1+1)%1,toe=globals[d.toe],toeYs=(d.toeIndices||[d.toe]).map(i=>globals[i][13]),y=Math.min(...toeYs),z=toe[14];
+    if(p<m.gaitData.duty){maxVerticalError=Math.max(maxVerticalError,Math.abs(y-m.gaitData.groundY));const k=Math.floor(g+d.phaseOffset);(groups[side][k]||(groups[side][k]=[])).push(z);}
+    else maxSwingLift=Math.max(maxSwingLift,y-m.gaitData.groundY);
+   }
+  }
+  for(const side of ['L','R'])for(const arr of Object.values(groups[side]))if(arr.length>1)maxSlip=Math.max(maxSlip,Math.max(...arr)-Math.min(...arr));
+  contactGood=maxVerticalError<.003&&maxSlip<.04&&maxSwingLift>.08;
+  contactText=`Apoio plantar: erro vertical ${(maxVerticalError*1000).toFixed(1)} mm · deslizamento máximo ${(maxSlip*100).toFixed(1)} cm · elevação ${(maxSwingLift*100).toFixed(1)} cm.`;
+ }
+ const contact=penetration<.005?'dentro de 5 mm':penetration<.02?'pequena penetração':'penetração a corrigir';
+ $('auditResult').textContent=`24 fases · ${samples.toLocaleString('pt-BR')} amostras. Pesos: ${bad===0?'normalizados':bad+' vértices fora da tolerância'}. Penetração estimada: ${penetrationText} (${contact}). Deformação máxima sem root motion: ${dispText}. ${contactText} A inspeção visual da malha continua obrigatória.`;
+ $('rigNote').className=bad===0&&penetration<.005&&contactGood?'notice good':'notice';
+ $('rigNote').textContent=contactGood&&penetration<.005?'Auditoria aprovada nos testes numéricos: pés apoiados, elevação no balanço e sem penetração relevante. A inspeção visual continua obrigatória.':contactGood?'Contato plantar aprovado, mas a malha ainda apresenta penetração estimada na sola. O ciclo permanece em revisão.':'Auditoria concluída com ressalvas. Confira a malha em movimento, especialmente pés, joelhos, tornozelos e penas.';
+ $('footerStatus').textContent='Auditoria WALK concluída · contato plantar + deformação';
+}
+function resetPose(){elapsed=0;playing=false;$('playBtn').textContent='▶';$('timeline').value=0;if(model)model.currentPose=new Map();}
+function togglePlay(){if(!model||!model.gltf.skins?.length)return;playing=!playing;$('playBtn').textContent=playing?'Ⅱ':'▶';if(playing){lastTime=performance.now();}else{model.currentPose=makeWalkPose(model,elapsed);}}
+function tick(){if(playing){const now=performance.now();if(lastTime)elapsed+=((now-lastTime)/1000)*speed;lastTime=now;const phaseTime=((elapsed%DURATION)+DURATION)%DURATION;$('timeline').value=phaseTime;$('timeLabel').textContent=`00:${phaseTime.toFixed(2).replace('.',',').padStart(5,'0')} / 00:01,20`;}else{lastTime=0;}}
+function initEvents(){
+$('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=async e=>{const f=e.target.files?.[0];if(!f)return;try{await loadModelBuffer(await f.arrayBuffer(),f.name);}catch(err){showError(err);}e.target.value='';};$('sampleBtn').onclick=async()=>{if(location.protocol==='file:'){$('rigNote').textContent='No modo arquivo local, selecione Velociraptor_WALK.glb na janela de importação.';$('fileInput').click();return;}try{$('footerStatus').textContent='Carregando modelo de exemplo…';const r=await fetch('./Velociraptor_WALK.glb');if(!r.ok)throw new Error('O arquivo de exemplo não está ao lado do HTML. Use Importar modelo e selecione o GLB incluído no pacote.');await loadModelBuffer(await r.arrayBuffer(),'Velociraptor · exemplo.glb');}catch(e){showError(e);}};
+$('autoRigBtn').onclick=autoRig;$('playBtn').onclick=togglePlay;$('timeline').oninput=e=>{elapsed=+e.target.value;if(model)model.currentPose=makeWalkPose(model,elapsed);if(playing)playing=false;$('playBtn').textContent='▶';};$('speedRange').oninput=e=>{speed=+e.target.value;$('speedValue').textContent=speed.toFixed(2).replace('.',',')+'×';};$('bonesBtn').onclick=()=>{showBones=!showBones;$('bonesBtn').textContent='◎ Esqueleto: '+(showBones?'visível':'oculto');$('showBones').checked=showBones;};$('gridBtn').onclick=()=>{showGround=!showGround;$('gridBtn').textContent='▦ Grade: '+(showGround?'ligada':'desligada');$('showGround').checked=showGround;};$('showBones').onchange=e=>showBones=e.target.checked;$('showGround').onchange=e=>showGround=e.target.checked;$('auditBtn').onclick=audit;$('resetPoseBtn').onclick=resetPose;$('exportBtn').onclick=downloadGLB;$('resetCamera').onclick=()=>{if(model)updateCameraTarget(model);camera.yaw=.75;camera.pitch=.22;};$('forwardAxis').onchange=e=>$('axisLabel').textContent=e.target.value;
+$('navRig').onclick=()=>$('autoRigBtn').scrollIntoView({behavior:'smooth',block:'center'});$('navAnim').onclick=()=>$('transportName').scrollIntoView({behavior:'smooth',block:'center'});
+canvas.addEventListener('pointerdown',e=>{camera.drag=true;camera.button=e.button;camera.lastX=e.clientX;camera.lastY=e.clientY;canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(!camera.drag)return;const dx=e.clientX-camera.lastX,dy=e.clientY-camera.lastY;camera.lastX=e.clientX;camera.lastY=e.clientY;if(camera.button===2){camera.target[0]-=dx*.002*camera.distance;camera.target[1]+=dy*.002*camera.distance;}else{camera.yaw-=dx*.008;camera.pitch=Math.max(-.15,Math.min(1.25,camera.pitch+dy*.006));}});canvas.addEventListener('pointerup',()=>camera.drag=false);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{camera.distance=Math.max(.55,Math.min(12,camera.distance*Math.exp(e.deltaY*.001)));e.preventDefault();},{passive:false});
+const dz=$('dropzone');dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.borderColor='var(--cyan)';});dz.addEventListener('dragleave',()=>dz.style.borderColor='');dz.addEventListener('drop',async e=>{e.preventDefault();dz.style.borderColor='';const f=e.dataTransfer.files?.[0];if(!f)return;try{await loadModelBuffer(await f.arrayBuffer(),f.name);}catch(err){showError(err);}});
+}
+function loop(){tick();render();}
+try{initRenderer();initEvents();if(!STATIC_SHOT)raf=requestAnimationFrame(loop);if(location.protocol!=='file:'){fetch('./Velociraptor_WALK.glb').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer();}).then(b=>loadModelBuffer(b,'Velociraptor · exemplo.glb')).catch(()=>{});}}catch(e){showError(e);}
+})();
+</script>
+</body>
+</html>

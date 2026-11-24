@@ -1,0 +1,45 @@
+AUDITORIA TÉCNICA
+DINOMOTION STUDIO v1.1 - WALK COM APOIO PLANTAR
+================================================
+
+MODELO E RIG
+
+Modelo: Velociraptor, usando o rig corrigido.
+Malha: 470.992 vértices e aproximadamente 800.000 triângulos.
+Esqueleto: 49 articulações.
+Influências: até 4 por vértice.
+Normalização dos pesos: aprovada na tolerância de 0,015.
+
+ANIMAÇÃO
+
+Clip: WALK_Normal_FootPlant_RootMotion.
+Duração: 1,20 segundo.
+Amostras exportadas: 73 por canal, incluindo os dois extremos.
+Canais: 32 de rotação e 1 de translação da raiz (33 no total).
+Interpolação: LINEAR.
+Deslocamento de raiz: +0,2397 m no eixo +Z por ciclo.
+Fase de apoio: 62% do ciclo.
+Elevação máxima programada no balanço: aproximadamente 0,1193 m (11,9 cm).
+
+AUDITORIA CINEMÁTICA DOS PÉS
+
+A passada foi dividida em apoio e balanço. Durante o apoio, a rotação do pé é ajustada para manter o ponto mais baixo entre os três marcadores de garras próximo ao piso. Durante o balanço, o pé é elevado e avança para a passada seguinte.
+
+Desvio vertical dos marcadores de contato durante o apoio: inferior a 0,1 mm no cálculo dos marcadores.
+Deslizamento horizontal máximo estimado durante o apoio: aproximadamente 2,1 cm.
+Elevação máxima medida no balanço: aproximadamente 11,9 cm.
+Rotação local do pé: aproximadamente -14,9° a +51,9° no lado dianteiro e +4,8° a +55,0° no lado traseiro, conforme a pose inicial deste modelo.
+
+AUDITORIA DA MALHA
+
+A amostragem de deformação utilizou aproximadamente 39 mil vértices por fase em 24 fases. A soma dos pesos permaneceu normalizada. O maior deslocamento amostrado, removido o deslocamento de raiz, foi de aproximadamente 0,197 m, concentrado nas partes móveis das pernas.
+
+A menor altura estimada da malha durante o ciclo foi de aproximadamente -0,0071 m. Como a malha original começa em cerca de +0,00016 m, isso representa uma penetração localizada estimada de aproximadamente 7,2 mm. O ponto crítico está na região do pé/dedos, não no tronco.
+
+RESULTADO
+
+O novo ciclo corrige o problema principal da versão anterior: os pés agora têm uma fase de apoio identificável e uma fase de balanço com elevação próxima de 12 cm. A raiz avança para que a passada tenha deslocamento de corpo, em vez de apenas girar as pernas no mesmo lugar.
+
+STATUS: EM REVISÃO, NÃO APROVADO PARA PRODUÇÃO.
+
+A auditoria numérica não substitui a inspeção visual. Antes de aprovar, abrir no navegador e no Blender/Godot e verificar a sola, os dedos, o clipping entre pernas, a flexão dos joelhos, o apoio dos tornozelos, a integridade das penas, o tronco e a cauda. A penetração localizada de aproximadamente 7,2 mm ainda precisa de correção ou validação visual.
