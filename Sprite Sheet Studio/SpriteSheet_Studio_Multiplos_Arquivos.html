@@ -1,0 +1,2223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SpriteSheet Studio | GIFs e imagens simultâneos</title>
+<style>
+:root{color-scheme:dark;--bg:#0d1020;--panel:#171b31;--panel2:#202641;--edge:#323b5e;--text:#eef0ff;--muted:#a8b0ce;--a:#9276ff;--a2:#5cbce9;--positive:#5cddba}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}
+header{height:75px;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-bottom:1px solid var(--edge);background:linear-gradient(100deg,#17152e,#121c33);gap:12px}
+.brand{display:flex;align-items:center;gap:13px}.logo{font-size:22px;display:grid;place-items:center;width:43px;height:43px;border:1px solid #6561be;border-radius:13px;background:linear-gradient(140deg,#393071,#232952)}h1{font-size:19px;line-height:1.15;margin:0;font-weight:800;letter-spacing:-.45px}.brand small{color:var(--muted);font-size:12px}header .tag{background:#202948;border:1px solid var(--edge);border-radius:20px;padding:7px 12px;color:#c4e3fe;font-size:12px;white-space:nowrap}
+.layout{display:grid;grid-template-columns:344px minmax(0,1fr);height:calc(100dvh - 75px);min-height:600px}aside{overflow:auto;padding:16px 15px 30px;background:linear-gradient(155deg,#151a30,#171b2b);border-right:1px solid var(--edge)}main{overflow-y:auto;min-width:0;padding:21px 23px 40px;background:radial-gradient(circle at top right,#1d2240,#0d1020 67%)}
+.section{background:linear-gradient(160deg,#202640,#1a1f36);border:1px solid var(--edge);border-radius:14px;padding:15px;margin-bottom:14px}.section h2{font-size:14px;margin:0 0 12px;font-weight:750;display:flex;align-items:center;justify-content:space-between}.number{background:#333c69;border-radius:7px;padding:2px 7px;color:#c7b9ff;margin-right:6px}
+label{display:block;font-size:12px;font-weight:650;color:#c5cce4;margin:10px 0 5px}input[type=number],select{width:100%;min-width:0;background:#10172d;color:#fff;border:1px solid #3b4567;border-radius:9px;padding:9px 10px;outline:none}input:focus,select:focus{border-color:var(--a)}input[type=range]{width:100%;accent-color:#a58dff;margin:6px 0}.pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}.pair label{margin-top:0}
+button{border:1px solid #485475;background:#242e4c;color:#e6e9ff;border-radius:9px;padding:9px 12px;font-weight:700;transition:background .15s,border-color .15s}button:hover:not(:disabled){background:#36416b;border-color:#8999d4}.primary{background:linear-gradient(120deg,#7866e7,#635cce);border-color:#aaa0ff;color:#fff}.primary:hover:not(:disabled){background:linear-gradient(120deg,#8e78fa,#7569ed)}.subtle{background:#1b2540}.buttonrow{display:flex;gap:8px;flex-wrap:wrap}.buttonrow button{flex:1}.hint{color:#acb7d5;font-size:12px;margin:9px 0 0;line-height:1.5}.dropzone{border:1px dashed #6b7eaf;border-radius:12px;padding:14px 9px;text-align:center;background:linear-gradient(135deg,#1b2c4a,#212044);transition:.2s}.dropzone.dragover{background:#29385f;border-color:#c4afff}.dropzone b{font-size:13px;display:block}.dropzone p{font-size:11px;margin:4px 0 10px;color:#b9c3df}.dropzone button{width:100%}.srclist{max-height:116px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;margin:9px 0}.sourceItem{width:100%;text-align:left;padding:7px 9px;font-size:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.sourceItem.active{background:#403670;border-color:#9782f4}.check{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:12px;color:#d2d9f0}.check input{accent-color:var(--a);width:16px;height:16px}
+.sectiontitle{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 12px}.sectiontitle h2{font-size:17px;margin:0;letter-spacing:-.3px}.sectiontitle small{color:var(--muted);font-size:12px}.stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px}.stats span{font-size:12px;background:#202b45;border:1px solid #39476b;border-radius:8px;padding:6px 10px;color:#cad5fc}.stats strong{color:#fff}
+.pane{border:1px solid #303b5b;border-radius:15px;background:#151b31;overflow:hidden;margin-bottom:18px}.panehead{background:#1d2540;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;gap:10px;flex-wrap:wrap;border-bottom:1px solid #303b5b}.panehead b{font-size:13px}.panehead span{color:var(--muted);font-size:12px}.toolbar{display:flex;align-items:center;gap:6px}.toolbar button{padding:5px 10px;font-size:12px;min-width:33px}.preview-area{height:420px;overflow:auto;overscroll-behavior:contain;background:radial-gradient(circle at 50% 38%,#343d5c,#171e36 68%,#101628);padding:20px;display:flex;align-items:flex-start;justify-content:flex-start}.preview-area canvas{display:block;max-width:none;flex:none;box-shadow:0 5px 28px #06091399}.atlas-area{min-height:320px;max-height:500px;display:block}.atlas-area canvas{image-rendering:auto}.panefoot{padding:11px 15px;color:var(--muted);border-top:1px solid #303b5b;font-size:12px}.manualbox{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.manualbox button{margin-left:auto}.spriteitems{display:flex;gap:10px;flex-wrap:wrap;padding:13px;max-height:258px;overflow-y:auto}.spriteitem{border:1px solid #465274;border-radius:11px;width:120px;padding:9px 7px 7px;background:linear-gradient(160deg,#28314b,#1b2237)}.spriteitem .thumb{display:grid;place-items:center;height:104px;width:100%;border-radius:7px;background:radial-gradient(circle at top,#445170,#1f2941)}.spriteitem .thumb img{max-width:96%;max-height:98%;image-rendering:pixelated}.spriteitem .name{font-size:11px;margin:7px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;color:#e3e4f2}.actions{display:flex;gap:4px}.actions button{padding:3px 0;flex:1;font-size:12px}.empty{color:#96a3c4;padding:38px 16px;text-align:center;font-size:13px;width:100%}.alert{margin-bottom:13px;padding:10px 12px;background:#1b3540;border:1px solid #345d69;border-radius:9px;font-size:12px;color:#c9f0f8}.error{background:#4a2337;border-color:#a6476a;color:#ffdde5}#fileInput{display:none}
+/* Cada arquivo de origem tem seu próprio X, independente dos X dos sprites. */
+.sourceRow{display:flex;gap:6px;align-items:stretch;min-width:0}
+.sourceRow .sourceItem{flex:1;min-width:0;width:0}
+.sourceRemove{flex:0 0 34px;width:34px;padding:0;display:grid;place-items:center;border:1px solid #ca5773;border-radius:8px;background:#6c273e;color:#fff;font-size:21px;font-weight:800;line-height:1}
+.sourceRemove:hover:not(:disabled){background:#b53150;border-color:#ffd3de}
+.sourceRemove:focus-visible{outline:3px solid #8be2ff;outline-offset:2px}
+/* Gestão visual dos quadros. O X atua sobre o sprite inteiro, não sobre o arquivo original. */
+.spriteitem{position:relative;min-width:120px;width:180px}
+.spriteitem .thumb{position:relative}
+.spriteitem .thumb img{width:auto;height:auto;object-fit:contain}
+.spriteitem .remove-sprite{position:absolute;right:-5px;top:-7px;z-index:2;display:grid;place-items:center;width:32px;height:32px;padding:0;border-radius:50%;font-size:21px;line-height:1;background:#95283f;color:#fff;border:2px solid #ffd2dc;box-shadow:0 3px 12px #080c1d99}
+.spriteitem .remove-sprite:hover:not(:disabled){background:#d3324c;border-color:white;transform:scale(1.07)}
+.spriteitem .remove-sprite:focus-visible{outline:3px solid #8be2ff;outline-offset:3px}
+.spriteitem .actions button{min-height:29px}.spriteaudit{font-size:10px;line-height:1.4;color:#a9e1ef;white-space:normal;padding:4px 1px;overflow-wrap:anywhere}
+#undoSpriteBtn{font-size:12px;padding:7px 10px;white-space:nowrap}
+/* Botões de exclusão HTML independentes do canvas: jamais aparecem no PNG/ZIP/GIF. */
+.atlas-stage{position:relative;width:max-content;height:max-content;display:block;isolation:isolate}
+.atlas-stage[hidden]{display:none}
+.atlas-stage canvas{display:block}
+.atlas-controls{position:absolute;inset:0;pointer-events:none;z-index:3}
+.atlas-remove{position:absolute;pointer-events:auto;display:grid;place-items:center;padding:0;border:2px solid #ffc0cb;border-radius:50%;background:#ad2945;color:#fff;box-shadow:0 2px 9px #070b19cc;font-weight:900;line-height:1;cursor:pointer;touch-action:manipulation}
+.atlas-remove:hover:not(:disabled){background:#ee3456;border-color:#fff;transform:scale(1.1)}
+.atlas-remove:focus-visible{outline:3px solid #95edff;outline-offset:2px}
+.atlas-empty{width:100%;text-align:center;padding:80px 16px;color:#b9c7e5;font-size:14px}.atlas-empty small{display:block;font-size:12px;color:#95a5c7;margin-top:8px}.atlas-empty[hidden]{display:none}
+.export-highlight{padding:9px 10px;margin-top:7px;border:1px solid #476575;border-radius:9px;background:linear-gradient(110deg,#1b3145,#1d2542);font-size:12px;color:#d5e9ed}
+
+
+
+/* Sprite-modelo independente: fica fora das fontes, atlas, animação e exportações. */
+.reference-section{border-color:#546b89;background:linear-gradient(160deg,#24334c,#1c2540)}
+.reference-drop{padding:12px 9px}.reference-drop button{width:100%}
+#refFileInput{display:none}
+.reference-box{display:flex;gap:11px;align-items:center;margin-top:12px;padding:9px;border:1px solid #52617d;border-radius:11px;background:linear-gradient(115deg,#18283e,#171c35)}
+.ref-thumb{flex:none;width:105px;height:120px;display:flex;align-items:center;justify-content:center;border-radius:8px;background:radial-gradient(circle at top,#334461,#161e33);overflow:hidden}
+.ref-thumb canvas{display:block;max-width:96px;max-height:110px;object-fit:contain;image-rendering:pixelated}
+.ref-desc{font-size:12px;color:#e7f1ff;min-width:0;flex:1;overflow-wrap:anywhere;line-height:1.5}
+.ref-desc strong{display:block;font-size:12px;color:#fff;margin-bottom:5px}
+.reference-box[hidden]{display:none}
+.ref-controls{display:none}.ref-controls.active{display:block}
+.ref-remove{width:100%;margin-top:9px;padding:7px 10px;font-size:12px}
+.ref-hint{font-size:12px;color:#bdcde8;line-height:1.5;margin:7px 0 0}
+.ref-warning{font-size:11px;color:#ffdeb0;margin:8px 0 0}
+.ref-checkbox{margin:11px 0}
+
+/* Transformações opcionais não alteram os pixels originais. */
+.anim-transform{border:1px solid #50618a;border-radius:11px;background:linear-gradient(130deg,#202b49,#1b2440);padding:10px 13px}
+.anim-transform .check{margin:5px 0 10px;cursor:pointer;align-items:flex-start}
+.anim-transform .check span{line-height:1.4}
+.anim-transform small{font-size:11px;color:#a6b8db;display:block;font-weight:400}
+.anim-transform .hint{margin:5px 0 0}
+/* Inspeção animada: guias, diagnóstico de geometria e player local. */
+.anim-layout{display:grid;grid-template-columns:minmax(285px,1.1fr) minmax(255px,1fr);gap:16px;padding:15px}
+.anim-view{display:flex;align-items:center;justify-content:center;min-height:320px;overflow:auto;border:1px solid #405074;border-radius:13px;background:radial-gradient(circle at 48% 30%,#354365,#1c2943 72%,#141d31);padding:12px}
+.anim-view canvas{display:block;max-width:100%;max-height:350px;width:auto;height:auto;image-rendering:pixelated;object-fit:contain;filter:drop-shadow(0 8px 10px #05081a80)}
+.anim-tools{display:flex;flex-direction:column;gap:10px;justify-content:center;min-width:0}
+.anim-frame-title{font-size:15px;font-weight:800;color:#f4f3ff}
+.anim-frame-sub{font-size:12px;color:#adbfe7}
+.anim-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.anim-ctl button{padding:8px 11px;min-width:39px}
+.anim-tools input[type=range]{margin:3px 0;accent-color:#b095ff}
+.anim-metric{font-size:12px;line-height:1.55;background:#131c32;border:1px solid #344565;border-radius:9px;padding:10px;color:#dce6f7;white-space:pre-line;min-height:80px}
+.anim-flag{background:#372b22;border:1px solid #816440;color:#f6e2b8;border-radius:9px;padding:9px 11px;font-size:12px;line-height:1.5}
+.anim-pass{background:#163534;border-color:#37716c;color:#c8f6e8}
+.anim-options{display:flex;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.anim-options label{display:flex;align-items:center;gap:7px;font-size:12px;margin:0;cursor:pointer}
+.anim-options input{accent-color:#ab8bff}
+.anim-slider-wrap{display:flex;align-items:center;gap:8px}
+.anim-slider-wrap span{min-width:50px;white-space:nowrap;color:#d8e5fb;font-size:12px}
+#animScrub{flex:1;min-width:120px}
+.anim-note{font-size:12px;color:#a8b9d8;padding:0px 15px 13px;line-height:1.5}
+.anim-pulse{font-weight:800;color:#b4f6dc}
+@media(max-width:1040px){.anim-layout{grid-template-columns:1fr}.anim-view{min-height:285px}}
+
+@media(max-width:990px){.layout{grid-template-columns:290px minmax(0,1fr)}main{padding:15px}.section{padding:12px}}@media(max-width:680px){header{height:auto;min-height:73px;padding:12px}.tag{display:none}.layout{display:flex;flex-direction:column;height:auto;min-height:0}aside{overflow:visible;border-right:0;border-bottom:1px solid var(--edge)}main{overflow:visible}.preview-area{height:300px}.section{margin-bottom:10px}}
+
+/* Detector da cor de fundo com amostra de cor verificável. */
+.detected-color{margin:8px 0 11px;display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid #445a7d;border-radius:10px;background:linear-gradient(125deg,#16293e,#192239);font-size:12px;color:#d1e1f3}
+.detected-color .color-swatch{width:30px;height:30px;flex:none;border:1px solid #91a9c7;border-radius:7px;background:#142137}
+.detected-color b{color:#fff}
+input[type=text].color-hex, input[type=color].color-picker{display:block;width:100%;height:40px;border:1px solid #475b7b;border-radius:8px;background:#10172d;color:#fff;padding:5px 8px}
+input[type=color].color-picker{cursor:pointer;padding:4px}
+/* Padronizador direto — independente da extração de sprites. */
+.normalize-section{border-color:#369da8;background:linear-gradient(145deg,#173b49,#1b2845)}
+.normalize-section .number{background:#17647a;color:#dcffff}
+.normalize-section input[type=file]{display:none}
+.normalize-details{padding:9px 10px;border:1px solid #406879;border-radius:9px;background:#102a3d;color:#d6f5ff;font-size:12px;margin:10px 0;line-height:1.5}
+.norm-file-list{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow:auto;margin:10px 0}
+.norm-file-row{display:flex;gap:7px;align-items:center;background:#11273a;border:1px solid #496c7b;border-radius:9px;padding:5px}
+.norm-file-row .norm-mark{flex:none;width:18px;height:18px;accent-color:#5dd8bd;cursor:pointer;margin:0 2px 0 5px}
+.norm-file-row button:first-child{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 8px;font-size:12px;min-width:0}
+.norm-file-row .norm-mark+button{flex:1;text-align:left;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.norm-file-row.active{border-color:#69dfe2;background:#1d4456}
+.norm-file-row button:last-child{padding:4px 10px;background:#6d2941;border-color:#a95a69}
+.norm-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;padding:16px}
+.norm-preview-card{min-width:0;border:1px solid #435d78;border-radius:12px;overflow:hidden;background:#111b30}
+.norm-preview-title{font-weight:750;font-size:12px;background:#1b3049;padding:10px 12px;min-height:43px}
+.norm-preview-title small{display:block;font-size:10px;font-weight:500;color:#aebfd8;margin-top:3px}
+.norm-before{border-color:#a07949}.norm-before .norm-preview-title{background:linear-gradient(115deg,#563927,#282b3c);color:#ffdfa9}
+.norm-after{border-color:#3ca99a}.norm-after .norm-preview-title{background:linear-gradient(115deg,#14564b,#1a3544);color:#bdffdf}
+.norm-reference .norm-preview-title{color:#c8cbff}
+.norm-canvas-wrap{min-height:215px;height:300px;padding:14px;display:flex;align-items:center;justify-content:center;overflow:auto;background-color:#1c2a3a;background-image:linear-gradient(135deg,#2b3b50,#162435)}
+.norm-canvas-wrap canvas{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 4px 10px #0006)}
+.norm-caption{padding:9px 12px;font-size:12px;color:#c2d7ea;min-height:39px}
+.norm-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:0 16px 14px}
+.norm-actions button{font-size:12px}
+.norm-actions label{margin:0}
+.norm-actions input[type=range]{flex:1;min-width:100px}
+.norm-downloads{display:flex;flex-wrap:wrap;gap:9px;align-items:center;padding:0 16px 14px}
+.norm-downloads button{flex:1;min-width:190px;padding:12px;font-size:13px}
+.norm-downloads .primary{background:linear-gradient(115deg,#16886f,#176d91);border-color:#74dbc0}
+.norm-downloads .primary:hover:not(:disabled){background:linear-gradient(115deg,#1aa483,#2689af)}
+.norm-live-scale{padding:13px 16px;border-bottom:1px solid #375777;background:linear-gradient(115deg,#163b48,#1c2c48)}
+.norm-live-scale h3{font-size:14px;margin:0 0 9px;color:#ddfff6}
+.norm-live-row{display:grid;grid-template-columns:minmax(180px,1.15fr) minmax(220px,2fr) 110px auto;align-items:end;gap:10px}
+.norm-live-row label{margin:0}
+.norm-live-row input[type=range]{width:100%;margin:10px 0}
+.norm-live-row button{white-space:nowrap}
+.norm-live-info{margin:9px 0 0}
+.norm-status{margin:0 16px 16px;font-size:12px;border:1px solid #45697d;border-radius:10px;padding:10px 12px;background:#152c3e;color:#d6e8ff}
+.norm-status.error{background:#4a2337;border-color:#a6476a}
+.norm-muted{opacity:.72}
+.ref-controls details{border:1px solid #425b78;border-radius:9px;margin:10px 0;padding:8px;background:#18263c}
+.ref-controls summary{cursor:pointer;font-size:12px;color:#c3daef;font-weight:750}
+@media(max-width:1100px){.norm-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.norm-reference{grid-column:1/-1}.norm-reference .norm-canvas-wrap{height:190px}}
+@media(max-width:760px){.norm-preview-grid{grid-template-columns:1fr}.norm-reference{grid-column:auto}.norm-canvas-wrap,.norm-reference .norm-canvas-wrap{height:245px}}
+@media(max-width:1100px){.norm-live-row{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.norm-live-row{grid-template-columns:1fr}}
+/* Interface compacta — o editor clássico fica disponível apenas em Avançado. */
+:root{--bg:#0b1220;--panel:#141e2e;--panel2:#1c2a3c;--edge:#29374c;--text:#eef5fc;--muted:#96a8bc;--a:#60a5fa;--a2:#53c8c6;--positive:#5adeb0}
+header{height:68px;background:#101a29;padding:10px 25px}.logo{background:#1e3e53;border-color:#376177;color:#6de0c7;width:40px;height:40px}.brand small{font-size:11px}.tag{background:transparent;border-color:#30465d;color:#9bbacf}
+.layout{grid-template-columns:280px minmax(0,1fr);height:calc(100dvh - 68px);min-height:530px}
+aside{padding:18px 14px;background:#101a29}main{padding:20px 23px;background:radial-gradient(circle at 60% 5%,#182b40,#0b1220 65%)}
+.section{background:#172437;border:1px solid #2f4359;border-radius:12px;padding:16px;margin-bottom:12px}
+.reference-section,.normalize-section{background:#172437;border-color:#304459}
+.section h2{font-size:13px;margin:0 0 14px;color:#e5f1fb}.number{background:#233a50;color:#96dccf}
+button{border-color:#3b5167;background:#24384b;border-radius:8px}.primary{background:#1f8d86;border-color:#34b3a7;color:#fff}.primary:hover:not(:disabled){background:#26a096}
+.legacy-reference,.legacy-normalize,.advanced-only{display:none}
+aside>.section:not(.reference-section):not(.normalize-section){display:none}
+main>#status,main>.sectiontitle,main>.stats,main>#scaleAudit,main>.pane:not(#normalizePane){display:none}
+body.show-advanced aside>.section:not(.reference-section):not(.normalize-section){display:block}
+body.show-advanced main>.sectiontitle,body.show-advanced main>.stats,body.show-advanced main>#scaleAudit,body.show-advanced main>.pane:not(#normalizePane){display:flex}
+body.show-advanced main>.sectiontitle{display:flex}body.show-advanced main>.stats{display:flex}
+body.show-advanced main>.pane:not(#normalizePane){display:block}
+body.show-advanced .legacy-reference,body.show-advanced .legacy-normalize,body.show-advanced .advanced-only{display:block}
+#advancedToggle{font-size:12px;font-weight:650;padding:7px 11px;background:#16283b}
+.category-card+.category-card{border-top:1px solid #31455c;margin-top:18px;padding-top:18px}
+.category-card h2{font-size:15px;letter-spacing:0;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+.category-card .category-badge{font-size:10px;color:#91c4dc;background:#223749;padding:3px 7px;border-radius:999px;font-weight:600}
+.category-card button{width:100%;margin-bottom:8px;padding:11px 10px;font-size:12px}
+.category-card .reference-pick{background:#203747;border-color:#4b7882;color:#b8e9db}
+.category-card .source-pick{background:#194a52;border-color:#2c9293;color:#e7fff8}
+.category-card input[type=file]{display:none}
+.category-meta{font-size:11px;color:#9eb7cd;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:-1px 0 9px}
+.filequeue-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 9px}.filequeue-head h2{margin:0}.filequeue-head small{color:#8fa5bc;font-size:10px}
+.norm-file-list{margin:0;max-height:210px;gap:5px}
+.norm-file-row{background:#111e2d;border:1px solid #2d4257;padding:4px;gap:4px}
+.norm-file-row.active{border-color:#51c3b6;background:#1b3b46}
+.norm-file-row button{font-weight:550;font-size:11px!important;padding:7px 6px!important}
+.norm-file-row button:last-child{background:transparent;color:#a9b6c7;border-color:transparent;font-size:19px!important;padding:2px 8px!important}
+.norm-file-row .norm-mark{display:none}.scope-marked .norm-file-row .norm-mark,body.show-advanced .norm-file-row .norm-mark{display:block}
+.switch-block{margin:14px 0}.switch-block>span{font-size:12px;color:#d3e4ef;font-weight:650;display:block;margin-bottom:7px}
+.switch-pair{display:flex;gap:6px}.switch-pair button{flex:1;font-size:12px;padding:7px 8px}
+.switch-pair button.active{background:#1d706c;border-color:#57d4bf;color:#f1fffc}
+.switch-caption{color:#91a9b9;font-size:11px;margin:5px 0 0;line-height:1.4}
+.zip-action{width:100%;font-size:12px;margin-top:12px;padding:11px 8px}
+#normalizePane{background:#121d2d;border-color:#30475e;margin:0;max-width:1190px}
+#normalizePane .panehead{padding:14px 17px;background:#18283a;border-color:#304458}
+.preview-toolbar{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.preview-toolbar button{font-size:11px;padding:6px 11px}
+.preview-toolbar button.active{background:#1c766f;border-color:#61d1c1;color:white}
+.norm-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:18px}
+.norm-reference{grid-column:auto!important}
+.norm-preview-card{border-color:#364b62;border-radius:11px;background:#142238}
+.norm-preview-title{background:#1b3043!important;color:#eaf6ff!important;padding:10px 12px;font-size:12px;min-height:39px}
+.norm-preview-title small{display:none}
+.norm-canvas-wrap{height:420px;min-height:200px;background-color:#152335;background-image:radial-gradient(ellipse at 50% 18%,#263c50,#142338 75%);padding:20px}
+.norm-caption{color:#a8bdce;min-height:42px;font-size:11px}
+body.view-after .norm-before{display:none}body.view-before .norm-after{display:none}
+body.view-both .norm-preview-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.norm-live-scale{background:#142435;border-color:#30465b;padding:11px 18px}
+.norm-live-scale h3{font-size:12px;font-weight:650;color:#cadce6;margin:0 0 7px}
+.norm-live-row{grid-template-columns:38px minmax(110px,1fr) 38px 57px auto;align-items:center;gap:10px}
+.norm-live-row label{font-size:11px}.norm-live-row .scale-step{font-size:20px;padding:5px 0;line-height:1.2;min-height:35px}
+.norm-live-row #normScaleValue{font-size:12px;white-space:nowrap;font-weight:750;color:#6be0c7}
+.norm-live-row #normScale{margin:5px 0 0}
+.norm-live-row details{position:relative;color:#9dafc0}.norm-live-row details summary{font-size:11px;cursor:pointer}
+.norm-live-row details[open]{grid-column:1/-1;background:#1a2e43;border:1px solid #35526b;border-radius:8px;padding:10px}
+.norm-live-row details label{margin:9px 0;display:block}
+.norm-live-info{padding:8px 9px;margin:8px 0 0;border:none;background:transparent;font-size:11px;color:#8da5b7}
+#normScaleNumber{max-width:110px}
+.norm-actions{padding:11px 18px;gap:6px;border-top:1px solid #2d4157}
+.norm-actions #normScrub{max-width:240px}.norm-downloads{padding:0 18px 13px}
+.norm-downloads button{min-width:160px;font-size:12px;padding:11px}
+.norm-status{margin:0 18px 15px;background:transparent;border:0;border-top:1px solid #283f54;border-radius:0;padding:10px 0 0;color:#94aebf;font-size:11px}
+@media(max-width:1050px){.norm-canvas-wrap{height:300px}}
+@media(max-width:840px){.layout{grid-template-columns:250px minmax(0,1fr)}main{padding:14px}.norm-canvas-wrap{height:260px;padding:11px}.norm-live-row{grid-template-columns:35px 1fr 35px 52px}.norm-live-row details{grid-column:1/-1}}
+@media(max-width:680px){header{height:auto}.layout{display:block;height:auto;min-height:0}aside{border-right:0;overflow:visible}main{overflow:visible}.norm-preview-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;padding:9px}.norm-canvas-wrap{height:240px;padding:8px}.norm-caption{font-size:10px}.category-card button{font-size:12px}}
+@media(max-width:530px){body.view-both .norm-preview-grid{grid-template-columns:1fr}.norm-canvas-wrap{height:210px}.norm-preview-title{padding:7px}.preview-toolbar{width:100%}}
+.norm-gallery-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:0 0 10px;max-width:1190px}
+.norm-gallery-head h2{font-size:16px;margin:0 0 3px}.norm-gallery-head small,.norm-gallery-head span{font-size:11px;color:#9db3c6}
+.norm-gallery{max-width:1190px;display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:10px;max-height:490px;overflow-y:auto;align-content:start;margin-bottom:19px;padding:1px 3px 8px 1px}
+.norm-gallery-card{border:1px solid #34495f;background:#152437;border-radius:11px;overflow:hidden;min-width:0}
+.norm-gallery-card.active{border-color:#58cbbb;box-shadow:0 0 0 1px #2f9287}
+.norm-gallery-top{display:flex;gap:6px;align-items:center;padding:10px 9px 7px}
+.norm-gallery-top .norm-gallery-select{accent-color:#56d6bb;margin:0;flex:none;width:16px;height:16px;cursor:pointer}
+.norm-gallery-title{flex:1;min-width:0;cursor:pointer;border:0!important;background:transparent!important;color:#e1f4ff;text-align:left;padding:0!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px}
+.norm-gallery-remove{background:transparent;border:0;padding:0 5px;color:#a9bac9;font-size:19px;line-height:1}
+.norm-gallery-views{display:flex;gap:5px;justify-content:center;height:165px;background:radial-gradient(ellipse at center,#2b4054,#152536);padding:9px;overflow:hidden;cursor:pointer}
+.norm-gallery-view{min-width:0;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.norm-gallery-view canvas{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+body.view-after .norm-gallery-view.gallery-before{display:none}
+body.view-before .norm-gallery-view.gallery-after{display:none}
+.norm-gallery-bottom{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 9px 0}
+.norm-gallery-bottom button{padding:4px 8px;font-size:16px;min-width:28px}
+.norm-gallery-bottom .norm-gallery-scale{font-size:11px;min-width:42px;text-align:center;color:#a9f3dd}
+.norm-gallery-meta{text-align:center;padding:5px 9px 10px;font-size:10px;color:#a8bcd0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.norm-gallery-empty{grid-column:1/-1;padding:22px;text-align:center;background:#162739;border:1px dashed #38566b;border-radius:10px;color:#a9c0d1;font-size:12px}
+.norm-inherit{cursor:pointer;padding:9px 0 0;border-top:1px solid #30465b;margin-top:12px}
+.norm-inherit-note{font-size:11px;color:#95b3bd;margin:4px 0 8px}
+.norm-standard-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:11px 18px;border-top:1px solid #2d4157}
+.norm-standard-controls button{background:#1b665f;border-color:#50b7a8;color:#e4fff6;font-size:12px;padding:9px 12px}
+.norm-standard-controls label{display:flex;align-items:center;gap:7px;color:#c3d5e3;font-size:11px}
+.norm-standard-controls select{font-size:12px;min-width:107px;margin:0;padding:7px}
+.norm-standard-controls .norm-pixel-toggle{cursor:pointer;white-space:nowrap}
+.norm-standard-controls .norm-pixel-toggle input{accent-color:#62d8b8;width:16px;height:16px}
+#normBoxInfo{flex:1 0 100%;font-size:11px;color:#9ab4c8}
+.norm-after .norm-canvas-wrap{display:block;overflow:auto}
+.norm-after .norm-canvas-wrap canvas{display:block;flex:none;max-width:none;max-height:none;margin:auto;object-fit:fill}
+.norm-canvas-wrap canvas.pixelated,.norm-gallery-view canvas.pixelated{image-rendering:pixelated}
+#normPresetRefresh{font-size:11px;padding:7px 9px}
+@media(max-width:680px){.norm-gallery{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));max-height:360px}.norm-gallery-views{height:140px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">▦</div><div><h1>SpriteSheet Studio</h1><small>Escala de GIFs e imagens · 100% local</small></div></div><button id="advancedToggle" type="button" aria-expanded="false">⚙ Avançado</button></header>
+<div class="layout"><aside>
+<section class="section reference-section" aria-label="Sprite de referência independente">
+<div class="category-card">
+ <h2>GIFs <span class="category-badge">Animação</span></h2>
+ <button type="button" class="reference-pick" id="refGifBtn">Escolher referência</button>
+ <div id="refGifMeta" class="category-meta">Nenhuma referência</div>
+ <button type="button" class="source-pick" id="normGifBtn">+ Carregar GIFs</button>
+ <input id="refGifInput" type="file" accept="image/gif,image/png,image/jpeg,image/webp,.gif" />
+ <input id="normGifInput" type="file" accept="image/gif,.gif" multiple />
+</div>
+<div class="category-card">
+ <h2>Imagens <span class="category-badge">Estáticas</span></h2>
+ <button type="button" class="reference-pick" id="refImageBtn">Escolher referência</button>
+ <div id="refImageMeta" class="category-meta">Nenhuma referência</div>
+ <button type="button" class="source-pick" id="normImageBtn">+ Carregar imagens</button>
+ <input id="refImageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,.gif" />
+ <input id="normImageInput" type="file" accept="image/png,image/jpeg,image/webp" multiple />
+</div>
+<div class="legacy-reference">
+<h2><span><span class="number">01</span> GIF ou imagem de referência</span></h2>
+<div id="refDropZone" class="dropzone reference-drop"><b>Primeiro, carregue o modelo</b><p>GIF animado, PNG, JPG ou WEBP. A largura e a altura originais serão o padrão.</p><button id="refImportBtn" type="button" class="primary">+ Escolher referência</button><input id="refFileInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif,.gif"></div>
+<div id="refBox" class="reference-box" hidden><div class="ref-thumb"><canvas id="refCanvas" width="1" height="1" aria-label="Prévia do sprite de referência"></canvas></div><div class="ref-desc"><strong id="refName">Referência</strong><div id="refDimensions"></div></div></div>
+<div class="ref-controls" id="refControls">
+<details><summary>Opções avançadas somente para a folha de sprites</summary>
+<label for="refBG">Fundo apenas do modelo</label><select id="refBG"><option value="auto" selected>Automático (padrão)</option><option value="custom">Cor personalizada</option><option value="none">Já transparente / manter fundo</option><option value="white">Branco</option><option value="black">Preto</option></select><div id="refColorWrap" class="pair" style="display:none"><label>Cor do fundo do modelo<input id="refColor" class="color-picker" type="color" value="#00ff00"></label><label>Hex do fundo do modelo<input id="refColorHex" class="color-hex" type="text" value="#00ff00" maxlength="7" spellcheck="false"></label></div>
+<div id="refDetectedColor" class="detected-color" role="status"><span class="color-swatch" id="refDetectedSwatch"></span><span id="refDetectedLabel">Importe o modelo para detectar a cor.</span></div>
+<label for="refTolerance">Sensibilidade do fundo do modelo <span id="refToleranceValue">50</span></label><input type="range" id="refTolerance" min="10" max="110" step="5" value="50" />
+<label class="check ref-checkbox"><input type="checkbox" id="refEnabled" checked> Aplicar dimensões do modelo</label>
+<label class="check ref-checkbox"><input type="checkbox" id="refAutoCell" checked> Ajustar o quadro ao tamanho do modelo</label>
+<label for="refScale">Escala dos próximos sprites</label><select id="refScale"><option value="series" selected>Escala uniforme da sequência (recomendado)</option><option value="contain">Encaixar individualmente sem deformar</option></select>
+<p class="ref-warning" id="refWarning">Escala comum usa a pose mais alta para calibrar as demais. Poses sentadas permanecem naturalmente mais baixas.</p>
+</details>
+<button id="refRemove" class="ref-remove" type="button" title="Remover apenas o sprite modelo">× Remover modelo</button>
+</div>
+<p class="ref-hint" id="refHint">A referência define as dimensões exatas no padronizador de GIFs abaixo. O módulo tradicional de sprite sheets usa a arte visível, se ativado.</p>
+</div>
+</section>
+<section class="section normalize-section" aria-label="Padronizar GIFs e imagens diretamente">
+<div class="filequeue-head"><h2>Arquivos carregados</h2><small id="normFileCounter">0 arquivos</small></div>
+<div id="normFileList" class="norm-file-list"><span class="hint">Nenhum arquivo carregado.</span></div>
+<div class="switch-block"><span>Encaixar GIFs automaticamente?</span><div class="switch-pair"><button id="normAutoNo" type="button" class="active" aria-pressed="true">Não · manual</button><button id="normAutoYes" type="button" aria-pressed="false">Sim · encaixar</button></div><p class="switch-caption">Usa o contorno dos quadros para caber exatamente na referência, sem cortar ou deformar.</p></div>
+<div class="switch-block" id="normGroupToggle"><span>Escalar todos os arquivos juntos?</span><div class="switch-pair"><button id="normGroupNo" type="button" class="active" aria-pressed="true">Não</button><button id="normGroupYes" type="button" aria-pressed="false">Sim</button></div></div>
+<label class="check norm-inherit"><input id="normInheritScale" type="checkbox"> Usar o primeiro arquivo como modelo de escala</label>
+<div id="normInheritInfo" class="norm-inherit-note">Opcional · desligado. Os arquivos têm escalas independentes.</div>
+<div class="legacy-normalize">
+<h2><span><span class="number">02</span> Arquivos para igualar</span></h2>
+<div class="dropzone" id="normDrop"><b>GIFs ou imagens para padronizar</b><p>Arraste vários arquivos de uma vez. GIFs mantêm seus quadros e tempos.</p><button id="normImport" type="button" class="primary">+ Carregar GIFs e imagens</button><input type="file" id="normInput" accept="image/png,image/jpeg,image/webp,image/gif,.gif" multiple></div>
+<div class="normalize-details" id="normRefInfo">Carregue uma referência acima para definir as dimensões de saída.</div>
+<div class="normalize-details" id="normModeInfo">Imagens estáticas são padronizadas automaticamente; nos GIFs, você controla manualmente a escala da personagem.</div>
+<p class="hint">A saída conserva exatamente a largura e altura da referência. GIFs e imagens se encaixam sem distorcer.</p>
+<p class="hint">A escala pode ser digitada livremente. Se a ampliação não couber nas medidas fixas, a ferramenta aplica o maior encaixe possível sem cortes.</p>
+<p class="hint">GIFs e imagens podem ser ajustados individualmente ou em conjunto. A resolução exportada depende da capacidade do navegador e da memória disponível.</p>
+<div class="buttonrow" style="margin-top:11px"><button id="normExportGIF" class="primary" disabled>↓ GIF</button><button id="normExportAPNG" disabled>↓ APNG</button><button id="normExportPNG" disabled>↓ PNG</button></div>
+<button id="normExportAll" style="width:100%;margin-top:8px" disabled>↓ Exportar todos em ZIP</button>
+<p class="hint">No ZIP, GIFs permanecem animados e imagens estáticas são PNGs. Arquivos maiores que o limite de GIF são preservados como APNG. Tudo funciona sem API.</p>
+</div>
+<button id="normQuickAll" class="primary zip-action" disabled>↓ Exportar todos em ZIP</button>
+</section>
+<section class="section"><h2><span><span class="number">A1</span> Origem para sprite sheets</span></h2>
+<div id="dropZone" class="dropzone"><b>Solte sprites ou sprite sheets aqui</b><p>PNG, JPG, WEBP e primeira imagem de GIF</p><button class="primary" id="importBtn">+ Importar imagens</button><input id="fileInput" type="file" accept="image/*" multiple></div>
+<div class="srclist" id="srcList" aria-label="Imagens de origem importadas"></div>
+<div class="buttonrow"><button id="clearBtn">Limpar projeto</button></div>
+</section>
+<section class="section"><h2><span><span class="number">A2</span> Extração de sprites</span></h2>
+<label for="mode">Tipo de separação</label><select id="mode"><option value="auto">Automática (objetos separados)</option><option value="grid">Grade uniforme</option><option value="manual">Somente recorte manual</option></select>
+<label for="bgmode">Remover fundo</label><select id="bgmode"><option value="auto" selected>Automático (padrão)</option><option value="custom">Cor personalizada</option><option value="white">Fundo claro / branco</option><option value="black">Fundo escuro / preto</option><option value="none">Não remover / já transparente</option></select><div id="bgColorWrap" class="pair" style="display:none"><label>Cor do fundo<input id="bgColor" class="color-picker" type="color" value="#00ff00"></label><label>Hex do fundo<input id="bgColorHex" class="color-hex" type="text" value="#00ff00" maxlength="7" spellcheck="false"></label></div>
+<div id="bgDetectedColor" class="detected-color" role="status"><span class="color-swatch" id="bgDetectedSwatch"></span><span id="bgDetectedLabel">Importe imagens para detectar o fundo automaticamente.</span></div>
+<div id="bgSettings"><label class="check"><input type="checkbox" id="strictGreen" checked> Eliminar resíduos verdes quando o fundo for verde</label><p class="hint">A cor é detectada por imagem. A limpeza global do verde só é aplicada quando o próprio fundo for verde. Desative se a arte contiver detalhes verdes importantes.</p><label for="tolerance">Sensibilidade do fundo <span id="toleranceValue">50</span></label><input id="tolerance" type="range" min="10" max="110" step="5" value="50" /></div>
+<div id="gridSettings" style="display:none"><div class="pair"><label>Colunas<input id="srcCols" type="number" min="1" max="64" value="2"></label><label>Linhas<input id="srcRows" type="number" min="1" max="64" value="1"></label></div></div>
+<button class="primary" id="analyzeBtn" style="width:100%;margin-top:13px">Detectar e organizar sprites</button>
+<p class="hint">A detecção identifica a cor de cada imagem automaticamente; cor manual é opcional. Cada recorte deve conter apenas um personagem. Tratamento extra-rigoroso de bordas e halos, com descontaminação reforçada de manchas verdes ou azuladas perto da transparência e contração leve do matte para cortar resíduos presos na borda. Se os personagens estiverem realmente sobrepostos, revise os recortes: o algoritmo não inventa partes ocultas.</p>
+</section>
+<section class="section"><h2><span><span class="number">A3</span> Padronização da folha</span></h2>
+<div class="pair"><label>Largura de cada quadro<input id="cellW" type="number" min="16" max="2048" value="256"></label><label>Altura de cada quadro<input id="cellH" type="number" min="16" max="2048" value="256"></label></div>
+<div class="pair"><label>Colunas da folha<input id="cols" type="number" min="1" max="64" value="4"></label><label>Espaço entre quadros (px)<input id="gap" type="number" min="0" max="4096" value="96" disabled></label></div>
+<label for="spacingMode">Distância livre entre personagens</label><select id="spacingMode"><option value="1" selected>1 metro virtual</option><option value="2">2 metros virtuais</option><option value="custom">Personalizar em pixels</option></select>
+<label for="meterScale">Escala de conversão: pixels por metro virtual</label><input id="meterScale" type="number" min="1" max="2048" value="96" />
+<p class="hint">PNG não possui metros reais. O padrão foi reduzido para deixar 1 metro virtual mais equilibrado visualmente. Se quiser mais distância, aumente os pixels por metro.</p>
+<div class="pair"><label>Margem externa<input id="margin" type="number" min="0" max="512" value="12"></label><label>Margem interna<input id="inset" type="number" min="0" max="300" value="10"></label></div>
+<label for="anchor">Alinhamento de cada personagem</label><select id="anchor"><option value="center">Centralizado</option><option value="bottom">Pés na mesma linha</option><option value="top">Topo alinhado</option></select>
+<label class="check"><input type="checkbox" id="pixel" checked> Preservar pixels sem borrões (pixel art)</label>
+<label class="check"><input type="checkbox" id="guides" checked> Exibir guias na prévia (não exportadas)</label>
+<p class="hint">A escala uniforme preserva as proporções e diferenças naturais de poses. Quadros idênticos e transparência real nos arquivos exportados.</p>
+</section>
+<section class="section"><h2><span><span class="number">A4</span> Exportação da folha</span></h2>
+<button id="spriteZipBtn" class="primary" style="width:100%;margin-bottom:8px">↓ Exportar imagens corrigidas em ZIP</button>
+<button id="gifBtn" style="width:100%;margin-bottom:8px" title="GIF com paleta adaptativa por quadro, reduzindo distorções de cor">▶ Baixar GIF de alta qualidade</button>
+<button id="apngBtn" class="primary" style="width:100%;margin-bottom:8px" title="APNG animado com todas as cores e transparência original">↓ Baixar APNG sem perda (recomendado)</button>
+<p class="hint" style="margin-top:0;margin-bottom:9px">GIF aceita somente 256 cores por quadro. O APNG mantém as cores e a transparência exatas do PNG; use-o quando a qualidade visual for prioridade.</p>
+<button id="pngBtn" style="width:100%;margin-bottom:8px">Baixar folha PNG transparente</button>
+<div class="buttonrow"><button id="zipBtn">ZIP completo + JSON</button><button id="jsonBtn">Baixar JSON</button></div>
+<div class="export-highlight">✓ O ZIP de imagens inclui <b>somente os sprites mantidos</b>, cada um em um PNG transparente e com a mesma largura e altura.</div>
+<p class="hint">O modelo de referência nunca entra nas exportações. Clique no X de um sprite para excluí-lo da folha e dos dois ZIPs. O arquivo original permanece intacto. O X das imagens de origem remove também os sprites associados. Tudo é processado localmente.</p>
+</section>
+</aside>
+<main>
+<div class="norm-gallery-head"><div><h2>Arquivos em edição</h2><small>Todos permanecem aqui. Clique para editar, use +/− em cada um ou marque vários.</small></div><span id="normGalleryCount">0 arquivos</span></div>
+<div id="normGallery" class="norm-gallery" aria-label="Galeria dos GIFs e imagens carregados"><div class="norm-gallery-empty">Carregue GIFs ou imagens. Cada arquivo terá sua própria prévia.</div></div>
+<div id="status" class="alert">Pronto para começar. Importe suas próprias imagens para criar uma folha de sprites.</div>
+<div class="sectiontitle"><div><h2>Antes e depois — padronização ao vivo</h2><small>Referência + imagem original + resultado corrigido · GIFs reproduzidos simultaneamente</small></div></div>
+<section class="pane" id="normalizePane">
+ <div class="panehead"><b>Visualização</b><div class="preview-toolbar"><button id="normViewBefore" type="button" aria-pressed="false">Antes</button><button id="normViewAfter" type="button" class="active" aria-pressed="true">Depois</button><button id="normViewBoth" type="button" aria-pressed="false">Ambos</button></div><span id="normNow">Aguardando referência e arquivo</span></div>
+ <div class="norm-preview-grid">
+  <div class="norm-preview-card norm-reference"><div class="norm-preview-title">REFERÊNCIA <small>Medidas que todos devem herdar</small></div><div class="norm-canvas-wrap"><canvas id="normRefCanvas" width="1" height="1" aria-label="GIF ou imagem de referência"></canvas></div><div class="norm-caption" id="normRefCaption">Carregue a referência.</div></div>
+  <div class="norm-preview-card norm-before"><div class="norm-preview-title">ANTES <small>GIF ou imagem original, sem alterações</small></div><div class="norm-canvas-wrap"><canvas id="normBeforeCanvas" width="1" height="1" aria-label="GIF ou imagem original antes da padronização"></canvas></div><div class="norm-caption" id="normBeforeCaption">Carregue um arquivo para comparar.</div></div>
+  <div class="norm-preview-card norm-after"><div class="norm-preview-title">DEPOIS <small>Escala proporcional, sem cortes</small></div><div class="norm-canvas-wrap"><canvas id="normResultCanvas" width="1" height="1" aria-label="GIF ou imagem redimensionada sem cortes"></canvas></div><div class="norm-caption" id="normResultCaption">Carregue os arquivos que deseja ajustar.</div></div>
+ </div>
+ <div class="norm-live-scale" id="normManualControls">
+  <h3>Escala da personagem · 100% = modelo</h3>
+  <div class="norm-live-row">
+   <button class="scale-step" id="normMinus" type="button" title="Diminuir a escala">−</button>
+   <label for="normScale">Ajuste fino<input id="normScale" type="range" min="1" max="400" step="1" value="100" /></label>
+   <button class="scale-step" id="normPlus" type="button" title="Aumentar a escala">+</button>
+   <span id="normScaleValue">100%</span>
+   <details><summary>Mais opções</summary>
+    <label for="normScaleScope">Aplicar a<select id="normScaleScope"><option value="single" selected>Somente o arquivo selecionado</option><option value="marked">Arquivos marcados</option><option value="all">Todos os arquivos</option></select></label>
+    <label for="normScaleNumber">Escala solicitada (%)<input id="normScaleNumber" type="number" min="0.01" step="any" value="100" /></label>
+    <button id="normScaleReset" type="button">Restaurar 100%</button>
+   </details>
+  </div>
+  <div class="normalize-details norm-live-info" id="normScaleInfo">A escala preserva as proporções do corpo em todos os quadros.</div>
+ </div>
+ <div class="norm-standard-controls">
+  <button id="normMatchHeight" type="button">↕ Igualar altura (se couber)</button>
+  <label for="normAlign">Âncora desta pose <select id="normAlign"><option value="center" selected>Centro</option><option value="bottom">Pés / base</option><option value="top">Topo</option></select></label>
+  <label class="norm-pixel-toggle"><input type="checkbox" id="normPixel" checked> Pixels nítidos</label>
+  <span id="normBoxInfo">Caixa comum: aguardando arquivos</span>
+ </div>
+ <div class="norm-actions"><button id="normPrev" disabled title="Quadro anterior">◀</button><button id="normPlay" disabled>❚❚ Pausar</button><button id="normNext" disabled title="Próximo quadro">▶</button><label for="normScrub">Quadro</label><input type="range" id="normScrub" min="0" max="0" value="0" disabled><span id="normCount">0 / 0</span></div>
+ <div class="norm-downloads"><button id="normQuickDownload" class="primary" disabled>↓ Baixar resultado corrigido</button></div>
+ <div class="norm-status" id="normStatus" aria-live="polite">Escolha uma referência e depois os GIFs ou imagens. O arquivo original não será alterado.</div>
+</section>
+<div class="sectiontitle"><div><h2>Folha padronizada</h2><small>Visualização ao vivo e exportação limpa</small></div></div>
+<div class="stats"><span id="statSprites"><strong>0</strong> sprites</span><span id="statSheet">Folha: aguardando</span><span id="statCell">Quadro: 256 × 256</span></div>
+<div id="scaleAudit" class="alert" style="margin-top:-4px">Importe um sprite modelo e uma folha para comparar suas medidas.</div>
+<section class="pane"><div class="panehead"><b>Prévia da sprite sheet</b><div class="toolbar"><button id="atlasUndoBtn" type="button" title="Restaurar o último quadro descartado" disabled>↶ Desfazer X</button><button id="atlasMinus" title="Diminuir zoom">−</button><span id="atlasZoomText">100%</span><button id="atlasPlus" title="Aumentar zoom">+</button><button id="atlasFit" title="Ajustar">Ajustar</button></div></div><div class="preview-area atlas-area" id="atlasScroll"><div class="atlas-empty" id="atlasEmpty">Nenhuma folha carregada.<small>Importe imagens e clique em “Detectar e organizar sprites”.</small></div><div id="atlasStage" class="atlas-stage" hidden><canvas id="atlasCanvas" aria-label="Prévia da folha de sprites"></canvas><div id="atlasControls" class="atlas-controls" aria-label="Descartar quadros individualmente"></div></div></div><div class="panefoot" id="atlasNote">Clique no X vermelho de qualquer quadro para descartá-lo. Use “Desfazer X” para restaurá-lo. Os botões não aparecem nas exportações PNG, GIF ou ZIP.</div></section>
+<div class="sectiontitle"><div><h2>Prévia animada (GIF / APNG)</h2><small>Compare altura, largura, proporção e alinhamento entre os quadros</small></div></div>
+<section class="pane" id="animationPane">
+  <div class="panehead"><b>Player de animação</b><span id="animStatus">Aguardando sprites</span></div>
+  <div class="anim-layout">
+    <div class="anim-view" id="animViewport"><canvas id="animCanvas" width="256" height="256" aria-label="Animação dos sprites selecionados"></canvas></div>
+    <div class="anim-tools">
+      <div><div class="anim-frame-title" id="animFrameTitle">Quadro 0 / 0</div><div class="anim-frame-sub" id="animFrameDimensions">Todas as células têm as mesmas dimensões.</div></div>
+      <div class="anim-ctl"><button id="animPrev" title="Quadro anterior">◀</button><button class="primary" id="animPlay">❚❚ Pausar</button><button id="animNext" title="Próximo quadro">▶</button></div>
+      <div class="anim-slider-wrap"><label for="animFPS" style="margin:0">FPS</label><input id="animFPS" type="range" min="1" max="24" step="1" value="4"><span id="animFPSValue">4 FPS</span></div>
+      <div class="anim-slider-wrap"><label for="animScrub" style="margin:0">Quadro</label><input id="animScrub" type="range" min="1" max="1" step="1" value="1"><span id="animScrubValue">0 / 0</span></div>
+      <div class="anim-options"><label><input id="animGuides" type="checkbox" checked> Guias de alinhamento</label><label><input id="animGhost" type="checkbox"> Rastro do quadro anterior</label></div>
+      <div class="anim-transform" role="group" aria-label="Opções para inverter a animação">
+        <label class="check"><input type="checkbox" id="reverseFrames"> <span>Inverter sequência <small>(último quadro → primeiro)</small></span></label>
+        <label class="check"><input type="checkbox" id="mirrorFrames"> <span>Espelhar horizontalmente <small>(direita ↔ esquerda)</small></span></label>
+        <p class="hint">As opções são independentes e afetam a prévia, o GIF, a folha PNG, os PNGs do ZIP e o JSON. Os sprites originais permanecem intactos.</p>
+      </div>
+      <div class="anim-metric" id="animMetrics">Importe ou detecte sprites para comparar suas medidas.</div>
+      <div class="anim-flag" id="animDiagnosis">Aguardando análise da sequência.</div>
+      <button id="animDownload" style="width:100%">↓ Exportar GIF de alta qualidade</button>
+      <button id="animDownloadAPNG" class="primary" style="width:100%">↓ Exportar APNG sem perda</button>
+    </div>
+  </div>
+  <div class="anim-note">Os quadros descartados pelo X não participam da animação. A inversão de ordem e o espelhamento aparecem na folha final e nas exportações. O GIF usa até 255 cores visíveis por quadro; o APNG mantém cores RGBA e transparência sem perda. Os guias e o rastro ficam apenas no player.</div>
+</section>
+<div class="sectiontitle"><div><h2>Sprites detectados</h2><small>Use o X na prévia ou nas miniaturas para descartar um quadro</small></div><div class="toolbar"><span id="spriteCount" style="color:var(--muted)">0 quadros</span><button id="undoSpriteBtn" disabled title="Restaurar o último sprite excluído">↶ Desfazer X</button></div></div>
+<section class="pane"><div id="spriteList" class="spriteitems"><div class="empty">Importe imagens para começar.</div></div></section>
+<div class="sectiontitle"><div><h2>Inspeção e recorte individual</h2><small>Clique em um personagem ou contorne somente um de cada vez</small></div></div>
+<section class="pane"><div class="panehead"><b id="sourceTitle">Imagem original</b><div class="toolbar"><button id="srcMinus">−</button><span id="srcZoomText">100%</span><button id="srcPlus">+</button><button id="srcFit">Ajustar</button></div></div><div class="preview-area" id="sourceScroll"><canvas id="sourceCanvas"></canvas></div><div class="panefoot manualbox"><span id="selectionInfo">Clique em um personagem para selecioná-lo individualmente, ou contorne apenas um.</span><button id="manualBtn" disabled>+ Adicionar recorte</button></div></section>
+</main></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const state={sources:[],sprites:[],undoDeletes:[],reference:null,selected:null,selection:null,dragging:false,sourceZoom:1,atlasZoom:1,lastAtlas:null,busy:false};
+let nextID=1;
+const ids=['cellW','cellH','cols','margin','inset','anchor','pixel','guides'];
+function normalizeHexColor(v,fallback='#00ff00'){
+ const str=String(v??'').trim();
+ if(/^#?[0-9a-f]{6}$/i.test(str))return ('#'+str.replace(/^#/,'')).toLowerCase();
+ if(/^#?[0-9a-f]{3}$/i.test(str)){const x=str.replace(/^#/,'');return ('#'+x[0]+x[0]+x[1]+x[1]+x[2]+x[2]).toLowerCase()}
+ return fallback;
+}
+function hexToRgb(value){const str=normalizeHexColor(value).slice(1);return [parseInt(str.slice(0,2),16),parseInt(str.slice(2,4),16),parseInt(str.slice(4,6),16)]}
+function rgbToHex(rgb){return '#'+rgb.map(x=>Math.max(0,Math.min(255,Math.round(x))).toString(16).padStart(2,'0')).join('')}
+function syncColorInputs(pickerId,hexId){
+ const picker=$(pickerId),hex=$(hexId);
+ const isRef=pickerId==='refColor';
+ function notify(){updateDetectedColor(isRef?'ref':'source');if(isRef&&state.reference&&$('refBG').value==='custom')updateReferenceBackground()}
+ picker.addEventListener('input',()=>{hex.value=picker.value.toUpperCase();notify()});
+ hex.addEventListener('change',()=>{const val=normalizeHexColor(hex.value,picker.value);picker.value=val;hex.value=val.toUpperCase();notify()});
+ hex.addEventListener('blur',()=>{const val=normalizeHexColor(hex.value,picker.value);picker.value=val;hex.value=val.toUpperCase();notify()});
+}
+function readBackground(canvas,mode,custom){
+ const ctx=canvas.getContext('2d',{willReadFrequently:true});
+ const {width:w,height:h}=canvas;
+ const d=ctx.getImageData(0,0,w,h).data;
+ // If image has mostly transparent edges, no keying is necessary.
+ if(mode==='none')return null;
+ if(mode==='auto'){
+  let transparent=0,total=0;
+  const step=Math.max(1,Math.floor(Math.min(w,h)/200));
+  for(let x=0;x<w;x+=step){total+=2;transparent+=Number(d[(x)*4+3]<20)+Number(d[((h-1)*w+x)*4+3]<20)}
+  for(let y=0;y<h;y+=step){total+=2;transparent+=Number(d[(y*w)*4+3]<20)+Number(d[(y*w+w-1)*4+3]<20)}
+  if(total>0&&transparent/total>.04)return null;
+ }
+ return getBG(d,w,h,mode,custom);
+}
+function updateDetectedColor(kind){
+ const ref=kind==='ref';
+ const mode=$(ref?'refBG':'bgmode').value;
+ const source=ref?state.reference?.original:state.sources.find(x=>x.id===state.selected)?.canvas;
+ const label=$(ref?'refDetectedLabel':'bgDetectedLabel');
+ const swatch=$(ref?'refDetectedSwatch':'bgDetectedSwatch');
+ if(!source){label.textContent=ref?'Importe o modelo para detectar sua cor.':'Importe uma imagem para identificar a cor do fundo.';swatch.style.background='#15213a';return}
+ const rgb=readBackground(source,mode,mode==='custom'?hexToRgb($(ref?'refColor':'bgColor').value):null);
+ if(!rgb){label.textContent=mode==='none'?'Remoção desligada.':'Imagem com transparência detectada; não há fundo sólido a remover.';swatch.style.background='linear-gradient(135deg,#a2aabd 48%,#18233b 49%)';return}
+ const hex=rgbToHex(rgb).toUpperCase();
+ swatch.style.background=hex;
+ label.textContent=(mode==='auto'?'Cor detectada automaticamente: ':mode==='custom'?'Cor definida por você: ':'Cor do fundo: ')+hex;
+}
+function num(id,min,max){const n=Number($(id).value);return Math.max(min,Math.min(max,Number.isFinite(n)?Math.round(n):min))}
+function msg(text,error=false){$('status').textContent=text;$('status').className='alert'+(error?' error':'')}
+function cnv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+function imgFromURL(url){return new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=()=>reject(Error('Não foi possível abrir a imagem.'));i.src=url})}
+function imageToCanvas(img){let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;const m=Math.min(1,Math.sqrt(9000000/(w*h)),4096/Math.max(w,h));let c=cnv(Math.max(1,Math.floor(w*m)),Math.max(1,Math.floor(h*m)));c.getContext('2d',{willReadFrequently:true}).drawImage(img,0,0,c.width,c.height);return c}
+function encodeName(s){return String(s).replace(/[\\/:*?"<>|\u0000-\u001f]/g,'_').slice(0,80)}
+async function addFiles(files){const list=Array.from(files).filter(f=>f.type.startsWith('image/'));if(!list.length){msg('Escolha imagens PNG, JPG, WEBP ou GIF.',true);return}try{for(const file of list){const u=URL.createObjectURL(file);try{const img=await imgFromURL(u);state.sources.push({id:nextID++,name:file.name,canvas:imageToCanvas(img),processed:null,boxes:[]})}finally{URL.revokeObjectURL(u)}}state.selected=state.sources[state.sources.length-list.length]?.id||state.sources[0]?.id;state.selection=null;renderSources();await analyze()}catch(e){msg('Problema ao importar arquivo: '+e.message,true)}}
+
+/* A referência NÃO é uma origem. Nunca vai para state.sources ou state.sprites. */
+function referenceIsActive(){return !!state.reference&&$('refEnabled').checked}
+function sourceScale(){
+ if(!referenceIsActive()||!state.sprites.length)return 1;
+ // A maior altura da sequência corresponde à altura visível do modelo.
+ // Uma única escala preserva a diferença de tamanho entre caminhada, salto e agachamento.
+ const tallest=Math.max(...state.sprites.map(sp=>sp.canvas.height));
+ return state.reference.art.height/Math.max(1,tallest);
+}
+function adjustCellsToReference(){
+ if(!referenceIsActive()||!$('refAutoCell').checked)return;
+ const ref=state.reference.art,inset=num('inset',0,300),ratio=sourceScale();
+ let width=ref.width,height=ref.height;
+ for(const sp of state.sprites){
+  let dw=sp.canvas.width*ratio,dh=sp.canvas.height*ratio;
+  if($('refScale').value==='contain'){
+   const fit=Math.min(ref.width/sp.canvas.width,ref.height/sp.canvas.height);
+   dw=sp.canvas.width*fit;dh=sp.canvas.height*fit;
+  }
+  width=Math.max(width,Math.ceil(dw));height=Math.max(height,Math.ceil(dh));
+ }
+ $('cellW').value=Math.max(16,Math.min(2048,Math.ceil(width)+2*inset));
+ $('cellH').value=Math.max(16,Math.min(2048,Math.ceil(height)+2*inset));
+}
+function suggestedMeterScale(){
+ if(referenceIsActive())return Math.max(32,Math.min(2048,Math.round(state.reference.art.height*.22)));
+ if(state.sprites.length){
+  const tallest=Math.max(...state.sprites.map(sp=>sp.canvas.height));
+  return Math.max(32,Math.min(2048,Math.round(tallest*.22)));
+ }
+ return num('meterScale',1,2048);
+}
+function updateSpacing(){
+ const mode=$('spacingMode').value;
+ $('gap').disabled=mode!=='custom';
+ if(mode!=='custom'){
+  const px=Math.max(1,num('meterScale',1,2048));
+  $('gap').value=Math.min(4096,Number(mode)*px);
+ }
+ if(state.lastAtlas||state.sprites.length)refresh();
+}
+$('spacingMode').onchange=updateSpacing;
+$('meterScale').oninput=()=>{$('meterScale').dataset.userEdited='1';updateSpacing()};
+$('gap').oninput=refresh;
+
+function rebuildReference(){
+ const ref=state.reference;
+ if(!ref)return;
+ const refCustom=$('refBG').value==='custom'?hexToRgb($('refColor').value):null;
+ const processed=removeOuterBackground(ref.original,$('refBG').value,num('refTolerance',10,110),refCustom);
+ const art=trim(processed);
+ if(!art)throw Error('O fundo apagou a imagem inteira. Tente “Já transparente / manter fundo”.');
+ ref.art=art;
+}
+function renderReference(){
+ const ref=state.reference;
+ $('refBox').hidden=!ref;
+ $('refControls').classList.toggle('active',!!ref);
+ $('refHint').textContent=ref?'A imagem original define o tamanho exato no padronizador de GIFs. A remoção de fundo acima só afeta o módulo tradicional de sprites. A referência nunca é exportada.':'Carregue uma referência para definir automaticamente largura, altura e proporção dos GIFs ou imagens.';
+ if(!ref){const cv=$('refCanvas');cv.width=1;cv.height=1;updateDetectedColor('ref');return}
+ $('refName').textContent=ref.name;
+ $('refDimensions').textContent='Arquivo: '+(normalizer.reference?.width||ref.original.width)+' × '+(normalizer.reference?.height||ref.original.height)+' px · '+(normalizer.reference?.frames.length||1)+' quadro(s)\nArte recortada (modo sprites): '+ref.art.width+' × '+ref.art.height+' px';
+ $('refDimensions').style.whiteSpace='pre-line';
+ const c=$('refCanvas');c.width=ref.art.width;c.height=ref.art.height;
+ const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.drawImage(ref.art,0,0);
+ $('refAutoCell').disabled=!$('refEnabled').checked;
+ $('refScale').disabled=!$('refEnabled').checked;
+ $('refWarning').hidden=false;
+ $('refTolerance').disabled=$('refBG').value==='none';
+ $('refColorWrap').style.display=$('refBG').value==='custom'?'grid':'none';
+ updateDetectedColor('ref');
+}
+async function addReference(file,category){
+ if(state.busy)return;
+ if(!validMedia(file)){msg('Escolha GIF, PNG, JPG ou WEBP para a referência.',true);return}
+ const kind=category||((file.type==='image/gif'||/\.gif$/i.test(file.name))?'gif':'image');
+ const url=URL.createObjectURL(file);
+ try{
+  const decoded=await decodeMediaFile(file);
+  const img=await imgFromURL(url);
+  state.reference={name:file.name,original:imageToCanvas(img),art:null};
+  // O tamanho do arquivo de referência é independente de qualquer recorte.
+  try{rebuildReference()}catch(e){state.reference.art=state.reference.original}
+  normalizer.refs[kind]={...decoded,name:file.name};
+  normalizer.activeCategory=kind;
+  normalizer.reference=normalizer.refs[kind];
+  normalizer.refIndex=0;
+  $('refEnabled').checked=true;
+  if(!$('meterScale').dataset.userEdited){$('meterScale').value=suggestedMeterScale()}updateSpacing();
+  adjustCellsToReference();renderReference();refresh();
+  updateNormalizer();
+  msg('Referência '+file.name+' carregada: '+decoded.width+' × '+decoded.height+' px, '+decoded.frames.length+' quadro(s). Agora importe os arquivos para padronizar.');
+ }catch(e){msg('Não foi possível importar o modelo: '+e.message,true)}
+ finally{URL.revokeObjectURL(url)}
+}
+$('refImportBtn').onclick=()=>$('refFileInput').click();
+$('refFileInput').onchange=async e=>{await addReference(e.target.files[0]);e.target.value=''};
+$('refDropZone').addEventListener('dragover',e=>{e.preventDefault();$('refDropZone').classList.add('dragover')});
+$('refDropZone').addEventListener('dragleave',()=>$('refDropZone').classList.remove('dragover'));
+$('refDropZone').addEventListener('drop',e=>{e.preventDefault();$('refDropZone').classList.remove('dragover');addReference(e.dataTransfer.files[0])});
+function updateReferenceBackground(){if(!state.reference)return;const old=state.reference.art;try{rebuildReference();if(!$('meterScale').dataset.userEdited){$('meterScale').value=suggestedMeterScale()}updateSpacing();adjustCellsToReference();renderReference();refresh()}catch(e){state.reference.art=old;renderReference();msg(e.message,true)}}
+$('refBG').onchange=()=>{ $('refColorWrap').style.display=$('refBG').value==='custom'?'grid':'none';updateDetectedColor('ref');updateReferenceBackground() };
+$('refTolerance').oninput=()=>{$('refToleranceValue').textContent=$('refTolerance').value;updateReferenceBackground()};
+$('refEnabled').onchange=()=>{adjustCellsToReference();renderReference();refresh()};
+$('refAutoCell').onchange=()=>{adjustCellsToReference();refresh()};
+$('refScale').onchange=()=>{adjustCellsToReference();renderReference();refresh()};
+$('refRemove').onclick=()=>{state.reference=null;normalizer.refs[normalizer.activeCategory]=null;normalizer.reference=null;renderReference();refresh();updateNormalizer();msg('Modelo removido. Nenhuma imagem de origem ou sprite foi excluído.')};
+
+function renderSources(){
+ const host=$('srcList');host.replaceChildren();
+ if(!state.sources.length){const empty=document.createElement('span');empty.className='hint';empty.textContent='Nenhuma imagem de origem importada.';host.append(empty)}
+ state.sources.forEach(s=>{
+  const row=document.createElement('div');row.className='sourceRow';
+  const b=document.createElement('button');b.type='button';b.className='sourceItem'+(state.selected===s.id?' active':'');
+  b.textContent=s.name+'  ('+s.canvas.width+'×'+s.canvas.height+')';b.title=s.name;
+  b.onclick=()=>{state.selected=s.id;state.selection=null;renderSources()};
+  const del=document.createElement('button');del.type='button';del.className='sourceRemove';del.textContent='×';
+  del.title='Excluir imagem de origem: '+s.name;
+  del.setAttribute('aria-label','Excluir imagem de origem '+s.name+' e seus sprites');
+  del.disabled=state.busy;
+  del.onclick=()=>removeSource(s.id);
+  row.append(b,del);host.append(row);
+ });
+ renderSource();
+ updateDetectedColor('source');
+}
+function removeSource(id){
+ if(state.busy)return;
+ const index=state.sources.findIndex(s=>s.id===id);
+ if(index<0)return;
+ const name=state.sources[index].name;
+ state.sources.splice(index,1);
+ const before=state.sprites.length;
+ state.sprites=state.sprites.filter(sp=>sp.sourceId!==id);
+ // Não permita desfazer a exclusão de um sprite cuja imagem original foi removida.
+ state.undoDeletes=state.undoDeletes.filter(item=>item.sprite.sourceId!==id);
+ if(state.selected===id){
+  state.selected=state.sources[Math.min(index,state.sources.length-1)]?.id??null;
+  state.selection=null;state.dragging=false;firstPoint=null;
+ }
+ renderSources();renderSprites();refresh();
+ msg('Imagem "'+name+'" removida do projeto. '+(before-state.sprites.length)+' sprite(s) associado(s) removido(s). Arquivos do computador preservados.');
+}
+// Descobre a cor dominante nas bordas, evitando a mediana (que misturava cores diferentes).
+function getBG(data,w,h,mode,customColor=null){
+ if(mode==='white')return [255,255,255];if(mode==='black')return [0,0,0];if(mode==='custom'&&customColor)return customColor;
+ const bins=new Map(),step=Math.max(1,Math.floor(Math.min(w,h)/250));
+ function sample(x,y){const i=(y*w+x)*4;if(data[i+3]<200)return;
+  const r=data[i],g=data[i+1],b=data[i+2];const key=((r>>4)<<8)|((g>>4)<<4)|(b>>4);
+  let v=bins.get(key);if(!v){v=[0,0,0,0];bins.set(key,v)}v[0]++;v[1]+=r;v[2]+=g;v[3]+=b;
+ }
+ for(let x=0;x<w;x+=step){sample(x,0);sample(x,h-1)}
+ for(let y=0;y<h;y+=step){sample(0,y);sample(w-1,y)}
+ let best=null;for(const b of bins.values())if(!best||b[0]>best[0])best=b;
+ return best?[Math.round(best[1]/best[0]),Math.round(best[2]/best[0]),Math.round(best[3]/best[0])]:[255,255,255];
+}
+// Eliminação cromática global com auditoria final. Diferente de flood fill, encontra verde MESMO em ilhas
+// sem contato com o contorno (entre pernas, cabelos, mãos). Faz despill nas vizinhanças.
+function purgeGreenChroma(im,w,h,bg){
+ if(!$('strictGreen')?.checked || !bg)return;
+ // Evita remover verde do personagem quando o fundo é vermelho, branco, azul etc.
+ if(!(bg[1] > 65 && bg[1] > bg[0]*1.16 + 8 && bg[1] > bg[2]*1.12 + 8))return;
+ const d=im.data,n=w*h,key=new Uint8Array(n);
+ let total=0;
+ for(let p=0;p<n;p++){
+  const i=p*4;if(d[i+3]<6)continue;
+  const r=d[i],g=d[i+1],b=d[i+2];
+  if(g>30&&g>r*1.14+4&&g>b*1.10+4&&g-r>13&&g-b>11){key[p]=1;total++}
+ }
+ if(!total)return;
+ // Transparência absoluta de cada pixel diagnosticado como verde cromático.
+ for(let p=0;p<n;p++)if(key[p]){
+  let i=p*4;d[i]=d[i+1]=d[i+2]=0;d[i+3]=0;
+ }
+ // Distância ao chroma: 1 a 3 px. Limpa mistura verde nas franjas do personagem.
+ const near=new Uint8Array(n);
+ for(let p=0;p<n;p++){
+  if(!key[p])continue;
+  const x=p%w,y=(p-x)/w;
+  for(let dy=-3;dy<=3;dy++){
+   const yy=y+dy;if(yy<0||yy>=h)continue;
+   for(let dx=-3;dx<=3;dx++){
+    const xx=x+dx;if(xx<0||xx>=w)continue;
+    const distance=Math.max(Math.abs(dx),Math.abs(dy));
+    if(!distance)continue;
+    const np=yy*w+xx;
+    const value=distance===1?3:(distance===2?2:1);
+    if(value>near[np])near[np]=value;
+   }
+  }
+ }
+ // Usa uma cópia intacta da cor nesta fase para evitar propagação de alterações.
+ const before=new Uint8ClampedArray(d);
+ for(let p=0;p<n;p++){
+  if(!near[p]||key[p])continue;
+  const i=p*4;
+  if(before[i+3]<6)continue;
+  let r=before[i],g=before[i+1],b=before[i+2];
+  // Conservador para pele, cabelo roxo e azul, rigoroso com coloração verde.
+  const spill=(g>r+12 && g>(r+b)*.5+12 && g>b*.58+12);
+  if(!spill)continue;
+  const strength=near[p]===3?1:(near[p]===2?.86:.72);
+  const neighborCap=Math.max(r+6,Math.round(b*.59+8));
+  const excess=Math.max(0,g-neighborCap);
+  if(excess<10)continue;
+  g=Math.round(g-excess*strength);
+  d[i+1]=Math.max(0,g);
+  const nearMask=near[p]===3?0.80:(near[p]===2?0.92:.98);
+  d[i+3]=Math.round(before[i+3]*nearMask);
+  // Restou um pixel majoritariamente verde: torna-o totalmente transparente.
+  if(g>r*1.25+10 && g>b*1.15+10){d[i]=d[i+1]=d[i+2]=d[i+3]=0}
+ }
+ // Verificação final, após TODAS as correções cromáticas. Não deixa
+ // pixels de verde de chroma ou alfas residuais quase invisíveis no PNG.
+ for(let p=0;p<n;p++){
+  const i=p*4,r=d[i],g=d[i+1],b=d[i+2],a=d[i+3];
+  if(a<28 || (g>30&&g>r*1.14+4&&g>b*1.10+4&&g-r>13&&g-b>11)){
+   d[i]=d[i+1]=d[i+2]=d[i+3]=0;
+  }
+ }
+}
+// Remove somente o fundo ligado às bordas e descontamina os pixels semitransparentes
+// adjacentes. Também reduz spill/chroma nas bordas para combater halos coloridos.
+function removeOuterBackground(src,mode,tol,customColor=null){
+ if(mode==='none')return src;
+ const w=src.width,h=src.height,c=cnv(w,h),ctx=c.getContext('2d',{willReadFrequently:true});
+ ctx.drawImage(src,0,0);const im=ctx.getImageData(0,0,w,h),d=im.data,n=w*h;
+ let transparentBorder=0,borderCount=0;
+ function edgeAlpha(p){borderCount++;if(d[4*p+3]<20)transparentBorder++}
+ for(let x=0;x<w;x++){edgeAlpha(x);edgeAlpha((h-1)*w+x)}
+ for(let y=1;y<h-1;y++){edgeAlpha(y*w);edgeAlpha(y*w+w-1)}
+ if(mode==='auto'&&transparentBorder/borderCount>.04){
+  for(let p=0;p<n;p++)if(d[p*4+3]===0){d[p*4]=d[p*4+1]=d[p*4+2]=0}
+  ctx.putImageData(im,0,0);return c;
+ }
+ const bg=getBG(d,w,h,mode,customColor),lim=tol*tol*3,soft=Math.max(tol*2.8,28);
+ const removed=new Uint8Array(n),checked=new Uint8Array(n),queue=new Uint32Array(n);
+ let head=0,tail=0;
+ function similarity(p){const i=p*4;
+  if(d[i+3]<18)return true;
+  const dr=d[i]-bg[0],dg=d[i+1]-bg[1],db=d[i+2]-bg[2];
+  return dr*dr+dg*dg+db*db<=lim;
+ }
+ function visit(p){if(checked[p])return;checked[p]=1;if(similarity(p)){removed[p]=1;queue[tail++]=p}}
+ for(let x=0;x<w;x++){visit(x);visit((h-1)*w+x)}
+ for(let y=0;y<h;y++){visit(y*w);visit(y*w+w-1)}
+ while(head<tail){
+  const p=queue[head++],x=p%w;
+  if(x>0)visit(p-1);if(x<w-1)visit(p+1);
+  if(p>=w)visit(p-w);if(p<n-w)visit(p+w);
+ }
+ for(let p=0;p<n;p++)if(removed[p]){d[p*4]=d[p*4+1]=d[p*4+2]=0;d[p*4+3]=0}
+ const halo=new Uint8Array(n),nearTransparent=new Uint8Array(n);
+ for(let p=0;p<n;p++){
+  if(d[p*4+3]!==0)continue;
+  const x=p%w,y=(p-x)/w;
+  for(let dy=-4;dy<=4;dy++){
+   const ny=y+dy;if(ny<0||ny>=h)continue;
+   for(let dx=-4;dx<=4;dx++){
+    const nx=x+dx;if(nx<0||nx>=w)continue;
+    const dist=Math.max(Math.abs(dx),Math.abs(dy));
+    if(dist>4)continue;
+    const np=ny*w+nx;
+    if(dist<=1){halo[np]=Math.max(halo[np],4);nearTransparent[np]=1}
+    else if(dist==2)halo[np]=Math.max(halo[np],3);
+    else if(dist==3)halo[np]=Math.max(halo[np],2);
+    else halo[np]=Math.max(halo[np],1);
+   }
+  }
+ }
+ let dominant=-1;
+ const bgMax=Math.max(bg[0],bg[1],bg[2]),bgMin=Math.min(bg[0],bg[1],bg[2]);
+ if(bgMax-bgMin>10)dominant=bg.indexOf(bgMax);
+ function neighborInfo(p){
+  const x=p%w,y=(p-x)/w;let sumA=0,countA=0,trans=0;
+  for(let dy=-1;dy<=1;dy++){
+   const ny=y+dy;if(ny<0||ny>=h)continue;
+   for(let dx=-1;dx<=1;dx++){
+    const nx=x+dx;if(nx<0||nx>=w||(dx===0&&dy===0))continue;
+    const np=ny*w+nx,a=d[np*4+3];sumA+=a;countA++;if(a===0)trans++;
+   }
+  }
+  return {avgA:countA?sumA/countA:255,trans};
+ }
+ function forceDecontaminateChannel(i,dom,amount){
+  const o1=(dom+1)%3,o2=(dom+2)%3;
+  const avg=(d[i+o1]+d[i+o2])/2;
+  if(d[i+dom] <= avg) return;
+  d[i+dom]=Math.max(Math.round(avg+1),Math.round(avg + (d[i+dom]-avg)*(1-amount)));
+ }
+ for(let p=0;p<n;p++){
+  const i=p*4;
+  if(d[i+3]===0||!halo[p])continue;
+  const dr=d[i]-bg[0],dg=d[i+1]-bg[1],db=d[i+2]-bg[2];
+  const dist=Math.sqrt(dr*dr+dg*dg+db*db);
+  const oldA=d[i+3]/255;
+  const info=neighborInfo(p);
+  let newA=oldA;
+  // matte contraction — encurta a borda para cortar franja grudada.
+  if(halo[p]>=4)newA=Math.min(newA,oldA*0.58);
+  else if(halo[p]===3)newA=Math.min(newA,oldA*0.78);
+  else if(halo[p]===2)newA=Math.min(newA,oldA*0.9);
+  if(dist<=tol*.55){
+   const mul=halo[p]>=4?0.0:(halo[p]===3?0.05:(halo[p]===2?0.13:0.22));
+   newA=Math.min(newA,oldA*mul);
+  }else if(dist<soft*1.22){
+   const fade=Math.min(1,Math.max(0,(dist-tol*.12)/Math.max(1,soft-tol*.12)));
+   const haloMul=halo[p]>=4?0.66:(halo[p]===3?0.78:(halo[p]===2?0.88:0.95));
+   newA=Math.min(newA,oldA*Math.min(1,fade*haloMul));
+  }
+  if(info.trans>=2)newA=Math.min(newA,Math.max(0,info.avgA/255*(halo[p]>=4?0.58:(halo[p]===3?0.74:0.88))));
+  if(newA<.014){d[i]=d[i+1]=d[i+2]=0;d[i+3]=0;continue}
+  if(newA<oldA){
+   const coverage=Math.min(1,Math.max(.015,newA/Math.max(oldA,.001)));
+   for(let k=0;k<3;k++)d[i+k]=Math.max(0,Math.min(255,Math.round((d[i+k]-(1-coverage)*bg[k])/coverage)));
+   d[i+3]=Math.round(newA*255);
+  }
+  // limpeza muito forte de spill verde/azul nas bordas
+  if(dominant>=0){
+   const o1=(dominant+1)%3,o2=(dominant+2)%3;
+   const otherAvg=(d[i+o1]+d[i+o2])/2;
+   const edgeBias=halo[p]>=4?0.98:(halo[p]===3?0.92:(halo[p]===2?0.82:0.66));
+   const excess=d[i+dominant]-otherAvg-(halo[p]>=3?1:3);
+   if(excess>0){
+    d[i+dominant]=Math.max(Math.round(otherAvg+1),Math.round(d[i+dominant]-excess*edgeBias));
+    d[i+o1]=Math.min(255,Math.round(d[i+o1]+excess*0.02));
+    d[i+o2]=Math.min(255,Math.round(d[i+o2]+excess*0.02));
+   }
+   // Se a borda é roxa/pele/azul e ainda sobra verde dominante, corta quase tudo.
+   const isGreenish = dominant===1 && d[i+1] > d[i] + 5 && d[i+1] > d[i+2] + 5;
+   if(isGreenish && halo[p]>=3) forceDecontaminateChannel(i,1,halo[p]>=4?0.995:0.94);
+   const isBluish = dominant===2 && d[i+2] > d[i] + 8 && d[i+2] > d[i+1] + 8;
+   if(isBluish && halo[p]>=3) forceDecontaminateChannel(i,2,halo[p]>=4?0.96:0.88);
+  }
+ }
+ // Segunda passada — rigor extra exatamente na borda visível.
+ for(let p=0;p<n;p++){
+  const i=p*4;if(d[i+3]===0||!nearTransparent[p])continue;
+  const info=neighborInfo(p);
+  if(info.trans===0)continue;
+  if(dominant>=0){
+    const dom=dominant,o1=(dom+1)%3,o2=(dom+2)%3;
+    const avg=(d[i+o1]+d[i+o2])/2;
+    if(d[i+dom] > avg + 1){
+      d[i+dom]=Math.max(Math.round(avg+1), Math.round(avg + (d[i+dom]-avg)*0.04));
+    }
+  }
+  const dr=d[i]-bg[0],dg=d[i+1]-bg[1],db=d[i+2]-bg[2];
+  const dist=Math.sqrt(dr*dr+dg*dg+db*db);
+  if(dist<tol*.85){
+   d[i+3]=Math.round(d[i+3]*(info.trans>=3?0.48:0.68));
+   if(d[i+3]<10){d[i]=d[i+1]=d[i+2]=0;d[i+3]=0}
+  }
+ }
+ // Remove partículas residuais minúsculas.
+ const used=new Uint8Array(n),q=new Uint32Array(n),minSpeck=Math.max(2,Math.round(n*.00002));
+ for(let p=0;p<n;p++){
+  if(used[p]||d[p*4+3]<18)continue;
+  let qh=0,qt=1,area=0;used[p]=1;q[0]=p;
+  while(qh<qt){
+   const cur=q[qh++],x=cur%w,y=(cur-x)/w;area++;
+   for(let dy=-1;dy<=1;dy++){
+    const ny=y+dy;if(ny<0||ny>=h)continue;
+    for(let dx=-1;dx<=1;dx++){
+     const nx=x+dx;if(nx<0||nx>=w)continue;
+     const np=ny*w+nx;
+     if(used[np]||d[np*4+3]<18)continue;
+     used[np]=1;q[qt++]=np;
+    }
+   }
+  }
+  if(area<=minSpeck){for(let k=0;k<qt;k++){const np=q[k];d[np*4]=d[np*4+1]=d[np*4+2]=0;d[np*4+3]=0}}
+ }
+ purgeGreenChroma(im,w,h,bg);ctx.putImageData(im,0,0);return c;
+}
+function components(src){const w=src.width,h=src.height,data=src.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data;const n=w*h,used=new Uint8Array(n),q=new Uint32Array(n),out=[],minArea=Math.max(6,Math.round(n*.00065));
+for(let i=0;i<n;i++){if(used[i]||data[i*4+3]<18)continue;let head=0,tail=1,area=0,minx=w,miny=h,maxx=-1,maxy=-1;q[0]=i;used[i]=1;while(head<tail){const pos=q[head++],x=pos%w,y=(pos-x)/w;area++;if(x<minx)minx=x;if(x>maxx)maxx=x;if(y<miny)miny=y;if(y>maxy)maxy=y;
+for(let dy=-1;dy<=1;dy++){const ny=y+dy;if(ny<0||ny>=h)continue;for(let dx=-1;dx<=1;dx++){const nx=x+dx;if(nx<0||nx>=w)continue;let np=ny*w+nx;if(!used[np]){used[np]=1;if(data[np*4+3]>=18)q[tail++]=np}}}}
+if(area>=minArea)out.push({x:minx,y:miny,w:maxx-minx+1,h:maxy-miny+1,area})}
+return mergeNearby(out,w,h).sort((a,b)=>Math.abs(a.y-b.y)<Math.max(12,Math.min(a.h,b.h)*.35)?a.x-b.x:a.y-b.y)}
+// Unifica ilhas de cor divididas por contornos escuros (útil para fundos pretos).
+function mergeNearby(bounds,width,height){
+ const gap=Math.max(1,Math.min(3,Math.floor(Math.min(width,height)*.005))),parent=bounds.map((_,i)=>i);
+ function find(x){while(parent[x]!==x){parent[x]=parent[parent[x]];x=parent[x]}return x}
+ function union(a,b){a=find(a);b=find(b);if(a!==b)parent[b]=a}
+ const medianArea=bounds.length?Math.max(...bounds.map(x=>x.area)):0;
+ for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length;j++){
+  const a=bounds[i],b=bounds[j];
+  const dx=Math.max(0,a.x-(b.x+b.w),b.x-(a.x+a.w));
+  const dy=Math.max(0,a.y-(b.y+b.h),b.y-(a.y+a.h));
+  // Duas silhuetas grandes são SEMPRE sprites diferentes, mesmo quase coladas.
+  const oneTiny=Math.min(a.area,b.area)<Math.max(22,Math.max(a.area,b.area)*.075);
+  if(oneTiny&&dx<=gap&&dy<=gap)union(i,j);
+ }
+ const groups=new Map();bounds.forEach((b,i)=>{
+  const root=find(i),p=groups.get(root);
+  if(!p)groups.set(root,{...b});
+  else{const x1=Math.min(p.x,b.x),y1=Math.min(p.y,b.y),x2=Math.max(p.x+p.w,b.x+b.w),y2=Math.max(p.y+p.h,b.y+b.h);p.x=x1;p.y=y1;p.w=x2-x1;p.h=y2-y1;p.area+=b.area}
+ });return [...groups.values()];
+}
+// Se duas silhuetas se tocam apenas por poucos pixels, procura um vale profundo
+// no histograma vertical. Em caso de dúvida preserva a silhueta inteira.
+function splitTouching(processed,bounds){
+ const tallest=bounds.reduce((m,b)=>Math.max(m,b.h),0);
+ const result=[],data=processed.getContext('2d',{willReadFrequently:true}).getImageData(0,0,processed.width,processed.height).data;
+ for(const b of bounds){
+  const refRatio=state.reference?state.reference.art.width/Math.max(1,state.reference.art.height):.56;
+  const naturalWidth=b.h*refRatio;
+  if(b.w<naturalWidth*1.35||b.h<40||b.h<tallest*.62){result.push(b);continue}
+  const proj=new Float32Array(b.w);
+  for(let x=0;x<b.w;x++)for(let y=b.y;y<b.y+b.h;y++)if(data[(y*processed.width+b.x+x)*4+3]>=35)proj[x]++;
+  const radius=Math.max(1,Math.floor(b.w*.008)),smooth=new Float32Array(b.w);
+  for(let x=0;x<b.w;x++){
+   let sum=0,count=0;
+   for(let k=Math.max(0,x-radius);k<=Math.min(b.w-1,x+radius);k++){sum+=proj[k];count++}
+   smooth[x]=sum/count;
+  }
+  const peak=Math.max(...smooth);
+  const minWidth=Math.max(15,Math.floor(naturalWidth*.32));
+  const threshold=Math.max(2,Math.min(b.h*.115,peak*.24));
+  const searchSpan=Math.max(minWidth*2,Math.round(naturalWidth*1.4));
+  const cuts=[];
+  for(let x=minWidth;x<b.w-minWidth;){
+   if(smooth[x]>threshold){x++;continue}
+   let start=x,end=x;
+   while(end<b.w-minWidth&&smooth[end]<=threshold)end++;
+   const mid=Math.floor((start+end-1)/2);
+   const left=Math.max(...smooth.subarray(Math.max(0,start-searchSpan),start));
+   const right=Math.max(...smooth.subarray(end,Math.min(b.w,end+searchSpan)));
+   const hasTwoBodies=left>=Math.max(12,threshold*2.1)&&right>=Math.max(12,threshold*2.1);
+   if(hasTwoBodies&&(!cuts.length||mid-cuts[cuts.length-1]>=minWidth*1.5))cuts.push(mid);
+   x=Math.max(end,x+1);
+  }
+  if(!cuts.length){result.push(b);continue}
+  // O corte só é válido se ambos os lados apresentarem silhuetas significativas
+  // (não separar braços ou cabelos de um personagem sozinho).
+  const candidates=[];
+  let prev=0;
+  for(const cut of [...cuts,b.w]){
+   if(cut-prev<minWidth*.68)continue;
+   const left=b.x+prev,right=b.x+cut;
+   let top=b.y+b.h,bottom=b.y-1,area=0;
+   for(let y=b.y;y<b.y+b.h;y++)for(let x=left;x<right;x++){
+    if(data[(y*processed.width+x)*4+3]<18)continue;
+    top=Math.min(top,y);bottom=Math.max(bottom,y);area++;
+   }
+   if(bottom>=top)candidates.push({x:left,y:top,w:right-left,h:bottom-top+1,area,split:true});
+   prev=cut;
+  }
+  if(candidates.length>=2 && candidates.every(part=>part.area>Math.max(24,b.area*.10)&&part.h>=b.h*.62)){
+   result.push(...candidates);
+  }else result.push(b);
+ }
+ return result.sort((a,b)=>Math.abs(a.y-b.y)<Math.max(12,Math.min(a.h,b.h)*.35)?a.x-b.x:a.y-b.y);
+}
+function crop(src,rect){const x=Math.max(0,Math.floor(rect.x)),y=Math.max(0,Math.floor(rect.y));const w=Math.min(src.width-x,Math.ceil(rect.w)),h=Math.min(src.height-y,Math.ceil(rect.h));if(w<1||h<1)return null;let out=cnv(w,h);out.getContext('2d').drawImage(src,x,y,w,h,0,0,w,h);return out}
+function trim(src){const {width:w,height:h}=src;const d=src.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data;let x1=w,y1=h,x2=-1,y2=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(d[(y*w+x)*4+3]>12){x1=Math.min(x,x1);x2=Math.max(x,x2);y1=Math.min(y,y1);y2=Math.max(y,y2)}return x2<0?null:crop(src,{x:x1,y:y1,w:x2-x1+1,h:y2-y1+1})}
+function makeSprite(src,rect,sourceName,sourceId){let cropped=crop(src,rect);if(!cropped)return null;cropped=trim(cropped);if(!cropped)return null;const id=nextID++;return {id,name:'Sprite_'+String(id).padStart(3,'0'),canvas:cropped,source:sourceName,sourceId}}
+async function analyze(){if(state.busy)return;if(!state.sources.length){msg('Primeiro, importe pelo menos uma imagem.',true);return}state.busy=true;$('analyzeBtn').disabled=true;msg('Analisando imagens e padronizando os recortes...');await new Promise(resolve=>setTimeout(resolve,35));try{const mode=$('mode').value,bgmode=$('bgmode').value,tolerance=num('tolerance',10,110),bgCustom=bgmode==='custom'?hexToRgb($('bgColor').value):null;let all=[];for(const s of state.sources){const processed=removeOuterBackground(s.canvas,bgmode,tolerance,bgCustom);s.processed=processed;s.boxes=[];if(mode==='auto'){const boxes=splitTouching(processed,components(processed));s.boxes=boxes;for(const b of boxes){const item=makeSprite(processed,b,s.name,s.id);if(item)all.push(item)}}else if(mode==='grid'){const cols=num('srcCols',1,64),rows=num('srcRows',1,64);for(let row=0;row<rows;row++)for(let col=0;col<cols;col++){const x=Math.round(col*processed.width/cols),y=Math.round(row*processed.height/rows),x2=Math.round((col+1)*processed.width/cols),y2=Math.round((row+1)*processed.height/rows);const rect={x,y,w:x2-x,h:y2-y};s.boxes.push(rect);const sprite=makeSprite(processed,rect,s.name,s.id);if(sprite)all.push(sprite)}}}state.sprites=all;state.undoDeletes=[];state.selection=null;adjustCellsToReference();renderSources();renderSprites();refresh();updateDetectedColor('source');msg(mode==='manual'?'Fundo processado. Arraste um retângulo na imagem abaixo e clique em Adicionar recorte.':`${all.length} sprite(s) identificado(s). Quadros organizados. A referência, se ativa, define as medidas finais.`)}catch(e){console.error(e);msg('Não foi possível analisar as imagens: '+e.message,true)}finally{state.busy=false;$('analyzeBtn').disabled=false;document.querySelectorAll('.sourceRemove').forEach(btn=>btn.disabled=false)}}
+
+/* Ordem de saída é separada dos itens editáveis: desfazer e o X continuam corretos. */
+function orderedSprites(){
+ const order=state.sprites.map((sprite,sourceIndex)=>({sprite,sourceIndex}));
+ return $('reverseFrames').checked?order.reverse():order;
+}
+/* O mesmo posicionamento é usado na prévia, no PNG, ZIP e GIF. */
+function paintSprite(ctx,sprite,cellW,cellH,inset,alignment,x=0,y=0){
+ const availW=Math.max(1,cellW-2*inset),availH=Math.max(1,cellH-2*inset);
+ let scale;
+ if(referenceIsActive()){
+  const ref=state.reference.art;
+  const maxScale=Math.min(availW/ref.width,availH/ref.height);
+  if($('refScale').value==='contain'){
+   scale=Math.min(availW/sprite.canvas.width,availH/sprite.canvas.height,ref.width*maxScale/sprite.canvas.width,ref.height*maxScale/sprite.canvas.height);
+  }else{
+   // A mesma escala para todos, usando a altura maior, inclusive quando agachados.
+   scale=sourceScale();
+   scale=Math.min(scale,availW/sprite.canvas.width,availH/sprite.canvas.height);
+  }
+ }else scale=Math.min(availW/sprite.canvas.width,availH/sprite.canvas.height);
+ const dw=Math.max(1,Math.round(sprite.canvas.width*scale));
+ const dh=Math.max(1,Math.round(sprite.canvas.height*scale));
+ const dx=x+Math.floor((cellW-dw)/2);
+ const dy=y+(alignment==='bottom'?cellH-inset-dh:alignment==='top'?inset:Math.floor((cellH-dh)/2));
+ if($('mirrorFrames').checked){
+  ctx.save();ctx.translate(dx+dw,dy);ctx.scale(-1,1);
+  ctx.drawImage(sprite.canvas,0,0,dw,dh);ctx.restore();
+ }else ctx.drawImage(sprite.canvas,dx,dy,dw,dh);
+ return {x:dx,y:dy,width:dw,height:dh};
+}
+
+function atlas(){const count=state.sprites.length;if(!count)return null;const w=num('cellW',16,2048),h=num('cellH',16,2048),cols=Math.min(num('cols',1,64),count),rows=Math.ceil(count/cols),gap=num('gap',0,4096),margin=num('margin',0,512),inset=Math.min(num('inset',0,300),Math.floor(Math.min(w,h)/2)-1),W=2*margin+w*cols+gap*(cols-1),H=2*margin+h*rows+gap*(rows-1);if(W*H>36000000)throw Error('Folha acima de 36 milhões de pixels. Reduza tamanho ou colunas.');const c=cnv(W,H),ctx=c.getContext('2d');ctx.imageSmoothingEnabled=!$('pixel').checked;const alignment=$('anchor').value,frames=[];orderedSprites().forEach(({sprite,sourceIndex},i)=>{const col=i%cols,row=Math.floor(i/cols),x=margin+col*(w+gap),y=margin+row*(h+gap),art=paintSprite(ctx,sprite,w,h,inset,alignment,x,y);frames.push({name:sprite.name,x,y,width:w,height:h,source:sprite.source,sourceIndex,art})});return {canvas:c,frames,cellW:w,cellH:h,cols,rows,gap,margin}}
+function manifest(a){return {metadata:{tool:'SpriteSheet Studio v4.3',animation:{reverseOrder:$('reverseFrames').checked,mirrorHorizontal:$('mirrorFrames').checked},image:'sprite_sheet.png',width:a.canvas.width,height:a.canvas.height,columns:a.cols,rows:a.rows,cellWidth:a.cellW,cellHeight:a.cellH,gap:a.gap,margin:a.margin,format:'RGBA PNG',coordinates:'pixels, origin top-left',virtualMeters: $('spacingMode').value==='custom'?null:Number($('spacingMode').value),pixelsPerVirtualMeter:num('meterScale',1,2048)},frames:a.frames}}
+function refresh(){let a=null;try{a=atlas()}catch(e){msg(e.message,true)}state.lastAtlas=a;const display=$('atlasCanvas'),ctx=display.getContext('2d');$('atlasEmpty').hidden=!!a;$('atlasStage').hidden=!a;display.hidden=!a; if(!a){display.width=1;display.height=1;ctx.clearRect(0,0,1,1);$('statSprites').innerHTML='<strong>0</strong> sprites';$('statSheet').textContent='Folha: aguardando';$('spriteCount').textContent='0 quadros';$('atlasControls').replaceChildren()}else{display.width=a.canvas.width;display.height=a.canvas.height;ctx.drawImage(a.canvas,0,0);if($('guides').checked){ctx.save();ctx.lineWidth=Math.max(1,Math.min(a.cellW,a.cellH)/100);ctx.strokeStyle='rgba(128,226,249,.85)';ctx.setLineDash([8,7]);a.frames.forEach((f,i)=>{ctx.strokeRect(f.x+.5,f.y+.5,f.width-1,f.height-1);ctx.fillStyle='rgba(9,16,39,.85)';ctx.fillRect(f.x+5,f.y+5,30,21);ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.fillText(String(i+1).padStart(2,'0'),f.x+8,f.y+20)});ctx.restore()}
+$('statSprites').innerHTML='<strong>'+state.sprites.length+'</strong> sprites';$('statSheet').innerHTML='Folha: <strong>'+a.canvas.width+' × '+a.canvas.height+'</strong>';$('spriteCount').textContent=state.sprites.length+' quadros'}$('statCell').innerHTML='Quadro: <strong>'+num('cellW',16,2048)+' × '+num('cellH',16,2048)+'</strong>';const audit=$('scaleAudit');if(referenceIsActive()&&state.sprites.length){
+ const ref=state.reference.art,scale=sourceScale();
+ const dims=state.sprites.map(sp=>[Math.round(sp.canvas.width*scale),Math.round(sp.canvas.height*scale)]);
+ const minW=Math.min(...dims.map(d=>d[0])),maxW=Math.max(...dims.map(d=>d[0]));
+ const minH=Math.min(...dims.map(d=>d[1])),maxH=Math.max(...dims.map(d=>d[1]));
+ audit.textContent='Modelo: '+ref.width+' × '+ref.height+' px (proporção '+(ref.width/ref.height).toFixed(3)+'). '+state.sprites.length+' sprite(s) comparados. Tamanhos calculados sem deformação: largura '+minW+'–'+maxW+' px, altura '+minH+'–'+maxH+' px. Escala comum: '+(scale*100).toFixed(1)+'%. Separação: '+num('gap',0,4096)+' px entre quadros.';
+}else audit.textContent=state.reference?'Modelo carregado. Importe uma folha para comparar largura, altura e proporção.':'Importe um sprite modelo e uma folha para comparar suas medidas.';
+for(const id of ['pngBtn','zipBtn','spriteZipBtn','jsonBtn'])$(id).disabled=!a;zoomAtlas();syncAnimation()}
+function renderSprites(){const host=$('spriteList');host.replaceChildren();$('undoSpriteBtn').disabled=state.undoDeletes.length===0;$('atlasUndoBtn').disabled=state.undoDeletes.length===0||state.busy;if(!state.sprites.length){const e=document.createElement('div');e.className='empty';e.textContent=state.undoDeletes.length?'Todos os sprites foram excluídos. Use “Desfazer X” para restaurar um quadro.':!state.sources.length?'Importe suas imagens para começar.':'Nenhum sprite encontrado. Experimente aumentar a sensibilidade, usar Grade ou selecionar manualmente.';host.append(e);return}state.sprites.forEach((sp,i)=>{const item=document.createElement('div');item.className='spriteitem';const t=document.createElement('div');t.className='thumb';const pic=new Image();pic.src=sp.canvas.toDataURL('image/png');pic.alt='Sprite '+String(i+1);t.append(pic);const del=document.createElement('button');del.className='remove-sprite';del.type='button';del.textContent='×';del.title='Excluir este sprite da folha e do ZIP';del.setAttribute('aria-label','Excluir sprite '+String(i+1)+' da folha e do ZIP');del.onclick=()=>removeSprite(i);t.append(del);item.append(t);const name=document.createElement('div');name.className='name';name.textContent=String(i+1).padStart(2,'0')+' · '+sp.canvas.width+'×'+sp.canvas.height;name.title=sp.source;item.append(name);if(referenceIsActive()){const rf=state.reference.art,r=sp.canvas.width/sp.canvas.height,rr=rf.width/rf.height;const audit=document.createElement('div');audit.className='spriteaudit';audit.textContent='L '+sp.canvas.width+'px ('+Math.round(sp.canvas.width/rf.width*100)+'%) • A '+sp.canvas.height+'px ('+Math.round(sp.canvas.height/rf.height*100)+'%) • Proporção '+r.toFixed(2)+' vs '+rr.toFixed(2);item.append(audit)}const actions=document.createElement('div');actions.className='actions';const left=document.createElement('button');left.textContent='← Mover';left.title='Mover antes';left.disabled=i===0;left.onclick=()=>moveSprite(i,i-1);actions.append(left);const right=document.createElement('button');right.textContent='Mover →';right.title='Mover depois';right.disabled=i===state.sprites.length-1;right.onclick=()=>moveSprite(i,i+1);actions.append(right);item.append(actions);host.append(item)})}
+function removeSprite(index){if(state.busy||index<0||index>=state.sprites.length)return;state.undoDeletes.push({sprite:state.sprites[index],index});state.sprites.splice(index,1);adjustCellsToReference();renderSprites();refresh();msg('Sprite excluído da seleção. Ele não será incluído no PNG ou no ZIP. Restam '+state.sprites.length+' sprite(s).')}
+function undoRemoveSprite(){if(state.busy)return;const removed=state.undoDeletes.pop();if(!removed)return;state.sprites.splice(Math.min(removed.index,state.sprites.length),0,removed.sprite);adjustCellsToReference();renderSprites();refresh();msg('Exclusão desfeita. Sprite restaurado na folha e no ZIP.')}
+$('undoSpriteBtn').onclick=undoRemoveSprite;$('atlasUndoBtn').onclick=undoRemoveSprite;
+function moveSprite(from,to){[state.sprites[from],state.sprites[to]]=[state.sprites[to],state.sprites[from]];renderSprites();refresh()}
+function renderAtlasRemoveButtons(){
+ const a=state.lastAtlas,host=$('atlasControls');host.replaceChildren();
+ if(!a||$('atlasStage').hidden)return;
+ const cv=$('atlasCanvas'),sx=(parseFloat(cv.style.width)||cv.width)/cv.width,sy=(parseFloat(cv.style.height)||cv.height)/cv.height;
+ a.frames.forEach((frame,index)=>{
+  const size=Math.max(17,Math.min(30,Math.round(Math.min(frame.width*sx,frame.height*sy)*.23)));
+  const b=document.createElement('button');b.type='button';b.className='atlas-remove';b.textContent='×';
+  b.title='Descartar quadro '+String(index+1).padStart(2,'0')+' da folha e de todas as exportações';
+  b.setAttribute('aria-label','Descartar quadro '+String(index+1).padStart(2,'0'));
+  b.style.width=size+'px';b.style.height=size+'px';b.style.fontSize=Math.max(14,Math.round(size*.77))+'px';
+  b.style.left=Math.max(0,Math.round((frame.x+frame.width)*sx-size-3))+'px';
+  b.style.top=Math.max(0,Math.round(frame.y*sy+3))+'px';
+  b.onclick=()=>removeSprite(frame.sourceIndex);
+  host.append(b);
+ });
+}
+function zoomAtlas(){const cv=$('atlasCanvas'),z=state.atlasZoom;const w=Math.max(1,Math.round(cv.width*z)),h=Math.max(1,Math.round(cv.height*z));cv.style.width=w+'px';cv.style.height=h+'px';const stage=$('atlasStage');stage.style.width=w+'px';stage.style.height=h+'px';cv.style.imageRendering=$('pixel').checked?'pixelated':'auto';$('atlasZoomText').textContent=Math.round(z*100)+'%';renderAtlasRemoveButtons()}
+function fitAtlas(){const a=state.lastAtlas;if(!a)return;const p=$('atlasScroll');state.atlasZoom=Math.min(2,Math.max(.08,(p.clientWidth-45)/a.canvas.width));zoomAtlas()}
+function sourceItem(){return state.sources.find(s=>s.id===state.selected)}
+function selectionPieces(s,b){
+ if(!s||!b||b.w<5||b.h<5)return [];
+ const c=crop(s.processed||s.canvas,b);if(!c)return [];
+ const parts=splitTouching(c,components(c));
+ if(!parts.length)return [];
+ const maxArea=Math.max(...parts.map(p=>p.area));
+ const significant=parts.filter(p=>p.area>=Math.max(32,maxArea*.16)&&p.h>=Math.max(18,b.h*.27));
+ return significant.map(p=>({x:b.x+p.x,y:b.y+p.y,w:p.w,h:p.h,area:p.area}));
+}
+function selectionCount(s,b){
+ if(!b||b.w<5||b.h<5)return 0;
+ // Primeiro consulta as silhuetas já identificadas, mantendo a mesma seleção
+ // que gerou a folha. Um retângulo não pode conter duas delas.
+ const boxes=s.boxes||[];
+ const substantial=boxes.filter(p=>{
+  const x1=Math.max(b.x,p.x),y1=Math.max(b.y,p.y);
+  const x2=Math.min(b.x+b.w,p.x+p.w),y2=Math.min(b.y+b.h,p.y+p.h);
+  const intersection=Math.max(0,x2-x1)*Math.max(0,y2-y1);
+  return intersection>p.w*p.h*.42;
+ });
+ if(substantial.length>1)return substantial.length;
+ return selectionPieces(s,b).length;
+}
+function renderSource(){
+ const s=sourceItem(),c=$('sourceCanvas'),ctx=c.getContext('2d');
+ if(!s){c.width=1;c.height=1;c.style.width='1px';c.style.height='1px';c.style.cursor='default';$('sourceTitle').textContent='Imagem original';$('srcZoomText').textContent='100%';$('manualBtn').disabled=true;$('selectionInfo').textContent='Importe uma imagem para iniciar um recorte.';return}
+ c.width=s.canvas.width;c.height=s.canvas.height;ctx.drawImage(s.processed||s.canvas,0,0);
+ ctx.lineWidth=Math.max(2,c.width/400);ctx.font=`bold ${Math.max(16,Math.round(c.width/43))}px sans-serif`;
+ for(let i=0;i<s.boxes.length;i++){const b=s.boxes[i];ctx.strokeStyle='#64e6b7';ctx.fillStyle='#64e6b7';ctx.strokeRect(b.x,b.y,b.w,b.h);ctx.fillText(String(i+1).padStart(2,'0'),b.x+6,Math.max(25,b.y-7))}
+ if(state.selection){const b=state.selection;ctx.strokeStyle='#ffd262';ctx.setLineDash([14,9]);ctx.strokeRect(b.x,b.y,b.w,b.h);ctx.setLineDash([])}
+ $('sourceTitle').textContent=s.name;const base=Math.min(900,c.width);
+ c.style.width=Math.round(base*state.sourceZoom)+'px';c.style.height='auto';c.style.cursor='crosshair';$('srcZoomText').textContent=Math.round(state.sourceZoom*100)+'%';
+ const valid=!!state.selection&&state.selection.w>=5&&state.selection.h>=5;
+ $('manualBtn').disabled=!valid;
+ $('selectionInfo').textContent=valid?'Seleção individual de '+Math.round(state.selection.w)+' × '+Math.round(state.selection.h)+' px. Adicione somente um personagem.':'Clique em um personagem ou arraste ao redor de apenas um.';
+}
+function ppoint(e){const rect=$('sourceCanvas').getBoundingClientRect(),s=sourceItem();if(!s)return null;return {x:Math.max(0,Math.min(s.canvas.width,Math.round((e.clientX-rect.left)*s.canvas.width/rect.width))),y:Math.max(0,Math.min(s.canvas.height,Math.round((e.clientY-rect.top)*s.canvas.height/rect.height)))}}
+function chooseOneAtPoint(s,p){
+ const area=s.processed||s.canvas;
+ const boxes=(s.boxes&&s.boxes.length?s.boxes:splitTouching(area,components(area)));
+ const targets=boxes.filter(b=>p.x>=b.x&&p.x<b.x+b.w&&p.y>=b.y&&p.y<b.y+b.h);
+ if(!targets.length)return null;
+ targets.sort((a,b)=>a.w*a.h-b.w*b.h);
+ const b=targets[0];return {x:b.x,y:b.y,w:b.w,h:b.h};
+}
+let firstPoint=null;
+$('sourceCanvas').addEventListener('pointerdown',e=>{if(!sourceItem())return;firstPoint=ppoint(e);state.dragging=true;state.selection=null;$('sourceCanvas').setPointerCapture(e.pointerId)});
+$('sourceCanvas').addEventListener('pointermove',e=>{if(!state.dragging||!firstPoint)return;const p=ppoint(e);state.selection={x:Math.min(firstPoint.x,p.x),y:Math.min(firstPoint.y,p.y),w:Math.abs(p.x-firstPoint.x),h:Math.abs(p.y-firstPoint.y)};renderSource()});
+$('sourceCanvas').addEventListener('pointerup',e=>{
+ if(!state.dragging)return;state.dragging=false;
+ const s=sourceItem(),p=ppoint(e);
+ if(s&&firstPoint&&p&&Math.max(Math.abs(firstPoint.x-p.x),Math.abs(firstPoint.y-p.y))<5){
+  state.selection=chooseOneAtPoint(s,p);
+  if(!state.selection)msg('Nenhum personagem localizado neste ponto. Clique sobre a silhueta.',true);
+ }
+ firstPoint=null;renderSource();
+});
+$('sourceCanvas').addEventListener('pointercancel',()=>{state.dragging=false;firstPoint=null});
+$('manualBtn').onclick=()=>{
+ const s=sourceItem(),b=state.selection;if(!s||!b)return;
+ const count=selectionCount(s,b);
+ if(count>1){
+  msg('Seleção bloqueada: este retângulo contém '+count+' personagens. Selecione apenas um por vez, com um clique na personagem.',true);
+  $('selectionInfo').textContent='Seleção inválida: foram encontrados '+count+' personagens. Clique em apenas um.';
+  return;
+ }
+ if(!count){msg('Nenhum personagem completo identificado nesta seleção. Aumente o recorte.',true);return}
+ const item=makeSprite(s.processed||s.canvas,b,s.name,s.id);
+ if(!item){msg('A área selecionada está vazia.',true);return}
+ state.sprites.push(item);adjustCellsToReference();state.selection=null;renderSource();renderSprites();refresh();
+ msg('Um personagem adicionado. Clique no próximo para continuar.');
+};
+function saveBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}
+function blobPNG(c){return new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(Error('Falha ao exportar PNG.')),'image/png'))}
+function metadataBlob(a){return new Blob([JSON.stringify(manifest(a),null,2)],{type:'application/json'})}
+function cellSprite(sprite,a){const c=cnv(a.cellW,a.cellH),ctx=c.getContext('2d');ctx.imageSmoothingEnabled=!$('pixel').checked;const inset=Math.min(num('inset',0,300),Math.floor(Math.min(a.cellW,a.cellH)/2)-1);paintSprite(ctx,sprite,a.cellW,a.cellH,inset,$('anchor').value);return c}
+// ZIP sem bibliotecas externas: contêiner ZIP padrão, entradas armazenadas sem compactação.
+const CRC=(()=>{const a=new Uint32Array(256);for(let i=0;i<256;i++){let n=i;for(let j=0;j<8;j++)n=(n&1)?(0xEDB88320^(n>>>1)):(n>>>1);a[i]=n>>>0}return a})();
+function crc32(bytes){let n=0xFFFFFFFF;for(const b of bytes)n=CRC[(n^b)&255]^(n>>>8);return(n^0xFFFFFFFF)>>>0}
+function zipBlobs(entries){const encoder=new TextEncoder(),parts=[],central=[];let offset=0;const stamp=new Date(),time=(stamp.getHours()<<11)|(stamp.getMinutes()<<5)|(Math.floor(stamp.getSeconds()/2)),date=((stamp.getFullYear()-1980)<<9)|((stamp.getMonth()+1)<<5)|stamp.getDate();for(const entry of entries){const name=encoder.encode(entry.name),bytes=entry.bytes,crc=crc32(bytes),length=bytes.length,local=new Uint8Array(30+name.length),v=new DataView(local.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint16(8,0,true);v.setUint16(10,time,true);v.setUint16(12,date,true);v.setUint32(14,crc,true);v.setUint32(18,length,true);v.setUint32(22,length,true);v.setUint16(26,name.length,true);local.set(name,30);parts.push(local,bytes);const h=new Uint8Array(46+name.length),d=new DataView(h.buffer);d.setUint32(0,0x02014b50,true);d.setUint16(4,20,true);d.setUint16(6,20,true);d.setUint16(8,0x800,true);d.setUint16(10,0,true);d.setUint16(12,time,true);d.setUint16(14,date,true);d.setUint32(16,crc,true);d.setUint32(20,length,true);d.setUint32(24,length,true);d.setUint16(28,name.length,true);d.setUint32(42,offset,true);h.set(name,46);central.push(h);offset+=local.length+length}const centralSize=central.reduce((n,x)=>n+x.length,0),footer=new Uint8Array(22),dv=new DataView(footer.buffer);dv.setUint32(0,0x06054b50,true);dv.setUint16(8,entries.length,true);dv.setUint16(10,entries.length,true);dv.setUint32(12,centralSize,true);dv.setUint32(16,offset,true);return new Blob([...parts,...central,footer],{type:'application/zip'})}
+$('pngBtn').onclick=async()=>{try{const a=atlas();if(!a)return;saveBlob(await blobPNG(a.canvas),'sprite_sheet_uniformizada.png');msg('Folha PNG exportada com transparência e sem as linhas de guia.')}catch(e){msg(e.message,true)}};
+$('jsonBtn').onclick=()=>{const a=atlas();if(!a)return;saveBlob(metadataBlob(a),'sprite_sheet_coordenadas.json')};
+async function exportZip(onlySprites){const button=$(onlySprites?'spriteZipBtn':'zipBtn');if(button.disabled||state.busy)return;let a;try{a=atlas()}catch(e){msg('Não é possível exportar: '+e.message,true);return}if(!a){msg('Mantenha pelo menos um sprite para exportar.',true);return}const sprites=orderedSprites().map(item=>item.sprite);button.disabled=true;state.busy=true;try{msg(onlySprites?'Preparando ZIP apenas com as imagens corrigidas...':'Preparando ZIP completo dos sprites mantidos...');const entries=[];if(!onlySprites){const main=await blobPNG(a.canvas);entries.push({name:'sprite_sheet.png',bytes:new Uint8Array(await main.arrayBuffer())});entries.push({name:'sprite_sheet.json',bytes:new Uint8Array(await metadataBlob(a).arrayBuffer())})}for(let i=0;i<sprites.length;i++){const b=await blobPNG(cellSprite(sprites[i],a));entries.push({name:(onlySprites?'':'sprites/')+'sprite_'+String(i+1).padStart(3,'0')+'.png',bytes:new Uint8Array(await b.arrayBuffer())})}saveBlob(zipBlobs(entries),onlySprites?'sprites_corrigidos.zip':'sprites_padronizados.zip');msg('ZIP exportado: '+sprites.length+' PNG(s) padronizados'+(onlySprites?', sem sprites excluídos.':', mais folha e JSON.') )}catch(e){msg('Falha no ZIP: '+e.message,true)}finally{state.busy=false;button.disabled=false}}
+$('zipBtn').onclick=()=>exportZip(false);
+$('spriteZipBtn').onclick=()=>exportZip(true);
+$('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=async e=>{await addFiles(e.target.files);e.target.value=''};
+$('dropZone').addEventListener('dragover',e=>{e.preventDefault();$('dropZone').classList.add('dragover')});$('dropZone').addEventListener('dragleave',()=>$('dropZone').classList.remove('dragover'));
+$('dropZone').addEventListener('drop',e=>{e.preventDefault();$('dropZone').classList.remove('dragover');addFiles(e.dataTransfer.files)});
+$('clearBtn').onclick=()=>{if(state.busy||normalizer.busy)return;state.reference=null;normalizer.reference=null;normalizer.refs={gif:null,image:null};normalizer.activeCategory='gif';normalizer.autoGIF=false;normalizer.inheritScale=false;normalizer.files=[];normalizer.marked.clear();normalizer.selected=null;normalizer.frame=0;normalizer.globalScale=100;$('normScaleScope').value='single';state.sources=[];state.sprites=[];state.undoDeletes=[];state.selected=null;state.selection=null;state.dragging=false;firstPoint=null;state.sourceZoom=1;state.atlasZoom=1;$('reverseFrames').checked=false;$('mirrorFrames').checked=false;delete $('meterScale').dataset.userEdited;$('meterScale').value=96;updateSpacing();renderReference();renderSources();renderSprites();refresh();updateDetectedColor('source');updateNormalizer();msg('Projeto limpo. Importe imagens para começar.')};$('analyzeBtn').onclick=analyze;
+$('mode').onchange=()=>{$('gridSettings').style.display=$('mode').value==='grid'?'block':'none'};
+$('bgmode').onchange=()=>{$('bgSettings').style.display=$('bgmode').value==='none'?'none':'block';$('bgColorWrap').style.display=$('bgmode').value==='custom'?'grid':'none';updateDetectedColor('source')};
+$('tolerance').oninput=()=>$('toleranceValue').textContent=$('tolerance').value;
+syncColorInputs('bgColor','bgColorHex');
+syncColorInputs('refColor','refColorHex');
+$('bgColorWrap').style.display=$('bgmode').value==='custom'?'grid':'none';
+$('refColorWrap').style.display=$('refBG').value==='custom'?'grid':'none';
+
+$('strictGreen').onchange=()=>{if(state.sources.length)analyze()};
+ids.forEach(id=>{const el=$(id);const handler=()=>{if(id==='inset')adjustCellsToReference();if((id==='cellW'||id==='cellH')&&state.reference)$('refAutoCell').checked=false;refresh()};el.addEventListener('input',handler);el.addEventListener('change',handler)});
+$('atlasMinus').onclick=()=>{state.atlasZoom=Math.max(.05,state.atlasZoom/1.25);zoomAtlas()};$('atlasPlus').onclick=()=>{state.atlasZoom=Math.min(5,state.atlasZoom*1.25);zoomAtlas()};$('atlasFit').onclick=fitAtlas;
+$('srcMinus').onclick=()=>{state.sourceZoom=Math.max(.1,state.sourceZoom/1.25);renderSource()};$('srcPlus').onclick=()=>{state.sourceZoom=Math.min(8,state.sourceZoom*1.25);renderSource()};$('srcFit').onclick=()=>{const s=sourceItem();if(!s)return;state.sourceZoom=Math.min(3,Math.max(.1,($('sourceScroll').clientWidth-42)/Math.min(900,s.canvas.width)));renderSource()};
+window.addEventListener('resize',()=>{if(state.lastAtlas&&state.atlasZoom===1)fitAtlas()});
+
+/* Prévia e GIF 100% offline. Reaproveita a normalização da folha/ZIP. */
+state.animIndex=0;
+state.animPlaying=true;
+state.animTimer=null;
+state.animData=[];
+state.animDiagnosis='';
+function animBoundingBox(canvas){
+ const w=canvas.width,h=canvas.height,d=canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data;
+ let x1=w,y1=h,x2=-1,y2=-1;
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   if(d[(y*w+x)*4+3]>=25){if(x<x1)x1=x;if(y<y1)y1=y;if(x>x2)x2=x;if(y>y2)y2=y}
+ }
+ return x2<0?{x:0,y:0,w:0,h:0,feet:0}:{x:x1,y:y1,w:x2-x1+1,h:y2-y1+1,feet:y2+1};
+}
+function syncAnimation(){
+ const dims={w:num('cellW',16,2048),h:num('cellH',16,2048)};
+ // A visualização e o GIF mostram exatamente as mesmas células exportadas em PNG/ZIP.
+ state.animVariation=null;
+ state.animData=orderedSprites().map(({sprite:sp})=>{
+   const canvas=cellSprite(sp,{cellW:dims.w,cellH:dims.h});
+   return {canvas,bbox:animBoundingBox(canvas),name:sp.name};
+ });
+ const n=state.animData.length;
+ if(n===0)state.animIndex=0;else state.animIndex=Math.max(0,Math.min(state.animIndex,n-1));
+ $('animScrub').min='1';$('animScrub').max=String(Math.max(1,n));
+ $('animScrub').disabled=n<2;
+ $('animPlay').disabled=n<2;
+ $('animPrev').disabled=n<2;
+ $('animNext').disabled=n<2;
+ $('animDownload').disabled=n<1;
+ $('gifBtn').disabled=n<1;
+ $('apngBtn').disabled=n<1;
+ $('animDownloadAPNG').disabled=n<1;
+ let diagnosis='';
+ if(!n){diagnosis='Aguardando análise da sequência.'}
+ else if(n===1){diagnosis='Apenas um sprite. Adicione outro para comparar a animação.'}
+ else {
+   const heights=state.animData.map(f=>f.bbox.h),widths=state.animData.map(f=>f.bbox.w),feet=state.animData.map(f=>f.bbox.feet);
+   const dh=Math.round(100*(Math.max(...heights)-Math.min(...heights))/Math.max(1,Math.max(...heights)));
+   const dw=Math.round(100*(Math.max(...widths)-Math.min(...widths))/Math.max(1,Math.max(...widths)));
+   const df=Math.max(...feet)-Math.min(...feet);
+   state.animVariation={dh,dw,df};
+   const warnings=[];
+   if(dh>12)warnings.push('altura aparente varia '+dh+'%');
+   if(dw>18)warnings.push('largura aparente varia '+dw+'%');
+   if(df>Math.max(3,dims.h*.04))warnings.push('base dos pés oscila '+df+' px');
+   diagnosis=warnings.length?'⚠ Verifique: '+warnings.join('; ')+'. Isso pode ser normal quando a pose muda.':'✓ Medidas visuais estáveis entre os quadros. A animação usa células de dimensões idênticas.';
+ }
+ $('animDiagnosis').textContent=diagnosis;
+ $('animDiagnosis').classList.toggle('anim-pass',n>1&&!diagnosis.startsWith('⚠'));
+ updateAnimFrame();
+ updateAnimTimer();
+}
+function updateAnimFrame(){
+ const n=state.animData.length,screen=$('animCanvas'),g=screen.getContext('2d');
+ const f=n?state.animData[state.animIndex]:null;
+ const w=f?f.canvas.width:num('cellW',16,2048),h=f?f.canvas.height:num('cellH',16,2048);
+ if(screen.width!==w)screen.width=w;if(screen.height!==h)screen.height=h;
+ g.clearRect(0,0,w,h);
+ if(f){
+  if($('animGhost').checked&&n>1){g.save();g.globalAlpha=.25;g.drawImage(state.animData[(state.animIndex+n-1)%n].canvas,0,0);g.restore()}
+  g.drawImage(f.canvas,0,0);
+  if($('animGuides').checked){
+    g.save();g.lineWidth=Math.max(1,Math.min(w,h)/180);
+    g.strokeStyle='#63effd';g.setLineDash([Math.max(4,Math.floor(w/32)),Math.max(3,Math.floor(w/48))]);
+    g.strokeRect(.5,.5,w-1,h-1);g.beginPath();g.moveTo(w/2,0);g.lineTo(w/2,h);g.stroke();
+    const feetY=f.bbox.feet||h;
+    g.strokeStyle='#fcb67f';g.beginPath();g.moveTo(0,feetY-.5);g.lineTo(w,feetY-.5);g.stroke();
+    g.setLineDash([Math.max(2,Math.floor(w/64)),Math.max(2,Math.floor(w/64))]);
+    if(f.bbox.w&&f.bbox.h){g.strokeStyle='#f1fa8d';g.strokeRect(f.bbox.x+.5,f.bbox.y+.5,Math.max(1,f.bbox.w-1),Math.max(1,f.bbox.h-1))}
+    g.restore();
+  }
+  $('animFrameTitle').textContent='Quadro '+(state.animIndex+1)+' / '+n;
+  $('animFrameDimensions').textContent='Célula: '+w+' × '+h+' px · proporção '+(w/h).toFixed(3)+':1';
+  $('animMetrics').textContent='Arte visível: '+f.bbox.w+' × '+f.bbox.h+' px\nPosição: X '+f.bbox.x+', Y '+f.bbox.y+' px\nLinha inferior: '+f.bbox.feet+' px\n'+(referenceIsActive()?'Modelo de referência: '+state.reference.art.width+' × '+state.reference.art.height+' px ('+($('refScale').value==='exact'?'medidas exatas':'encaixe proporcional')+')\n':'')+(state.animVariation&&n>1?'Variação na sequência: altura '+state.animVariation.dh+'% · largura '+state.animVariation.dw+'%':'Medidas padronizadas em todos os quadros.');
+  $('animStatus').textContent=n+' sprites · '+$('animFPS').value+' FPS'+($('reverseFrames').checked?' · ordem inversa':'')+($('mirrorFrames').checked?' · espelhada':'');
+ }else{
+  $('animFrameTitle').textContent='Quadro 0 / 0';$('animFrameDimensions').textContent='Sem sprites para animar';$('animMetrics').textContent='Importe ou detecte sprites para comparar suas medidas.';$('animStatus').textContent='Aguardando sprites';
+ }
+ $('animScrub').value=String(n?state.animIndex+1:1);
+ $('animScrubValue').textContent=(n?state.animIndex+1:0)+' / '+n;
+ $('animPlay').textContent=state.animPlaying?'❚❚ Pausar':'▶ Reproduzir';
+}
+function updateAnimTimer(){
+ if(state.animTimer){clearInterval(state.animTimer);state.animTimer=null}
+ if(state.animPlaying&&state.animData.length>=2){
+  state.animTimer=setInterval(()=>{
+   if(document.hidden)return;
+   state.animIndex=(state.animIndex+1)%state.animData.length;updateAnimFrame();
+  },Math.round(1000/Math.max(1,Number($('animFPS').value)||4)));
+ }
+}
+$('animPlay').onclick=()=>{state.animPlaying=!state.animPlaying;updateAnimTimer();updateAnimFrame()};
+$('animPrev').onclick=()=>{const n=state.animData.length;if(n){state.animIndex=(state.animIndex+n-1)%n;updateAnimFrame()}};
+$('animNext').onclick=()=>{const n=state.animData.length;if(n){state.animIndex=(state.animIndex+1)%n;updateAnimFrame()}};
+$('animFPS').oninput=()=>{$('animFPSValue').textContent=$('animFPS').value+' FPS';updateAnimTimer();updateAnimFrame()};
+$('animScrub').oninput=()=>{state.animIndex=Math.max(0,Number($('animScrub').value)-1);updateAnimFrame()};
+$('animGuides').onchange=updateAnimFrame;
+$('animGhost').onchange=updateAnimFrame;
+for(const name of ['reverseFrames','mirrorFrames']){
+ $(name).addEventListener('change',()=>{
+  // Atualiza todas as saídas de maneira sincronizada, sem destruir a lista original.
+  if(state.busy)return;
+  state.animIndex=0;
+  refresh();
+  msg(($('reverseFrames').checked?'Sequência invertida. ':'Sequência normal. ')+($('mirrorFrames').checked?'Sprites espelhados.':'Orientação original.')+' Prévia e exportações atualizadas.');
+ });
+}
+// Paleta adaptativa POR QUADRO: o GIF continua limitado a 255 cores opacas,
+// mas seleciona as cores reais da imagem em vez de usar o cubo RGB fixo 3-3-2.
+// A imagem indexada é mapeada à cor perceptualmente mais próxima, sem pontilhar pixel art.
+function adaptiveGifPalette(rgba,w,h){
+ const hist=new Map();
+ for(let i=0;i<rgba.length;i+=4){
+  if(rgba[i+3]<128)continue;
+  const r=rgba[i],g=rgba[i+1],b=rgba[i+2];
+  const key=((r>>>3)<<10)|((g>>>3)<<5)|(b>>>3);
+  let item=hist.get(key);
+  if(!item){item={key,n:0,rs:0,gs:0,bs:0,r:0,g:0,b:0};hist.set(key,item)}
+  item.n++;item.rs+=r;item.gs+=g;item.bs+=b;
+ }
+ const pixels=[...hist.values()];
+ for(const p of pixels){p.r=p.rs/p.n;p.g=p.gs/p.n;p.b=p.bs/p.n}
+ const box=(bins)=>{
+  let mr=255,mg=255,mb=255,xr=0,xg=0,xb=0,num=0;
+  for(const p of bins){mr=Math.min(mr,p.r);mg=Math.min(mg,p.g);mb=Math.min(mb,p.b);xr=Math.max(xr,p.r);xg=Math.max(xg,p.g);xb=Math.max(xb,p.b);num+=p.n}
+  const ranges=[xr-mr,xg-mg,xb-mb];
+  const channel=ranges.map((v,i)=>v*[.95,1.12,.96][i]).indexOf(Math.max(...ranges.map((v,i)=>v*[.95,1.12,.96][i])));
+  return {bins,n:num,channel,score:Math.max(...ranges)*Math.sqrt(num),splittable:bins.length>1};
+ };
+ let boxes=pixels.length?[box(pixels)]:[];
+ while(boxes.length<255){
+  let bi=-1,best=-1;
+  for(let k=0;k<boxes.length;k++){
+   const v=boxes[k];if(v.splittable&&v.score>best){best=v.score;bi=k}
+  }
+  if(bi<0)break;
+  const group=boxes[bi],ch=['r','g','b'][group.channel];
+  group.bins.sort((a,b)=>a[ch]-b[ch]);
+  const half=group.n/2;let total=0,cut=1;
+  for(let i=0;i<group.bins.length-1;i++){
+   total+=group.bins[i].n;
+   if(total>=half){cut=i+1;break}
+   cut=i+1;
+  }
+  const first=group.bins.slice(0,cut),last=group.bins.slice(cut);
+  boxes.splice(bi,1,box(first),box(last));
+ }
+ const palette=new Uint8Array(768); // índice 0: transparência real.
+ for(let i=0;i<boxes.length;i++){
+  const group=boxes[i];let rs=0,gs=0,bs=0,count=0;
+  for(const p of group.bins){rs+=p.rs;gs+=p.gs;bs+=p.bs;count+=p.n}
+  palette[3*(i+1)]=Math.round(rs/count);
+  palette[3*(i+1)+1]=Math.round(gs/count);
+  palette[3*(i+1)+2]=Math.round(bs/count);
+ }
+ const cache=new Int16Array(32768);cache.fill(-1);
+ const indices=new Uint8Array(w*h);
+ for(let p=0,i=0;p<indices.length;p++,i+=4){
+  if(rgba[i+3]<128){indices[p]=0;continue}
+  const r=rgba[i],g=rgba[i+1],b=rgba[i+2];
+  const key=((r>>>3)<<10)|((g>>>3)<<5)|(b>>>3);
+  let match=cache[key];
+  if(match<0){
+   let nearest=1,dist=Infinity;
+   // Primeiro encontro do bucket usa sua cor média real (não quantizada).
+   const hit=hist.get(key);const rr=hit?hit.r:r,gg=hit?hit.g:g,bb=hit?hit.b:b;
+   for(let j=1;j<=boxes.length;j++){
+    const pr=palette[3*j],pg=palette[3*j+1],pb=palette[3*j+2];
+    const dr=rr-pr,dg=gg-pg,db=bb-pb;
+    const d=dr*dr*2+dg*dg*4+db*db*3;
+    if(d<dist){dist=d;nearest=j}
+   }
+   match=nearest;cache[key]=match;
+  }
+  indices[p]=match;
+ }
+ return {palette,indices};
+}
+// GIF89a com tabela de cores LOCAL por frame e transparência indexada 0.
+// Clears periódicos mantêm o código LZW de 9 bits compatível e previsível.
+function gifBytes(frames,fps,delays=null){
+ if(!frames.length)throw Error('Sem quadros para exportar.');
+ const w=frames[0].width,h=frames[0].height;
+ if(w>1024||h>1024||w*h*frames.length>20000000)throw Error('GIF muito grande: utilize células menores ou reduza a quantidade de quadros (limite de 20 milhões de pixels no total e 1024 px por lado).');
+ const parts=[];
+ const push=arr=>parts.push(Uint8Array.from(arr));
+ const u16=n=>[n&255,(n>>>8)&255];
+ push([71,73,70,56,57,97]); // GIF89a
+ push([...u16(w),...u16(h),0x70,0,0]); // sem paleta global
+ push([0x21,0xFF,11,78,69,84,83,67,65,80,69,50,46,48,3,1,0,0,0]); // loop infinito
+ for(let fi=0;fi<frames.length;fi++){
+  const c=frames[fi],delay=Math.max(2,Math.min(65535,Math.round((delays?.[fi]??(1000/fps))/10)));
+  if(c.width!==w||c.height!==h)throw Error('Há quadros com tamanhos diferentes. Atualize a padronização.');
+  const rgba=c.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data;
+  const {palette,indices}=adaptiveGifPalette(rgba,w,h);
+  push([0x21,0xF9,0x04,0x09,...u16(delay),0,0]); // disposal 2; índice 0 transparente
+  push([0x2C,0,0,0,0,...u16(w),...u16(h),0x87]); // paleta local de 256 cores
+  parts.push(palette);
+  push([8]);
+  const compressed=[];let buffer=0,bits=0;
+  const emit=code=>{buffer|=code<<bits;bits+=9;while(bits>=8){compressed.push(buffer&255);buffer>>>=8;bits-=8}};
+  emit(256);
+  for(let i=0;i<indices.length;i++){
+   if(i>0&&i%200===0)emit(256);
+   emit(indices[i]);
+  }
+  emit(257);
+  if(bits)compressed.push(buffer&255);
+  for(let i=0;i<compressed.length;i+=255){const part=compressed.slice(i,i+255);push([part.length]);parts.push(Uint8Array.from(part))}
+  push([0]);
+ }
+ push([0x3B]);
+ return new Blob(parts,{type:'image/gif'});
+}
+// APNG: sequência PNG RGBA verdadeira, sem quantização e com canal alfa de 8 bits.
+// Usa o codificador PNG nativo do navegador (Canvas.toBlob), sem rede ou bibliotecas.
+const PNG_SIG=Uint8Array.from([137,80,78,71,13,10,26,10]);
+function be32(n){return Uint8Array.from([(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255])}
+const PNG_CRC_TABLE=(()=>{
+ const tab=new Uint32Array(256);
+ for(let i=0;i<256;i++){let v=i;for(let j=0;j<8;j++)v=(v&1)?0xEDB88320^(v>>>1):v>>>1;tab[i]=v>>>0}
+ return tab;
+})();
+function apngChunk(type,data){
+ const typeBytes=Uint8Array.from([...type].map(ch=>ch.charCodeAt(0)));
+ const out=new Uint8Array(data.length+12);
+ out.set(be32(data.length),0);out.set(typeBytes,4);out.set(data,8);
+ let crc=0xFFFFFFFF;
+ for(let i=4;i<8+data.length;i++)crc=PNG_CRC_TABLE[(crc^out[i])&255]^(crc>>>8);
+ out.set(be32((crc^0xFFFFFFFF)>>>0),8+data.length);
+ return out;
+}
+async function getPngIDAT(c){
+ const blob=await blobPNG(c);
+ const bytes=new Uint8Array(await blob.arrayBuffer());
+ if(bytes.length<45||!PNG_SIG.every((v,i)=>v===bytes[i]))throw Error('Canvas não conseguiu produzir um PNG válido.');
+ let pos=8,ihdr=null;const compressed=[];
+ while(pos+12<=bytes.length){
+  const len=((bytes[pos]*16777216)+(bytes[pos+1]<<16)+(bytes[pos+2]<<8)+bytes[pos+3])>>>0;
+  if(pos+12+len>bytes.length)throw Error('PNG incompleto.');
+  const type=String.fromCharCode(...bytes.subarray(pos+4,pos+8));
+  const data=bytes.subarray(pos+8,pos+8+len);
+  if(type==='IHDR')ihdr=new Uint8Array(data);
+  if(type==='IDAT')compressed.push(new Uint8Array(data));
+  pos+=len+12;
+  if(type==='IEND')break;
+ }
+ if(!ihdr||!compressed.length||ihdr[9]!==6)throw Error('O navegador precisa produzir PNG RGBA (com transparência) para gerar APNG.');
+ return {ihdr,compressed};
+}
+async function apngBytes(frames,fps,delays=null){
+ if(!frames.length)throw Error('Sem quadros para exportar.');
+ const w=frames[0].width,h=frames[0].height;
+ const chunks=[PNG_SIG];let sequence=0;
+ const first=await getPngIDAT(frames[0]);
+ chunks.push(apngChunk('IHDR',first.ihdr));
+ chunks.push(apngChunk('acTL',Uint8Array.from([...be32(frames.length),...be32(0)])));
+ for(let i=0;i<frames.length;i++){
+  const c=frames[i];if(c.width!==w||c.height!==h)throw Error('Quadros de tamanhos diferentes.');
+  const frame=i===0?first:await getPngIDAT(c);
+  // fcTL: seq, W,H, x,y, delay numerator/denominator, dispose 0, blend SOURCE 0.
+  const ctl=new Uint8Array(26);const view=new DataView(ctl.buffer);
+  view.setUint32(0,sequence++);view.setUint32(4,w);view.setUint32(8,h);
+  view.setUint32(12,0);view.setUint32(16,0);
+  view.setUint16(20,Math.max(1,Math.min(65535,Math.round(delays?.[i]??(1000/fps)))));view.setUint16(22,1000);
+  ctl[24]=0;ctl[25]=0;
+  chunks.push(apngChunk('fcTL',ctl));
+  for(const payload of frame.compressed){
+   if(i===0)chunks.push(apngChunk('IDAT',payload));
+   else {
+    const fd=new Uint8Array(payload.length+4);
+    fd.set(be32(sequence++),0);fd.set(payload,4);
+    chunks.push(apngChunk('fdAT',fd));
+   }
+  }
+ }
+ chunks.push(apngChunk('IEND',new Uint8Array(0)));
+ return new Blob(chunks,{type:'image/png'});
+}
+async function exportAnimation(format){
+ if(state.busy)return;
+ if(!state.animData.length){msg('Não há sprites para exportar.',true);return}
+ const buttons=[$('gifBtn'),$('animDownload'),$('apngBtn'),$('animDownloadAPNG')];
+ state.busy=true;buttons.forEach(b=>b.disabled=true);
+ try{
+  msg(format==='apng'?'Gerando APNG com cores e transparência originais...':'Gerando GIF com paleta otimizada para cada quadro...');
+  await new Promise(resolve=>setTimeout(resolve,35));
+  const frames=state.animData.map(f=>f.canvas);
+  const fps=Number($('animFPS').value);
+  const blob=format==='apng'?await apngBytes(frames,fps):gifBytes(frames,fps);
+  saveBlob(blob,format==='apng'?'sprites_animados_sem_perda.apng':'sprites_animados_alta_qualidade.gif');
+  msg((format==='apng'?'APNG sem perda':'GIF de alta qualidade')+' exportado: '+frames.length+' quadros, '+frames[0].width+' × '+frames[0].height+' pixels e '+fps+' FPS. Apenas os sprites mantidos, sem guias.');
+ }catch(e){console.error(e);msg('Erro ao exportar animação: '+e.message,true)}
+ finally{state.busy=false;buttons.forEach(b=>b.disabled=!state.animData.length)}
+}
+$('gifBtn').onclick=()=>exportAnimation('gif');
+$('animDownload').onclick=()=>exportAnimation('gif');
+$('apngBtn').onclick=()=>exportAnimation('apng');
+$('animDownloadAPNG').onclick=()=>exportAnimation('apng');
+
+/* Padronização direta: preserva TODOS os frames do GIF original.
+   Não passa por crop(), trim(), splitTouching() nem por remoção de fundo. */
+const normalizer={reference:null,refs:{gif:null,image:null},activeCategory:'gif',autoGIF:false,inheritScale:false,files:[],selected:null,marked:new Set(),frame:0,refIndex:0,playing:true,timer:null,refTimer:null,galleryTimer:null,busy:false,globalScale:100,previewKey:''};
+function validMedia(file){
+ return !!file && (/^image\/(gif|png|jpeg|webp)$/i.test(file.type)||/\.(gif|png|jpe?g|webp)$/i.test(file.name));
+}
+function gifLZW(data,minSize,pixelCount){
+ if(minSize<2||minSize>8)throw Error('GIF com compressão LZW inválida.');
+ const clear=1<<minSize,end=clear+1,prefix=new Uint16Array(4096),suffix=new Uint8Array(4096);
+ const stack=new Uint8Array(4097),out=new Uint8Array(pixelCount);
+ let next=end+1,size=minSize+1,bit=0,old=-1,first=0,written=0;
+ function readCode(){
+  if(bit+size>data.length*8)return -1;
+  const byte=bit>>3,shift=bit&7;
+  const word=(data[byte]||0)|((data[byte+1]||0)<<8)|((data[byte+2]||0)<<16);
+  const code=(word>>>shift)&((1<<size)-1);bit+=size;return code;
+ }
+ while(true){
+  let code=readCode();if(code<0||code===end)break;
+  if(code===clear){next=end+1;size=minSize+1;old=-1;continue}
+  const inputCode=code;let top=0;
+  if(code>=next){
+   if(code!==next||old<0)throw Error('Dados LZW do GIF corrompidos.');
+   stack[top++]=first;code=old;
+  }
+  let guard=0;
+  while(code>=end+1){
+   if(code>=next||++guard>4096)throw Error('Dicionário GIF inválido.');
+   stack[top++]=suffix[code];code=prefix[code];
+  }
+  if(code>=clear)throw Error('Código GIF inválido.');
+  first=code;stack[top++]=code;
+  while(top){if(written<pixelCount)out[written]=stack[--top];else top=0;written++}
+  if(old>=0&&next<4096){
+   prefix[next]=old;suffix[next]=first;next++;
+   if(next===(1<<size)&&size<12)size++;
+  }
+  old=inputCode;
+  if(written>=pixelCount)break;
+ }
+ if(written<pixelCount)throw Error('Quadro GIF incompleto.');
+ return out;
+}
+function decodeGIF(arrayBuffer){
+ const bytes=new Uint8Array(arrayBuffer);
+ let p=0;
+ const take=()=>{if(p>=bytes.length)throw Error('GIF incompleto.');return bytes[p++]};
+ const take16=()=>take()|(take()<<8);
+ const skip=n=>{if(p+n>bytes.length)throw Error('GIF incompleto.');p+=n};
+ const signature=String.fromCharCode(...bytes.subarray(0,6));
+ if(signature!=='GIF87a'&&signature!=='GIF89a')throw Error('Assinatura GIF inválida.');
+ p=6;const w=take16(),h=take16(),packed=take(),bgIndex=take();take();
+ if(w<1||h<1||w>2048||h>2048)throw Error('GIF acima do limite de 2048 px por lado.');
+ if(w*h>4000000)throw Error('GIF acima de 4 milhões de pixels por quadro.');
+ const readPalette=count=>{const palette=[];for(let i=0;i<count;i++)palette.push([take(),take(),take()]);return palette};
+ const globalPalette=packed&0x80?readPalette(1<<((packed&7)+1)):null;
+ function subBlocks(){
+  const chunks=[];let total=0;
+  while(true){const len=take();if(!len)break;if(total+len>30000000)throw Error('Blocos do GIF excedem o limite.');const chunk=bytes.subarray(p,p+len);if(chunk.length!==len)throw Error('Bloco GIF incompleto.');chunks.push(chunk);total+=len;skip(len)}
+  const result=new Uint8Array(total);let at=0;for(const chunk of chunks){result.set(chunk,at);at+=chunk.length}return result;
+ }
+ const screen=cnv(w,h),ctx=screen.getContext('2d',{willReadFrequently:true});
+ const frames=[];let gce={delay:100,disposal:0,transparent:-1},prior=null,backup=null;
+ function applyDisposal(){
+  if(!prior)return;
+  if(prior.disposal===2){
+   ctx.clearRect(prior.x,prior.y,prior.w,prior.h);
+   if(prior.transparent<0&&globalPalette&&globalPalette[bgIndex]){
+    const c=globalPalette[bgIndex];ctx.fillStyle='rgb('+c.join(',')+')';ctx.fillRect(prior.x,prior.y,prior.w,prior.h);
+   }
+  }else if(prior.disposal===3&&backup)ctx.putImageData(backup,0,0);
+  backup=null;
+ }
+ while(p<bytes.length){
+  const marker=take();if(marker===0x3b)break;
+  if(marker===0x21){
+   const extension=take();
+   if(extension===0xf9){
+    if(take()!==4)throw Error('Extensão GIF inválida.');
+    const flags=take(),cs=take16(),transparent=take();take();
+    gce={delay:cs===0?100:Math.max(20,cs*10),disposal:(flags>>2)&7,transparent:(flags&1)?transparent:-1};
+   }else{
+    if(extension===0xff||extension===0x01){const len=take();skip(len)}
+    subBlocks();
+   }
+  }else if(marker===0x2c){
+   applyDisposal();
+   const x=take16(),y=take16(),fw=take16(),fh=take16(),flags=take();
+   if(!fw||!fh||x+fw>w||y+fh>h)throw Error('Quadro GIF fora dos limites.');
+   const palette=flags&0x80?readPalette(1<<((flags&7)+1)):globalPalette;
+   if(!palette)throw Error('Quadro GIF sem paleta de cores.');
+   const minSize=take(),indices=gifLZW(subBlocks(),minSize,fw*fh);
+   if(gce.disposal===3)backup=ctx.getImageData(0,0,w,h);
+   const tile=cnv(fw,fh),tctx=tile.getContext('2d'),img=tctx.createImageData(fw,fh);
+   let ix=0;
+   const putRow=row=>{
+    for(let xx=0;xx<fw;xx++){
+     const value=indices[ix++];if(value===gce.transparent)continue;
+     const color=palette[value];if(!color)continue;
+     const offset=(row*fw+xx)*4;img.data[offset]=color[0];img.data[offset+1]=color[1];
+     img.data[offset+2]=color[2];img.data[offset+3]=255;
+    }
+   };
+   if(flags&0x40){
+    for(const [start,step] of [[0,8],[4,8],[2,4],[1,2]])for(let row=start;row<fh;row+=step)putRow(row);
+   }else for(let row=0;row<fh;row++)putRow(row);
+   tctx.putImageData(img,0,0);ctx.drawImage(tile,x,y);
+   const copy=cnv(w,h);copy.getContext('2d').drawImage(screen,0,0);
+   frames.push({canvas:copy,delay:gce.delay});
+   if(frames.length>180||frames.length*w*h>30000000)throw Error('GIF muito longo para processar de uma vez (máx. 180 quadros e 30 milhões de pixels).');
+   prior={x,y,w:fw,h:fh,disposal:gce.disposal,transparent:gce.transparent};
+   gce={delay:100,disposal:0,transparent:-1};
+  }else throw Error('Estrutura GIF desconhecida.');
+ }
+ if(!frames.length)throw Error('Nenhum quadro encontrado no GIF.');
+ return {width:w,height:h,frames,animated:frames.length>1,isGIF:true};
+}
+async function decodeMediaFile(file){
+ if(!validMedia(file))throw Error('Use GIF, PNG, JPEG ou WEBP.');
+ if(file.size>35*1024*1024)throw Error('Arquivo acima de 35 MB; reduza-o para evitar travamentos.');
+ const isGIF=file.type==='image/gif'||/\.gif$/i.test(file.name);
+ if(isGIF)return decodeGIF(await file.arrayBuffer());
+ const url=URL.createObjectURL(file);
+ try{
+  const img=await imgFromURL(url),w=img.naturalWidth,h=img.naturalHeight;
+  if(w<1||h<1||w>2048||h>2048||w*h>4000000)throw Error('Imagem acima do limite de 2048 px por lado / 4 MP.');
+  const frame=cnv(w,h);frame.getContext('2d').drawImage(img,0,0);
+  return {width:w,height:h,frames:[{canvas:frame,delay:100}],animated:false,isGIF:false};
+ }finally{URL.revokeObjectURL(url)}
+}
+function activeNormalized(){return normalizer.files.find(x=>x.id===normalizer.selected)||null}
+function scaleModel(){return normalizer.files[0]||null}
+function applyInheritedScale(){
+ if(!normalizer.inheritScale)return;
+ const source=scaleModel();if(!source)return;
+ const scale=source.media.manualScale??100;
+ for(const item of normalizer.files)if(item.id!==source.id)item.media.manualScale=scale;
+}
+function invalidScaledItem(){
+ return normalizer.files.find(item=>{
+  const ref=referenceForMedia(item.media);
+  return ref&&!outputSizeAllowed(normalizationSize(ref,item.media));
+ });
+}
+function scalePercent(value){
+ const n=Number(value);
+ return Number.isFinite(n)&&n>=0.01?n:null;
+}
+function tryIndividualScale(item,pct){
+ if(!item||normalizer.busy)return;
+ if(normalizer.inheritScale&&scaleModel()?.id!==item.id){normReport('Esta escala segue o primeiro arquivo. Desative o modelo para editar separadamente.');return}
+ const previous=normalizer.files.map(x=>[x,x.media.manualScale]);
+ const wasAuto=normalizer.autoGIF;
+ if(item.media.isGIF)normalizer.autoGIF=false;
+ const percent=scalePercent(pct);
+ if(percent===null){normReport('Informe uma escala positiva.',true);return}
+ item.media.manualScale=percent;
+ applyInheritedScale();
+ if(invalidScaledItem()){
+  for(const [file,scale] of previous)file.media.manualScale=scale;
+  normalizer.autoGIF=wasAuto;
+  normReport(outputLimitText(),true);return;
+ }
+ normalizer.selected=item.id;
+ normalizer.frame=item.galleryFrame||0;
+ $('normScaleScope').value='single';
+ updateNormalizer();
+}
+function referenceForMedia(media){return normalizer.refs[media?.isGIF?'gif':'image']||null}
+function updateCategoryButtons(){
+ for(const kind of ['gif','image']){
+  const ref=normalizer.refs[kind];
+  $('ref'+(kind==='gif'?'Gif':'Image')+'Meta').textContent=ref?ref.name+' · '+ref.width+' × '+ref.height+' px':'Nenhuma referência';
+ }
+ $('normFileCounter').textContent=normalizer.files.length+' arquivo(s)';
+ $('normAutoNo').classList.toggle('active',!normalizer.autoGIF);
+ $('normAutoYes').classList.toggle('active',normalizer.autoGIF);
+ $('normAutoNo').setAttribute('aria-pressed',String(!normalizer.autoGIF));
+ $('normAutoYes').setAttribute('aria-pressed',String(normalizer.autoGIF));
+ const grouped=$('normScaleScope').value==='all';
+ $('normGroupNo').classList.toggle('active',!grouped);
+ $('normGroupYes').classList.toggle('active',grouped);
+ $('normGroupNo').setAttribute('aria-pressed',String(!grouped));
+ $('normGroupYes').setAttribute('aria-pressed',String(grouped));
+ document.body.classList.toggle('scope-marked',$('normScaleScope').value==='marked');
+ $('normGroupToggle').hidden=normalizer.autoGIF||normalizer.inheritScale;
+ $('normInheritScale').checked=normalizer.inheritScale;
+ $('normInheritScale').disabled=normalizer.busy;
+ $('normAutoNo').disabled=normalizer.busy;
+ $('normAutoYes').disabled=normalizer.inheritScale;
+ if(normalizer.busy)$('normAutoYes').disabled=true;
+ $('normGroupNo').disabled=normalizer.busy;
+ $('normGroupYes').disabled=normalizer.busy;
+ const model=scaleModel();
+ $('normInheritInfo').textContent=normalizer.inheritScale?(model?'Modelo: '+model.name+' · '+(model.media.manualScale??100)+'%. Todos os demais seguem esta escala.':'Ativado. O primeiro arquivo carregado será o modelo.'):'Opcional · desligado. Os arquivos têm escalas independentes.';
+}
+function normReport(message,error=false){
+ const el=$('normStatus');el.textContent=message;el.classList.toggle('error',error);
+}
+function normalCanvas(el,w,h){
+ if(el.width!==w)el.width=w;if(el.height!==h)el.height=h;
+ const ctx=el.getContext('2d');
+ if(!ctx)return null;
+ ctx.setTransform(1,0,0,1,0,0);
+ ctx.clearRect(0,0,w,h);return ctx;
+}
+/* Contorno compartilhado entre quadros: mantém a posição durante a animação. */
+function visualInfo(media){
+ if(media.visualInfo)return media.visualInfo;
+ const w=media.width,h=media.height,areas=[];
+ let minX=w,minY=h,maxX=-1,maxY=-1;
+ // Varre todos os pixels: detalhes finos não podem ser omitidos pela amostragem.
+ const stride=1;
+ for(const frame of media.frames){
+  const rgba=frame.canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,w,h).data;
+  // Se a folha veio com chroma verde opaco, o verde não faz parte do corpo.
+  // A identificação serve só às medidas; a imagem original é preservada.
+  const corners=[0,w-1,(h-1)*w,w*h-1];
+  const greenMatte=corners.every(p=>{const i=p*4;return rgba[i+3]>245&&rgba[i+1]>145&&rgba[i+1]>rgba[i]*1.7&&rgba[i+1]>rgba[i+2]*1.7});
+  let mass=0;
+  for(let y=0;y<h;y+=stride)for(let x=0;x<w;x+=stride){
+   const i=(y*w+x)*4,alpha=rgba[i+3];
+   if(alpha===0)continue;
+   if(greenMatte&&rgba[i+1]>135&&rgba[i+1]>rgba[i]*1.6&&rgba[i+1]>rgba[i+2]*1.6)continue;
+   mass+=alpha/255*stride*stride;
+   if(x<minX)minX=x;if(y<minY)minY=y;
+   if(x+stride-1>maxX)maxX=x+stride-1;
+   if(y+stride-1>maxY)maxY=y+stride-1;
+  }
+  if(mass>0)areas.push(mass);
+ }
+ areas.sort((a,b)=>a-b);
+ const median=areas.length?areas[Math.floor(areas.length/2)]:0;
+ const padding=2;
+ const bounds=maxX>=minX?{
+  x:Math.max(0,minX-padding),y:Math.max(0,minY-padding),
+  w:Math.min(w,Math.min(w-1,maxX)+padding+1)-Math.max(0,minX-padding),
+  h:Math.min(h,Math.min(h-1,maxY)+padding+1)-Math.max(0,minY-padding)
+ }:{x:0,y:0,w,h};
+ media.visualInfo={mass:median,bounds};return media.visualInfo;
+}
+function artworkBounds(media){
+ // A pose toda é medida, incluindo todas as posições extremas de braços e
+ // pernas num GIF. Para imagens opacas, a tela inteira é a medida segura.
+ return visualInfo(media).bounds;
+}
+function fittingBounds(media){
+ // Imagens transparentes também podem ter grandes margens vazias. Medir a
+ // personagem, e não o tamanho do arquivo, libera o aumento real de escala.
+ return artworkBounds(media);
+}
+function bodyFrameBounds(media,frame){
+ if(frame.bodyBounds)return frame.bodyBounds;
+ const b=visualInfo({width:media.width,height:media.height,frames:[frame]}).bounds;
+ // Um objeto nas mãos pode ultrapassar os PÉS sem fazer parte da altura da
+ // pessoa. Nos sprites com calçado azul, encontra-se o último pixel azul na
+ // porção inferior do corpo e acrescenta-se margem para o contorno escuro.
+ const rgba=frame.canvas.getContext('2d',{willReadFrequently:true}).getImageData(0,0,media.width,media.height).data;
+ let shoeBottom=-1,shoeCount=0;
+ const yStart=Math.floor(b.y+b.h*.55),yEnd=Math.min(media.height,b.y+b.h);
+ for(let y=yStart;y<yEnd;y++)for(let x=b.x;x<b.x+b.w;x++){
+  const i=(y*media.width+x)*4,r=rgba[i],g=rgba[i+1],blue=rgba[i+2],a=rgba[i+3];
+  if(a>180&&blue>75&&blue>r*1.45&&blue>g*1.35){shoeBottom=y;shoeCount++}
+ }
+ const footwearDetected=shoeCount>24&&shoeBottom>b.y+b.h*.72;
+ const foot=footwearDetected?Math.min(media.height-1,shoeBottom+Math.max(3,Math.round(media.height*.008))):b.y+b.h-1;
+ frame.bodyBounds={head:b.y,foot,h:Math.max(1,foot-b.y),footwearDetected};
+ return frame.bodyBounds;
+}
+function characterBounds(media){
+ if(media.characterBounds)return media.characterBounds;
+ const list=media.frames.map(frame=>bodyFrameBounds(media,frame));
+ const head=Math.min(...list.map(p=>p.head)),foot=Math.max(...list.map(p=>p.foot));
+ media.characterBounds={head,foot,h:Math.max(1,foot-head),footwearDetected:list.filter(p=>p.footwearDetected).length>=Math.ceil(list.length/2)};
+ return media.characterBounds;
+}
+function referenceGuideBounds(reference){
+ if(reference.guideBounds)return reference.guideBounds;
+ const body=characterBounds(reference);
+ reference.guideBounds={x:0,y:body.head,w:reference.width,h:body.h,foot:body.foot};
+ return reference.guideBounds;
+}
+function matchedHeightPercent(reference,media){
+ // O padrão 100% agora corresponde à ALTURA VISÍVEL da referência.
+ // Caso haja uma escala de grupo, compensa-a sem deslocar o tamanho padrão.
+ return 100/(normalizer.globalScale/100);
+}
+function manualPlan(reference,media,frame=null){
+ // Saída EXATA da referência. A escala nunca ultrapassa o encaixe seguro:
+ // caso contrário, seria matematicamente impossível evitar recortes.
+ const b=fittingBounds(media);
+ const index=frame?media.frames.indexOf(frame):-1;
+ const paired=index>=0&&reference.frames.length===media.frames.length&&media.frames.length>1;
+ const body=paired?bodyFrameBounds(media,frame):characterBounds(media);
+ const modelBody=paired?bodyFrameBounds(reference,reference.frames[index]):characterBounds(reference);
+ const guide={y:modelBody.head,h:modelBody.h,foot:modelBody.foot};
+ const modelHeight=Math.max(1,guide.h),figureHeight=Math.max(1,body.h);
+ const referenceScale=modelHeight/figureHeight;
+ // A escala nunca pode ultrapassar a altura da LINHA anatômica. A vassoura
+ // não conta como pé, mas continua precisando caber no canvas sem cortes.
+ const center=(body.head+body.foot)/2,goal=(modelBody.head+modelBody.foot)/2;
+ const topDistance=Math.max(1,center-b.y),bottomDistance=Math.max(1,b.y+b.h-center);
+ const fit=Math.min(reference.width/Math.max(1,b.w),goal/topDistance,(reference.height-goal)/bottomDistance,referenceScale);
+ const globalFactor=normalizer.globalScale/100;
+ const localFactor=(media.manualScale??100)/100;
+ // 100% iguala a cabeça e os pés ao modelo, sem incluir utensílios e objetos.
+ const requested=media.isGIF&&normalizer.autoGIF?fit:referenceScale*globalFactor*localFactor;
+ const scale=Math.min(requested,fit);
+ return {scale,factor:scale,bounds:b,body,guide,globalFactor,localFactor,fit,referenceScale,requested,limited:requested>fit+1e-8};
+}
+function visibleHeightRatio(reference,media,frame=null){
+ const plan=manualPlan(reference,media,frame);
+ return plan.body.h*plan.scale/Math.max(1,plan.guide.h);
+}
+function normalizationSize(reference,media){
+ const plan=manualPlan(reference,media);
+ // Todos os quadros da categoria têm exatamente largura, altura e proporção
+ // do modelo, independentemente do tamanho da pose ou do número de arquivos.
+ return {width:reference.width,height:reference.height,growth:1,expanded:false,plan};
+}
+// Sem teto artificial de porcentagem ou resolução. A exportação final está
+// sujeita somente à memória disponível e às capacidades reais do navegador.
+function outputSizeAllowed(s){return Number.isSafeInteger(s.width)&&Number.isSafeInteger(s.height)&&s.width>0&&s.height>0}
+function outputLimitText(){return 'A escala gerou dimensões que excedem a precisão numérica do navegador. Informe um valor menor.'}
+function ensureOutputAllowed(size){if(!outputSizeAllowed(size))throw Error(outputLimitText())}
+function normalizedFrame(frame,reference,media){
+ const size=normalizationSize(reference,media);
+ ensureOutputAllowed(size);
+ const output=cnv(size.width,size.height);
+ drawNormalized(output,frame,reference,media,size);return output;
+}
+function drawNormalized(output,frame,reference,media,size=normalizationSize(reference,media),preview=false){
+ ensureOutputAllowed(size);
+ // Na tela, miniaturize APENAS a prévia: nunca use um canvas gigante
+ // a cada alteração do slider. O download mantém a resolução solicitada.
+ const shrink=preview?Math.min(1,900/Math.max(size.width,size.height),Math.sqrt(650000/(size.width*size.height))):1;
+ const canvasW=preview?Math.max(1,Math.ceil(size.width*shrink)):size.width;
+ const canvasH=preview?Math.max(1,Math.ceil(size.height*shrink)):size.height;
+ const ctx=normalCanvas(output,canvasW,canvasH);
+ if(!ctx)throw Error('Não foi possível criar a imagem nesta resolução.');
+ ctx.setTransform(canvasW/size.width,0,0,canvasH/size.height,0,0);
+ const sw=frame.canvas.width,sh=frame.canvas.height,rw=size.width,rh=size.height;
+ const align=media.align||'center';
+ ctx.imageSmoothingEnabled=!$('normPixel').checked;ctx.imageSmoothingQuality='high';
+ const plan=manualPlan(reference,media,frame),b=plan.bounds,guide=plan.guide,body=plan.body,dw=b.w*plan.scale,dh=b.h*plan.scale;
+ const dx=(rw-dw)/2-b.x*plan.scale;
+ // As linhas medem cabeça e sapatos, não a ponta da vassoura. O objeto pode
+ // sair do corredor do CORPO, mas jamais pode sair do canvas exportado.
+ const dy=align==='bottom'?guide.foot-body.foot*plan.scale:
+          align==='top'?guide.y-body.head*plan.scale:
+          guide.y+guide.h/2-(body.head+body.foot)/2*plan.scale;
+ ctx.drawImage(frame.canvas,dx,dy,sw*plan.scale,sh*plan.scale);
+}
+function syncComparisonPreview(reference,size,selected){
+ const refCanvas=$('normRefCanvas'),resultCanvas=$('normResultCanvas');
+ const refWrap=refCanvas.parentElement,resultWrap=resultCanvas.parentElement;
+ const styles=getComputedStyle(refWrap);
+ const availableW=Math.max(1,refWrap.clientWidth-parseFloat(styles.paddingLeft)-parseFloat(styles.paddingRight));
+ const availableH=Math.max(1,refWrap.clientHeight-parseFloat(styles.paddingTop)-parseFloat(styles.paddingBottom));
+ // Mesma escala visual nas DUAS janelas: ampliar o sprite não encolhe
+ // automaticamente toda a tela. O resultado pode ser percorrido por scroll.
+ const zoom=Math.min(availableW/reference.width,availableH/reference.height);
+ refCanvas.style.width=(reference.width*zoom)+'px';
+ refCanvas.style.height=(reference.height*zoom)+'px';
+ if(!size||!selected){resultCanvas.style.width='';resultCanvas.style.height='';normalizer.previewKey='';return}
+ resultCanvas.style.width=(size.width*zoom)+'px';
+ resultCanvas.style.height=(size.height*zoom)+'px';
+ const key=[selected.id,reference.width,reference.height,size.width,size.height,Math.round(zoom*1000)].join('/');
+ if(key!==normalizer.previewKey){
+  normalizer.previewKey=key;
+  requestAnimationFrame(()=>{
+   if(key!==normalizer.previewKey)return;
+   resultWrap.scrollLeft=Math.max(0,(resultWrap.scrollWidth-resultWrap.clientWidth)/2);
+   resultWrap.scrollTop=Math.max(0,(resultWrap.scrollHeight-resultWrap.clientHeight)/2);
+  });
+ }
+}
+function syncManualControls(){
+ const scope=$('normScaleScope').value,selected=activeNormalized();
+ const marked=normalizer.files.filter(item=>normalizer.marked.has(item.id));
+ const mixed=scope==='marked'&&marked.length>1&&marked.some(item=>item.media.manualScale!==marked[0].media.manualScale);
+ const value=scope==='all'?normalizer.globalScale:scope==='marked'?(marked[0]?.media.manualScale??100):(selected?.media.manualScale??100);
+ // O slider cresce conforme necessário; o campo numérico e o botão +
+ // permitem continuar aumentando indefinidamente.
+ $('normScale').max=String(Math.max(400,Number.isFinite(value+10)?Math.ceil((value+10)/400)*400:value));
+ $('normScale').value=String(value);
+ $('normScaleNumber').value=String(value);
+ $('normScaleValue').textContent=mixed?'Valores diferentes — ajuste para igualar':value+'%';
+ const following=normalizer.inheritScale&&!!selected&&selected.id!==scaleModel()?.id;
+ const disabled=normalizer.busy||following||(scope==='single'&&!selected)||(scope==='marked'&&!marked.length)||(scope==='all'&&!normalizer.files.length);
+ $('normScale').disabled=disabled;
+ $('normScaleNumber').disabled=disabled;
+ $('normScaleReset').disabled=disabled;
+ $('normMinus').disabled=disabled;
+ $('normPlus').disabled=disabled;
+ $('normMatchHeight').disabled=normalizer.busy||following||!selected||!referenceForMedia(selected.media);
+ updateCategoryButtons();
+}
+function applyManualScale(value){
+ if(normalizer.busy)return;
+ const pct=scalePercent(value);
+ if(pct===null){syncManualControls();normReport('Informe uma escala positiva.',true);return}
+ const scope=$('normScaleScope').value;
+ const selected=activeNormalized();
+ if(normalizer.inheritScale&&selected?.id!==scaleModel()?.id)return;
+ const oldGlobal=normalizer.globalScale;
+ const oldLocals=new Map(normalizer.files.map(item=>[item.id,item.media.manualScale]));
+ if(normalizer.inheritScale){if(!selected)return;selected.media.manualScale=pct;applyInheritedScale()}
+ else if(scope==='all')normalizer.globalScale=pct;
+ else if(scope==='marked'){
+  const marked=normalizer.files.filter(item=>normalizer.marked.has(item.id));
+  if(!marked.length)return;
+  for(const item of marked)item.media.manualScale=pct;
+ }else{if(!selected)return;selected.media.manualScale=pct}
+ if(invalidScaledItem()){
+  normalizer.globalScale=oldGlobal;
+  for(const item of normalizer.files)item.media.manualScale=oldLocals.get(item.id);
+  syncManualControls();normReport(outputLimitText(),true);return;
+ }
+ syncManualControls();drawNormalizer();renderNormalizerGallery();
+ const exceeded=normalizer.files.filter(item=>{const ref=referenceForMedia(item.media);return ref&&manualPlan(ref,item.media).limited});
+ normReport(exceeded.length?'Escala acima do encaixe possível em '+exceeded.length+' arquivo(s). O resultado mantém o maior tamanho que cabe, sem cortes.':'Escala aplicada proporcionalmente, com as medidas exatas da referência.',exceeded.length>0);
+}
+function updateManualInfo(){
+ const ref=normalizer.reference,selected=activeNormalized();
+ const manual=!!selected&&(!selected.media.isGIF||!normalizer.autoGIF);
+ $('normManualControls').hidden=!manual;
+ $('normModeInfo').textContent=!selected?'Cada arquivo recebe uma caixa transparente com as medidas exatas de sua referência.':selected.media.isGIF?'GIF selecionado — escala proporcional, sem cortes.':'Imagem selecionada — escala proporcional, com ajuste opcional.';
+ const el=$('normScaleInfo');
+ $('normAlign').value=selected?.media.align||'center';
+ $('normAlign').disabled=!selected||normalizer.busy;
+ if(!manual){el.textContent='GIF encaixado sem deformar na resolução exata da referência.';return}
+ if(!ref||!selected){el.textContent='Carregue a referência para visualizar o resultado.';return}
+ const size=normalizationSize(ref,selected.media);
+ const following=normalizer.inheritScale&&selected.id!==scaleModel()?.id;
+ const ratio=Math.round(visibleHeightRatio(ref,selected.media)*100);
+ const plan=size.plan;
+ el.textContent=(following?'Seguindo a escala do primeiro arquivo. ':'')+'Altura visível '+ratio+'% da referência · saída '+size.width+' × '+size.height+' px · multiplicador real '+(plan.scale*100).toFixed(1)+'%.'+(plan.limited?' Limite do enquadramento: aumentar mais exigiria cortes.':' A escala de 100% iguala a altura visível do modelo.');
+}
+function selectNormalizedItem(item){
+ if(!item||normalizer.busy)return;
+ const current=activeNormalized();if(current)current.galleryFrame=normalizer.frame;
+ normalizer.selected=item.id;
+ normalizer.frame=item.galleryFrame||0;
+ updateNormalizer();
+}
+function removeNormalizedItem(item){
+ if(normalizer.busy)return;
+ const index=normalizer.files.indexOf(item);
+ if(index<0)return;
+ normalizer.marked.delete(item.id);
+ normalizer.files.splice(index,1);
+ if(normalizer.selected===item.id)normalizer.selected=normalizer.files[Math.min(index,normalizer.files.length-1)]?.id||null;
+ if(normalizer.inheritScale)applyInheritedScale();
+ normalizer.frame=0;updateNormalizer();
+}
+function drawGalleryFrame(item){
+ const views=item.galleryNodes;if(!views)return;
+ const media=item.media,index=item.id===normalizer.selected?normalizer.frame:(item.galleryFrame||0);
+ const frame=media.frames[Math.min(index,media.frames.length-1)];
+ views.before.classList.toggle('pixelated',$('normPixel').checked);
+ views.after.classList.toggle('pixelated',$('normPixel').checked);
+ normalCanvas(views.before,media.width,media.height).drawImage(frame.canvas,0,0);
+ const ref=referenceForMedia(media);
+ if(!ref){normalCanvas(views.after,1,1);views.meta.textContent='Carregue a referência de '+(media.isGIF?'GIFs':'imagens');return}
+ const size=normalizationSize(ref,media);
+ if(!outputSizeAllowed(size)){normalCanvas(views.after,1,1);views.meta.textContent='Dimensões inválidas';return}
+ drawNormalized(views.after,frame,ref,media,size,true);
+ views.meta.textContent=size.width+' × '+size.height+' px · altura '+Math.round(visibleHeightRatio(ref,media,frame)*100)+'% · '+(media.isGIF?media.frames.length+' quadros':'imagem');
+}
+function renderNormalizerGallery(){
+ const host=$('normGallery');host.replaceChildren();
+ $('normGalleryCount').textContent=normalizer.files.length+' arquivo(s)';
+ if(!normalizer.files.length){const empty=document.createElement('div');empty.className='norm-gallery-empty';empty.textContent='Carregue GIFs ou imagens. Cada arquivo terá sua própria prévia.';host.append(empty);return}
+ const model=scaleModel();
+ for(const item of normalizer.files){
+  const card=document.createElement('article');card.className='norm-gallery-card'+(item.id===normalizer.selected?' active':'');
+  const top=document.createElement('div');top.className='norm-gallery-top';
+  const mark=document.createElement('input');mark.type='checkbox';mark.className='norm-gallery-select';mark.checked=normalizer.marked.has(item.id);mark.disabled=normalizer.busy||normalizer.inheritScale;mark.title='Selecionar para ajustar vários juntos';mark.setAttribute('aria-label','Marcar '+item.name);
+  mark.onchange=()=>{if(mark.checked)normalizer.marked.add(item.id);else normalizer.marked.delete(item.id);$('normScaleScope').value=normalizer.marked.size?'marked':'single';if(mark.checked&&item.media.isGIF)normalizer.autoGIF=false;updateNormalizer()};
+  const title=document.createElement('button');title.type='button';title.className='norm-gallery-title';title.textContent=(normalizer.inheritScale&&item.id===model?.id?'★ MODELO · ':'')+(item.media.isGIF?'GIF · ':'IMG · ')+item.name;title.title=item.name+' — clicar para editar';title.onclick=()=>selectNormalizedItem(item);
+  const remove=document.createElement('button');remove.type='button';remove.className='norm-gallery-remove';remove.textContent='×';remove.title='Remover apenas '+item.name;remove.disabled=normalizer.busy;remove.onclick=()=>removeNormalizedItem(item);
+  top.append(mark,title,remove);
+  const previews=document.createElement('div');previews.className='norm-gallery-views';previews.title='Clique para editar este arquivo';previews.onclick=()=>selectNormalizedItem(item);
+  const beforeWrap=document.createElement('div');beforeWrap.className='norm-gallery-view gallery-before';
+  const afterWrap=document.createElement('div');afterWrap.className='norm-gallery-view gallery-after';
+  const before=cnv(1,1),after=cnv(1,1);beforeWrap.append(before);afterWrap.append(after);previews.append(beforeWrap,afterWrap);
+  const bottom=document.createElement('div');bottom.className='norm-gallery-bottom';
+  const minus=document.createElement('button');minus.type='button';minus.textContent='−';minus.title='Diminuir apenas este arquivo';
+  const plus=document.createElement('button');plus.type='button';plus.textContent='+';plus.title='Aumentar apenas este arquivo';
+  const save=document.createElement('button');save.type='button';save.textContent='↓';save.title='Baixar somente '+item.name;save.disabled=normalizer.busy;
+  save.onclick=()=>{selectNormalizedItem(item);exportNormalized('auto')};
+  const following=normalizer.inheritScale&&item.id!==model?.id;
+  minus.disabled=plus.disabled=normalizer.busy||following;
+  minus.onclick=()=>tryIndividualScale(item,(item.media.manualScale??100)-5);
+  plus.onclick=()=>tryIndividualScale(item,(item.media.manualScale??100)+5);
+  const value=document.createElement('span');value.className='norm-gallery-scale';value.textContent=item.media.isGIF&&normalizer.autoGIF?'Auto':(item.media.manualScale??100)+'%';
+  bottom.append(minus,value,plus,save);
+  const meta=document.createElement('div');meta.className='norm-gallery-meta';
+  card.append(top,previews,bottom,meta);host.append(card);
+  item.galleryNodes={before,after,meta};
+  drawGalleryFrame(item);
+ }
+}
+function paintHeightGuides(canvas,reference){
+ const guide=referenceGuideBounds(reference),ctx=canvas.getContext('2d');
+ const sy=canvas.height/reference.height;
+ ctx.save();ctx.fillStyle='rgba(255,210,50,.83)';
+ for(const y of [guide.y,guide.foot])ctx.fillRect(0,Math.max(0,Math.min(canvas.height-1,Math.round(y*sy))),canvas.width,1);
+ ctx.restore();
+}
+function drawNormalizer(){
+ const ref=normalizer.reference,selected=activeNormalized();
+ const rc=$('normRefCanvas'),before=$('normBeforeCanvas'),out=$('normResultCanvas');
+ if(ref){
+  const rf=ref.frames[Math.min(normalizer.refIndex,ref.frames.length-1)];
+  normalCanvas(rc,ref.width,ref.height).drawImage(rf.canvas,0,0);
+  paintHeightGuides(rc,ref);
+  $('normRefCaption').textContent=ref.width+' × '+ref.height+' px · linhas amarelas: cabeça ↕ pés · '+ref.frames.length+' quadro(s)';
+ }else{$('normRefCaption').textContent='Carregue a referência.';normalCanvas(rc,1,1)}
+ if(!ref){rc.style.width='';rc.style.height='';out.style.width='';out.style.height='';normalizer.previewKey=''}
+ // Antes e depois partilham o MESMO quadro e relógio para comparação fiel.
+ if(selected){
+  const original=selected.media,frame=original.frames[Math.min(normalizer.frame,original.frames.length-1)];
+  normalCanvas(before,original.width,original.height).drawImage(frame.canvas,0,0);
+  $('normBeforeCaption').textContent=original.width+' × '+original.height+' px · proporção '+(original.width/original.height).toFixed(4)+' · quadro '+(normalizer.frame+1)+'/'+original.frames.length;
+ }else{normalCanvas(before,1,1);$('normBeforeCaption').textContent='Carregue um GIF ou uma imagem para comparar.'}
+ if(ref&&selected){
+  const frame=selected.media.frames[Math.min(normalizer.frame,selected.media.frames.length-1)];
+  const size=normalizationSize(ref,selected.media);
+  if(outputSizeAllowed(size)){
+   drawNormalized(out,frame,ref,selected.media,size,true);
+   paintHeightGuides(out,ref);
+   const ratio=Math.round(visibleHeightRatio(ref,selected.media,frame)*100);
+   $('normResultCaption').textContent='Saída '+size.width+' × '+size.height+' px · corpo '+ratio+'% do modelo · quadro '+(normalizer.frame+1)+'/'+selected.media.frames.length;
+   $('normNow').textContent=selected.name+' · escala comparável à referência';
+   $('normBoxInfo').textContent='Linhas amarelas: topo da cabeça até os sapatos. A vassoura não conta na altura. Guias só na prévia, nunca no GIF exportado.';
+   syncComparisonPreview(ref,size,selected);
+  }else{
+   normalCanvas(out,1,1);$('normResultCaption').textContent=outputLimitText();
+   $('normNow').textContent='Dimensões fora da precisão numérica';
+   $('normBoxInfo').textContent='A caixa ultrapassou a precisão numérica.';
+   syncComparisonPreview(ref,null,null);
+  }
+ }else{
+  normalCanvas(out,1,1);$('normResultCaption').textContent=ref?'Escolha GIFs ou imagens para ajustar.':'Aguardando referência.';
+  $('normNow').textContent='Aguardando referência e arquivo';
+  $('normBoxInfo').textContent='Caixa comum: aguardando arquivos';
+  if(ref)syncComparisonPreview(ref,null,null);
+ }
+ rc.classList.toggle('pixelated',$('normPixel').checked);
+ out.classList.toggle('pixelated',$('normPixel').checked);
+ const n=selected?selected.media.frames.length:0;
+ $('normCount').textContent=(n?normalizer.frame+1:0)+' / '+n;
+ $('normScrub').max=String(Math.max(0,n-1));$('normScrub').value=String(n?normalizer.frame:0);
+ $('normPlay').textContent=normalizer.playing?'❚❚ Pausar':'▶ Reproduzir';
+ updateManualInfo();
+ if(selected?.galleryNodes)drawGalleryFrame(selected);
+}
+function scheduleNormalizer(){
+ if(normalizer.timer){clearTimeout(normalizer.timer);normalizer.timer=null}
+ const selected=activeNormalized();
+ const needsTarget=!!selected&&selected.media.frames.length>1;
+ if(!normalizer.playing||!needsTarget)return;
+ const delay=selected.media.frames[normalizer.frame].delay;
+ normalizer.timer=setTimeout(()=>{
+  if(!document.hidden){
+   normalizer.frame=(normalizer.frame+1)%selected.media.frames.length;
+   drawNormalizer();
+  }
+  scheduleNormalizer();
+ },Math.max(20,delay));
+}
+function scheduleReference(){
+ if(normalizer.refTimer){clearTimeout(normalizer.refTimer);normalizer.refTimer=null}
+ const ref=normalizer.reference;
+ if(!normalizer.playing||!ref||ref.frames.length<2)return;
+ normalizer.refTimer=setTimeout(()=>{
+  if(!document.hidden){normalizer.refIndex=(normalizer.refIndex+1)%ref.frames.length;drawNormalizer()}
+  scheduleReference();
+ },Math.max(20,ref.frames[normalizer.refIndex].delay));
+}
+function scheduleGallery(){
+ if(normalizer.galleryTimer){clearTimeout(normalizer.galleryTimer);normalizer.galleryTimer=null}
+ if(!normalizer.playing||!normalizer.files.some(item=>item.media.frames.length>1))return;
+ normalizer.galleryTimer=setTimeout(()=>{
+  if(!document.hidden){
+   for(const item of normalizer.files){
+    if(item.id===normalizer.selected||item.media.frames.length<2)continue;
+    item.galleryElapsed=(item.galleryElapsed||0)+70;
+    let changed=false,steps=0;
+    while(steps++<10&&item.galleryElapsed>=Math.max(20,item.media.frames[item.galleryFrame||0].delay)){
+     item.galleryElapsed-=Math.max(20,item.media.frames[item.galleryFrame||0].delay);
+     item.galleryFrame=((item.galleryFrame||0)+1)%item.media.frames.length;
+     changed=true;
+    }
+    if(changed)drawGalleryFrame(item);
+   }
+  }
+  scheduleGallery();
+ },70);
+}
+function restartNormalPlayback(){scheduleNormalizer();scheduleReference();scheduleGallery()}
+function updateNormalizer(){
+ const selected=activeNormalized();
+ const kind=selected?(selected.media.isGIF?'gif':'image'):normalizer.activeCategory;
+ const previousReference=normalizer.reference;
+ normalizer.activeCategory=kind;
+ normalizer.reference=normalizer.refs[kind]||null;
+ if(previousReference!==normalizer.reference)normalizer.refIndex=0;
+ const ref=normalizer.reference,ready=!!ref&&!!selected&&!normalizer.busy;
+ updateCategoryButtons();
+ $('normRefInfo').textContent=ref?'Padrão fixo: '+ref.width+' × '+ref.height+' px · razão '+(ref.width/ref.height).toFixed(4)+':1 · '+ref.frames.length+' quadro(s) de referência.':'Carregue uma referência acima para definir a largura, altura e proporção finais.';
+ const host=$('normFileList');host.replaceChildren();
+ if(!normalizer.files.length){const hint=document.createElement('span');hint.className='hint';hint.textContent='Nenhum arquivo carregado.';host.append(hint)}
+ for(const item of normalizer.files){
+  const row=document.createElement('div');row.className='norm-file-row'+(item.id===normalizer.selected?' active':'');
+  const marked=document.createElement('input');marked.type='checkbox';marked.className='norm-mark';marked.checked=normalizer.marked.has(item.id);
+  marked.title='Marcar '+item.name+' para ajuste em grupo';marked.setAttribute('aria-label','Incluir '+item.name+' no ajuste em grupo');
+  marked.disabled=normalizer.busy||normalizer.inheritScale;
+  marked.onchange=()=>{if(marked.checked)normalizer.marked.add(item.id);else normalizer.marked.delete(item.id);$('normScaleScope').value=normalizer.marked.size?'marked':'single';if(marked.checked&&item.media.isGIF)normalizer.autoGIF=false;updateNormalizer()};
+  const btn=document.createElement('button');btn.type='button';btn.textContent=(item.media.isGIF?'GIF · ':'IMG · ')+item.name;
+  btn.title=item.name;btn.onclick=()=>selectNormalizedItem(item);
+  const remove=document.createElement('button');remove.type='button';remove.textContent='×';remove.title='Remover '+item.name;
+  remove.disabled=normalizer.busy;
+  remove.onclick=()=>removeNormalizedItem(item);
+  row.append(marked,btn,remove);host.append(row);
+ }
+ $('normPrev').disabled=!selected||selected.media.frames.length<2;
+ $('normNext').disabled=$('normPrev').disabled;
+ $('normScrub').disabled=$('normPrev').disabled;
+ $('normPlay').disabled=!(ref?.frames.length>1||selected?.media.frames.length>1);
+ $('normExportGIF').disabled=!ready;
+ $('normExportAPNG').disabled=!ready;
+ $('normExportPNG').disabled=!ready;
+ const allReady=normalizer.files.length>0&&normalizer.files.every(item=>{
+  const r=referenceForMedia(item.media);return !!r&&outputSizeAllowed(normalizationSize(r,item.media));
+ })&&!normalizer.busy;
+ $('normExportAll').disabled=!allReady;
+ const selectedSize=ready?normalizationSize(ref,selected.media):null;
+ $('normQuickDownload').disabled=!ready||!outputSizeAllowed(selectedSize||{width:0,height:0});
+ const largeAnimation=selectedSize&&selected?.media.isGIF&&(selectedSize.width>1024||selectedSize.height>1024||selectedSize.width*selectedSize.height*selected.media.frames.length>20000000);
+ $('normQuickDownload').textContent=selected?(selected.media.isGIF?(largeAnimation?'↓ Baixar animação corrigida (APNG)':'↓ Baixar GIF corrigido'):'↓ Baixar imagem corrigida (PNG)'):'↓ Baixar resultado corrigido';
+ $('normQuickAll').disabled=!allReady;
+ $('normImport').disabled=normalizer.busy;
+ syncManualControls();
+ renderNormalizerGallery();
+ if(ref&&selected&&!normalizer.busy){
+  const size=normalizationSize(ref,selected.media);
+  const excess=size.plan.limited;
+  normReport(!outputSizeAllowed(size)?'Dimensões inválidas para exportação.':excess?'A escala solicitada ultrapassa as medidas fixas. Aplicado o encaixe máximo proporcional, sem cortar.':'Saída exata '+size.width+' × '+size.height+' px, '+selected.media.frames.length+' quadro(s) preservado(s), sem cortes.',!outputSizeAllowed(size)||excess);
+ }
+ else if(!ref)normReport('Escolha primeiro a referência. Os arquivos podem ser importados em qualquer ordem.');
+ else if(!selected&&!normalizer.busy)normReport('Referência pronta. Carregue os GIFs ou imagens que deseja ajustar.');
+ drawNormalizer();restartNormalPlayback();
+}
+async function addNormalizerFiles(files,category){
+ const items=Array.from(files).filter(file=>validMedia(file)&&(!category||((file.type==='image/gif'||/\.gif$/i.test(file.name))===(category==='gif'))));
+ if(!items.length){normReport('Escolha um ou mais GIFs, PNGs, JPEGs ou WEBPs.',true);return}
+ if(normalizer.busy)return;
+ normalizer.busy=true;updateNormalizer();
+ let added=0,errors=[];
+ try{
+  for(const file of items){
+   normReport('Lendo '+file.name+' — preservando todos os quadros e seus tempos...');
+   await new Promise(resolve=>setTimeout(resolve,0));
+   try{
+    const media=await decodeMediaFile(file);
+    media.manualScale=normalizer.inheritScale&&scaleModel()?(scaleModel().media.manualScale??100):100;
+    const id=nextID++;
+    normalizer.files.push({id,name:file.name,media,galleryFrame:0,galleryElapsed:0});
+    // Adicionar NÃO muda a seleção atual nem substitui as prévias anteriores.
+    if(normalizer.selected==null){normalizer.selected=id;normalizer.frame=0}
+    added++;
+   }catch(e){errors.push(file.name+': '+e.message)}
+  }
+ }finally{normalizer.busy=false;updateNormalizer()}
+ if(errors.length)normReport(added+' arquivo(s) importado(s); erro(s): '+errors.join(' | '),true);
+ else normReport(added+' arquivo(s) adicionado(s). Todos permanecem na galeria para edição individual ou conjunta.');
+}
+async function exportNormalized(kind,all=false){
+ if(normalizer.busy)return;
+ const files=all?normalizer.files:[activeNormalized()].filter(Boolean);
+ if(!files.length)return;
+ const estimatedPixels=files.reduce((total,item)=>{
+  const ref=referenceForMedia(item.media);
+  if(!ref)return total;
+  const size=normalizationSize(ref,item.media);
+  return total+size.width*size.height*item.media.frames.length;
+ },0);
+ if(estimatedPixels>80000000){
+  const estimate=(estimatedPixels*4/(1024**3)).toFixed(1);
+  if(!window.confirm('Esta escala poderá exigir mais de '+estimate+' GB de memória temporária para exportar os quadros. A ferramenta não limita a escala, mas o navegador pode ficar lento ou não conseguir concluir. Deseja tentar?'))return;
+ }
+ normalizer.busy=true;updateNormalizer();
+ const entries=[];
+ let finalNotice='',finalError=false;
+ try{
+  for(let i=0;i<files.length;i++){
+   const item=files[i],source=item.media,ref=referenceForMedia(source);
+   if(!ref)throw Error('Falta a referência de '+(source.isGIF?'GIFs':'imagens')+'.');
+   normReport('Exportando '+(i+1)+' de '+files.length+' — '+item.name+'...');
+   await new Promise(resolve=>setTimeout(resolve,10));
+   const size=normalizationSize(ref,source);
+   ensureOutputAllowed(size);
+   // Sem limite percentual artificial: se o navegador não conseguir alocar
+   // os quadros finais, o erro será tratado sem alterar as escalas escolhidas.
+   const frames=source.frames.map(frame=>normalizedFrame(frame,ref,source));
+   const delays=source.frames.map(frame=>frame.delay);
+   const selectedKind=all||kind==='auto'?(source.isGIF?'gif':'png'):kind;
+   const outKind=selectedKind==='gif'&&(size.width>1024||size.height>1024||size.width*size.height*frames.length>20000000)?'apng':selectedKind;
+   const blob=outKind==='gif'?gifBytes(frames,10,delays):outKind==='apng'?await apngBytes(frames,10,delays):await blobPNG(frames[Math.min(normalizer.frame,frames.length-1)]);
+   const ext=outKind==='apng'?'apng':outKind;
+   const name=encodeName(item.name.replace(/\.[^.]+$/,''))+'_padronizado.'+ext;
+   if(all){
+    const bytes=new Uint8Array(await blob.arrayBuffer());
+    entries.push({name:String(i+1).padStart(3,'0')+'_'+name,bytes});
+   }else{saveBlob(blob,name);finalNotice='Arquivo exportado: '+name+' · '+size.width+' × '+size.height+' px · '+frames.length+' quadro(s), sem cortes.';}
+  }
+  if(all){saveBlob(zipBlobs(entries),'gifs_e_imagens_padronizados.zip');finalNotice='ZIP exportado com '+entries.length+' arquivo(s), cada um nas medidas de sua referência.';}
+ }catch(e){finalNotice='Falha na exportação: '+e.message;finalError=true}
+ finally{normalizer.busy=false;updateNormalizer();if(finalNotice)normReport(finalNotice,finalError)}
+}
+$('normImport').onclick=()=>$('normInput').click();
+$('normInput').onchange=e=>{addNormalizerFiles(e.target.files);e.target.value=''};
+for(const [kind,label] of [['gif','Gif'],['image','Image']]){
+ $('ref'+label+'Btn').onclick=()=>$('ref'+label+'Input').click();
+ $('ref'+label+'Input').onchange=async e=>{if(e.target.files.length)await addReference(e.target.files[0],kind);e.target.value=''};
+ $('norm'+label+'Btn').onclick=()=>$('norm'+label+'Input').click();
+ $('norm'+label+'Input').onchange=e=>{if(e.target.files.length)addNormalizerFiles(e.target.files,kind);e.target.value=''};
+}
+function setGifAutomatic(on){if(normalizer.busy||on&&normalizer.inheritScale)return;if(on)$('normScaleScope').value='single';normalizer.autoGIF=on;updateNormalizer()}
+$('normAutoNo').onclick=()=>setGifAutomatic(false);
+$('normAutoYes').onclick=()=>setGifAutomatic(true);
+function setScaleTogether(on){if(normalizer.busy||normalizer.inheritScale)return;if(on)normalizer.autoGIF=false;$('normScaleScope').value=on?'all':'single';updateNormalizer()}
+$('normGroupNo').onclick=()=>setScaleTogether(false);
+$('normGroupYes').onclick=()=>setScaleTogether(true);
+$('normInheritScale').onchange=()=>{
+ if(normalizer.busy){$('normInheritScale').checked=normalizer.inheritScale;return}
+ const enabled=$('normInheritScale').checked;
+ const oldScales=normalizer.files.map(item=>[item,item.media.manualScale]);
+ const oldAuto=normalizer.autoGIF;
+ normalizer.inheritScale=enabled;
+ if(enabled){normalizer.autoGIF=false;$('normScaleScope').value='single';normalizer.marked.clear();applyInheritedScale()}
+ if(invalidScaledItem()){
+  for(const [item,scale] of oldScales)item.media.manualScale=scale;
+  normalizer.inheritScale=!enabled;normalizer.autoGIF=oldAuto;
+  $('normInheritScale').checked=!enabled;
+  normReport('Não foi possível vincular todas as escalas. '+outputLimitText(),true);
+  updateNormalizer();return;
+ }
+ updateNormalizer();
+};
+$('normMatchHeight').onclick=()=>{
+ if(normalizer.busy)return;
+ const selected=activeNormalized();
+ if(!selected)return;
+ const ref=referenceForMedia(selected.media);
+ if(!ref){normReport('Carregue uma referência para medir a altura.',true);return}
+ const pct=matchedHeightPercent(ref,selected.media);
+ if(!Number.isFinite(pct)||pct<=0){normReport('Não foi possível calcular a altura deste arquivo.',true);return}
+ tryIndividualScale(selected,pct);
+ if(Math.abs(visibleHeightRatio(ref,selected.media)-1)<.001){
+  normReport('Altura igualada à referência sem deformação, mantendo as medidas exatas do quadro.');
+ }else normReport('A altura desejada não cabe na largura do modelo. Foi aplicado o maior tamanho possível sem cortes.',true);
+};
+function setComparison(mode){
+ document.body.classList.remove('view-before','view-after','view-both');
+ document.body.classList.add('view-'+mode);
+ for(const [id,value] of [['normViewBefore','before'],['normViewAfter','after'],['normViewBoth','both']]){
+  const button=$(id),active=value===mode;button.classList.toggle('active',active);button.setAttribute('aria-pressed',String(active));
+ }
+}
+$('normViewBefore').onclick=()=>setComparison('before');
+$('normViewAfter').onclick=()=>setComparison('after');
+$('normViewBoth').onclick=()=>setComparison('both');
+setComparison('after');
+$('advancedToggle').onclick=()=>{
+ const expanded=document.body.classList.toggle('show-advanced');
+ $('advancedToggle').setAttribute('aria-expanded',String(expanded));
+ $('advancedToggle').textContent=expanded?'✕ Fechar avançado':'⚙ Avançado';
+};
+$('normDrop').addEventListener('dragover',e=>{e.preventDefault();$('normDrop').classList.add('dragover')});
+$('normDrop').addEventListener('dragleave',()=>$('normDrop').classList.remove('dragover'));
+$('normDrop').addEventListener('drop',e=>{e.preventDefault();$('normDrop').classList.remove('dragover');addNormalizerFiles(e.dataTransfer.files)});
+$('normAlign').addEventListener('change',()=>{
+ const selected=activeNormalized();
+ if(selected)selected.media.align=$('normAlign').value;
+ drawNormalizer();renderNormalizerGallery();
+});
+$('normPixel').addEventListener('change',()=>{drawNormalizer();renderNormalizerGallery()});
+window.addEventListener('resize',()=>drawNormalizer());
+$('normScaleScope').onchange=()=>{syncManualControls();drawNormalizer()};
+$('normScale').oninput=()=>applyManualScale($('normScale').value);
+$('normScaleNumber').onchange=()=>applyManualScale($('normScaleNumber').value);
+$('normScaleReset').onclick=()=>applyManualScale(100);
+$('normMinus').onclick=()=>applyManualScale(Number($('normScale').value)-5);
+$('normPlus').onclick=()=>applyManualScale(Number($('normScale').value)+5);
+$('normPlay').onclick=()=>{normalizer.playing=!normalizer.playing;drawNormalizer();restartNormalPlayback()};
+$('normPrev').onclick=()=>{const s=activeNormalized();if(s){normalizer.frame=(normalizer.frame+s.media.frames.length-1)%s.media.frames.length;drawNormalizer();scheduleNormalizer()}};
+$('normNext').onclick=()=>{const s=activeNormalized();if(s){normalizer.frame=(normalizer.frame+1)%s.media.frames.length;drawNormalizer();scheduleNormalizer()}};
+$('normScrub').oninput=()=>{normalizer.frame=Number($('normScrub').value);drawNormalizer();scheduleNormalizer()};
+$('normExportGIF').onclick=()=>exportNormalized('gif');
+$('normExportAPNG').onclick=()=>exportNormalized('apng');
+$('normExportPNG').onclick=()=>exportNormalized('png');
+$('normExportAll').onclick=()=>exportNormalized('gif',true);
+$('normQuickDownload').onclick=()=>exportNormalized('auto');
+$('normQuickAll').onclick=()=>exportNormalized('auto',true);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)drawNormalizer()});
+
+// Projeto vazio por padrão; o modelo só é importado separadamente.
+updateNormalizer();
+renderReference();
+renderSources();
+renderSprites();
+refresh();
+
+</script>
+</body></html>

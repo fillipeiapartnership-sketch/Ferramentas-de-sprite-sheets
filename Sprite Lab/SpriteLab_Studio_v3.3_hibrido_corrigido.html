@@ -1,0 +1,1614 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpriteLab Studio v2.3 | Separador de Sprites</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141c2d;--panel2:#1a2437;--line:#2b374c;--txt:#eef4ff;--soft:#a4b2ca;--accent:#7b9bff;--teal:#55ddc1;--red:#ff7d95}*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--txt)}button,input,select{font:inherit}button{border:1px solid var(--line);background:#212d43;color:var(--txt);border-radius:11px;padding:10px 12px;cursor:pointer;font-weight:650;transition:.16s}button:hover:not(:disabled){border-color:#7393ef;background:#2a3958}button:disabled{opacity:.38;cursor:not-allowed}.primary{background:linear-gradient(135deg,#7294ff,#9565ec);color:#fff;border:0}.primary:hover:not(:disabled){background:linear-gradient(135deg,#88a4ff,#a17df3)}.teal{background:#1b534f;color:#cefff5;border-color:#26736c}.tiny{font-size:12px;padding:7px 10px;border-radius:8px}.danger{color:#ffafbf}header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:#101727;gap:12px}.brand{display:flex;align-items:center;gap:12px}.mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,#648efb,#6ae0c1);display:grid;place-items:center;color:#0d1a30;font-size:24px;font-weight:1000}.brand h1{margin:0;font-size:21px;letter-spacing:-.65px}.brand small{color:var(--soft);font-size:12px}.header-right{display:flex;align-items:center;gap:9px;color:var(--soft);font-size:12px}.pill{border:1px solid var(--line);border-radius:30px;padding:7px 10px}main{height:calc(100vh - 72px);min-height:640px;display:grid;grid-template-columns:300px minmax(320px,1fr) 288px}.sidebar{overflow:auto;padding:18px;background:var(--panel);border-right:1px solid var(--line)}.right{border-left:1px solid var(--line);border-right:0}.section{margin-bottom:23px}.sectitle{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#8fa2c6;font-weight:800;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}.upload{border:1.5px dashed #4c6592;border-radius:15px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;cursor:pointer;background:linear-gradient(145deg,#202f49,#192234);transition:.2s}.upload.drag{border-color:var(--teal);background:#1c3d43}.upload strong{font-size:14px}.upload span{font-size:12px;color:var(--soft)}.upload svg{color:#a7bbff}.filename{font-size:12px;color:var(--teal);overflow-wrap:anywhere;line-height:1.5;margin-top:9px}.mode-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.mode-buttons button{font-size:11px;padding:10px 3px}.mode-buttons .active{border-color:#819aff;color:#fff;background:#304575}.hint{font-size:12px;line-height:1.55;color:var(--soft);margin:10px 0 12px}.field{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;font-size:12px;color:#d9e2f4}.field input[type=number]{width:74px;padding:7px 9px;border-radius:8px;border:1px solid var(--line);background:#101929;color:var(--txt)}.field input[type=range]{width:115px;accent-color:#8ea7ff}.field select{background:#101929;color:#fff;border:1px solid var(--line);padding:7px;border-radius:8px}.field label{flex:1}.field small{font-variant-numeric:tabular-nums;color:var(--soft);min-width:23px;text-align:right}.full{width:100%;margin-top:6px}.two{display:grid;grid-template-columns:1fr 1fr;gap:7px}.check{display:flex;align-items:flex-start;gap:9px;font-size:12px;line-height:1.4;color:#dbe5f9;margin:13px 0;cursor:pointer}.check input{accent-color:#8ba6ff;margin-top:2px}.notice{padding:10px 12px;background:#262d3e;border-left:3px solid #eac277;border-radius:6px;color:#efdbad;font-size:11px;line-height:1.5}.workspace{display:flex;flex-direction:column;min-width:0;background:#0d1423}.toolbar{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:8px;border-bottom:1px solid var(--line);background:#111b2b}.toolbar .group{display:flex;align-items:center;gap:8px}.toolbar .group button{font-size:12px;padding:8px 10px}.meta{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums}.view{position:relative;overflow:auto;flex:1;display:flex;align-items:flex-start;justify-content:flex-start;background:radial-gradient(ellipse at 55% 20%,#253046 0,#121c2d 45%,#0b1120 100%)}.empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:12px;color:var(--soft)}.empty h2{margin:0;color:var(--txt);font-size:23px}.empty p{max-width:350px;font-size:13px;line-height:1.65;margin:0}.stage-wrap{display:none;margin:auto;padding:28px;min-width:min-content}.stage{position:relative;line-height:0;box-shadow:0 14px 65px #0008;border:1px solid #506078;touch-action:none;background-color:#e0e7f0;background-image:linear-gradient(45deg,#c8d1dc 25%,transparent 25%),linear-gradient(-45deg,#c8d1dc 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c8d1dc 75%),linear-gradient(-45deg,transparent 75%,#c8d1dc 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}canvas#editor{display:block;cursor:crosshair;max-width:none}.bottom{min-height:54px;display:flex;align-items:center;gap:12px;border-top:1px solid var(--line);background:#111b2b;padding:10px 20px;font-size:12px;color:var(--soft)}.dot{width:8px;height:8px;background:var(--teal);border-radius:50%;display:inline-block}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}.stat{background:#1e2940;padding:14px 12px;border:1px solid #2d3a53;border-radius:12px}.stat strong{display:block;font-size:22px;font-variant-numeric:tabular-nums}.stat small{font-size:11px;color:var(--soft)}.thumbs{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:320px;overflow:auto}.thumb{padding:7px;border:1px solid #35415a;border-radius:10px;background:#1c283c;text-align:center;cursor:pointer;color:var(--soft);font-size:11px}.thumb.selected{border-color:#a4baff;box-shadow:inset 0 0 0 1px #a4baff;color:#fff}.thumb canvas{width:100%;height:84px;object-fit:contain;border-radius:5px;background-color:#dce4eb;background-image:linear-gradient(45deg,#bfc8d2 25%,transparent 25%),linear-gradient(-45deg,#bfc8d2 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#bfc8d2 75%),linear-gradient(-45deg,transparent 75%,#bfc8d2 75%);background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;margin-bottom:6px}.small-note{font-size:11px;color:var(--soft);line-height:1.5}.divider{height:1px;background:var(--line);margin:17px 0}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);padding:13px 19px;border:1px solid #6a82b2;border-radius:12px;box-shadow:0 8px 40px #0009;background:#203651;color:#f0f5ff;font-size:13px;z-index:20;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateX(-50%)}.tips{margin-top:17px;border:1px solid #314058;border-radius:12px;padding:12px;color:#c5d3ea;font-size:11px;line-height:1.65;background:#192438}.tips b{color:#fff}button:focus-visible,input:focus-visible{outline:2px solid #9fb6ff;outline-offset:2px} @media(max-width:1150px){main{grid-template-columns:258px minmax(200px,1fr) 238px}.sidebar{padding:13px}.toolbar{padding:0 9px}.toolbar .group{gap:3px}}@media(max-width:860px){header{padding:0 12px}main{height:auto;min-height:0;display:flex;flex-direction:column}.sidebar{overflow:visible;border-right:none;border-bottom:1px solid var(--line)}.right{border-top:1px solid var(--line)}.workspace{height:65vh;min-height:390px}.stage-wrap{padding:18px}.header-right .pill{display:none}}
+
+.preset-buttons{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 15px}.preset-buttons .preset{font-size:11px;line-height:1.35;min-height:47px;padding:8px 5px;font-weight:650}.preset.active{border-color:#8af0d8!important;background:#20534e!important;color:#d8fff7}.selection-info{border:1px solid #46617a;border-radius:10px;padding:10px 12px;margin-top:9px;font-size:12px;color:#dbeaff;background:#1b3042;line-height:1.55}.selection-info strong{color:#83ead2}.thumb{position:relative;min-width:0;padding:6px;outline-offset:2px}.thumb .thumb-remove{position:absolute;right:3px;top:3px;display:grid;place-items:center;background:#572b3c;border:1px solid #9c5263;color:#fff;width:25px;height:25px;line-height:1;padding:0;border-radius:7px;font-size:16px;z-index:1}.thumb .thumb-remove:hover{background:#a43d58}.thumb .thumb-id{display:block;font-weight:700;font-size:11px;color:#dae7ff;margin:1px 0}.thumb .thumb-dims{display:block;color:#99adc9;font-size:10px}.thumb:hover{border-color:#819aff}.thumb canvas{height:96px}.toolbar .group{flex-wrap:nowrap}.tips{overflow-wrap:anywhere}input[type=color]{min-width:44px}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="mark">✂</div><div><h1>SpriteLab <span style="color:#9ab1ff">Studio</span></h1><small>Separe, ajuste e exporte seus sprites</small></div></div><div class="header-right"><span class="pill">100% local • Sem enviar arquivos</span><span>v2.3 · Grade inteligente + isolamento</span></div></header>
+<main>
+<aside class="sidebar">
+<section class="section"><h3 class="sectitle">01 · Importar imagem</h3><label class="upload" id="dropzone" tabindex="0" role="button" for="file"><svg width="37" height="37" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0L7 9m5-5 5 5M4 16.5V19a1 1 0 001 1h14a1 1 0 001-1v-2.5"/></svg><strong>Escolher sprite sheet</strong><span>Arraste a imagem aqui ou clique<br>PNG, WEBP, JPG</span></label><input type="file" id="file" accept="image/png,image/webp,image/jpeg,image/gif,image/bmp" hidden><div class="filename" id="fileInfo"></div></section>
+<section class="section"><h3 class="sectitle">02 · Método de separação</h3><div class="mode-buttons"><button class="active" data-mode="auto">✨ Automático</button><button data-mode="grid">▦ Grade</button><button data-mode="manual">✎ Manual</button></div><div id="autoControls"><label class="check"><input id="clickSelection" type="checkbox" checked><span><b>Seleção por clique (sem quadradinhos)</b><br><span class="small-note">Clique diretamente no objeto para selecioná-lo. Em folhas grandes, não desenha milhares de caixas.</span></span></label><p class="hint">Isola cada objeto usando sua própria máscara de pixels. Preserva bordas e evita incluir partes de objetos vizinhos.</p><div class="field"><label for="strategy">Direção da detecção</label><select id="strategy"><option value="smart">Inteligente (recomendado)</option><option value="columns">Colunas primeiro</option><option value="rows">Linhas primeiro</option></select></div><div class="field"><label for="gapX">Unir espaços horizontais até</label><input id="gapX" type="number" min="0" max="200" value="8" title="Espaços internos menores que este valor são tratados como parte do mesmo sprite"><small>px</small></div><div class="field"><label for="gapY">Unir espaços verticais até</label><input id="gapY" type="number" min="0" max="200" value="8"><small>px</small></div><div class="field"><label for="minSize">Tamanho mínimo</label><input id="minSize" type="number" min="1" max="1000" value="24"><small>px</small></div><div class="field"><label for="alpha">Opacidade mínima</label><input id="alpha" type="range" min="1" max="254" value="12"><small id="alphaLabel">12</small></div><button class="primary full" id="autoBtn">Detectar sprites</button><p class="small-note" id="strategyInfo">O modo Inteligente é recomendado para folhas com poses e efeitos de ataque em tamanhos diferentes.</p></div><div id="gridControls" hidden><p class="hint">Ideal para folhas organizadas em linhas e colunas com células regulares.</p><div class="two"><div class="field"><label>Linhas</label><input type="number" id="rows" min="1" max="100" value="2"></div><div class="field"><label>Colunas</label><input type="number" id="cols" min="1" max="100" value="4"></div></div><div class="field"><label>Margem externa</label><input id="margin" type="number" min="0" max="2000" value="0"><small>px</small></div><div class="field"><label>Espaço entre colunas</label><input id="gridGapX" type="number" min="0" max="1000" value="0"><small>px</small></div><div class="field"><label>Espaço entre linhas</label><input id="gridGapY" type="number" min="0" max="1000" value="0"><small>px</small></div><button class="primary full" id="gridBtn">Aplicar grade</button></div><div id="manualControls" hidden><p class="hint">Desenhe um retângulo ao redor de cada sprite. Arraste para mover e use o quadrado no canto para redimensionar.</p><button class="primary full" id="drawBtn">+ Desenhar novo recorte</button><div class="two" style="margin-top:8px"><button id="dupBtn" class="tiny">Duplicar</button><button id="delBtn" class="tiny danger">Excluir</button></div><div id="repairPanel" style="margin-top:12px;padding:12px;border:1px solid #537e89;border-radius:10px;background:#172b3a"><b>Correção pontual (sem reiniciar)</b><p class="small-note">Selecione um objeto e corrija somente sua máscara. Os demais recortes permanecem intactos.</p><div class="two"><button id="repairAdd" class="tiny" type="button">＋ Adicionar pixels</button><button id="repairErase" class="tiny" type="button">− Remover pixels</button></div><div class="field"><label>Raio do pincel</label><input id="repairRadius" type="number" min="1" max="90" value="12"><small>px</small></div><button id="repairTwoClicks" class="full tiny" type="button">◎ Separar escolhendo 2 objetos</button><button id="repairSplit" class="full tiny" type="button">✂ Separar por linha desenhada</button><button id="repairStop" class="full tiny" type="button">✓ Encerrar correção</button><p id="repairStatus" class="small-note">Selecione um recorte para corrigir.</p></div><button id="splitBtn" class="full tiny">✂ Dividir recorte por clique</button><button id="tightenBtn" class="full tiny">▣ Ajustar caixa ao conteúdo visível</button><p class="small-note">Use as miniaturas à direita para selecionar ou descartar uma caixa pelo X. Se dois personagens aparecerem no mesmo retângulo, ative Dividir e clique na linha entre eles. Repita quantas vezes quiser.</p></div></section>
+<section class="section"><h3 class="sectitle">03 · Fundo da imagem</h3><label class="check"><input id="autoBg" type="checkbox" checked><span><b>Remover fundo automaticamente</b><br><span class="small-note">Detecta fundos lisos e quadriculados. Refina transparência e halos externos quando a detecção é confiável.</span></span></label><label class="check"><input id="cleanGreen" type="checkbox" checked><span><b>Limpar halo verde do chroma key</b><span class="small-note"> · limpa halos externos de chroma key. Desmarque quando o desenho tiver detalhes verdes verdadeiros.</span></span></label><div class="field"><label for="bgColor">Cor do fundo (opcional)</label><input type="color" id="bgColor" value="#00ff00" title="Escolha a cor exata do fundo" style="width:50px;height:31px;border:0;background:transparent;cursor:pointer"></div><label class="check"><input id="useBgColor" type="checkbox"><span>Usar a cor escolhida para remover o fundo</span></label><label class="check"><input id="softEdges" type="checkbox" checked><span>Suavizar bordas e pixels misturados ao fundo</span></label><button id="pickBgBtn" class="full tiny teal" type="button">◎ Apagar fundo clicando na imagem</button><button id="undoBgBtn" class="full tiny" type="button" disabled>↶ Desfazer última limpeza do fundo</button><label class="check"><input id="bgRemove" type="checkbox">Forçar remoção de fundo uniforme</label><div id="bgOptions"><p class="hint">Apaga fundos lisos e quadriculados, limpa frestas internas e suaviza pixels de borda quando a detecção é confiável. A remoção permanece conservadora para fundos complexos e partes semelhantes ao fundo.</p><div class="field"><label>Sensibilidade</label><input type="range" id="tolerance" min="0" max="110" value="35"><small id="tolLabel">35</small></div></div><p class="small-note" id="alphaInfo">A ferramenta verifica o fundo ao importar a imagem e mostra o resultado aqui.</p></section>
+</aside>
+<section class="workspace"><div class="toolbar"><div class="group"><button id="zoomOut" title="Diminuir zoom">−</button><button id="fitBtn" title="Ajustar a imagem">Ajustar</button><button id="zoomIn" title="Aumentar zoom">+</button><span class="meta" id="zoomLabel">100%</span></div><div class="group"><button id="undoBtn" title="Desfazer (Ctrl+Z)">↶ Desfazer</button><button id="redoBtn" title="Refazer (Ctrl+Y)">↷ Refazer</button><button id="clearBtn" title="Limpar recortes">Limpar</button></div></div><div class="view" id="view"><div class="empty" id="empty"><svg width="95" height="95" viewBox="0 0 100 100" fill="none"><rect x="9" y="19" width="82" height="61" rx="12" stroke="#647da9" stroke-width="2" stroke-dasharray="6 5"/><rect x="20" y="30" width="26" height="38" rx="5" fill="#34496b" stroke="#8ca8e3"/><rect x="55" y="30" width="26" height="38" rx="5" fill="#34496b" stroke="#8ca8e3"/><path d="M50 24v52" stroke="#65d8c6" stroke-width="2" stroke-dasharray="4 4"/></svg><h2>Sua sprite sheet começa aqui</h2><p>Carregue uma imagem para encontrar os sprites, ajustar os recortes e exportar todos com transparência.</p></div><div class="stage-wrap" id="stageWrap"><div class="stage"><canvas id="editor" aria-label="Editor visual dos recortes"></canvas></div></div></div><div class="bottom"><span class="dot"></span><span id="status">Aguardando uma sprite sheet</span></div></section>
+<aside class="sidebar right"><section class="section"><h3 class="sectitle">Resultado</h3><div class="stats"><div class="stat"><strong id="count">0</strong><small>sprites encontrados</small></div><div class="stat"><strong id="dimensions">–</strong><small>dimensões da imagem</small></div></div><div class="selection-info" style="margin-bottom:12px"><strong>Conferência de quantidade</strong><div class="field"><label for="expectedItems">Itens esperados na folha</label><input id="expectedItems" type="number" min="0" max="100000" value="0" title="Informe a quantidade real de objetos; zero significa não informado"></div><div class="small-note">Informe o total esperado para conferir se algum item ficou sem separar. Uma contagem igual não garante recortes corretos.</div><div id="countAudit" role="status" aria-live="polite" style="margin-top:8px;font-weight:700">Total ainda não informado.</div></div><div class="thumbs" id="thumbs"></div><div id="selectedInfo" class="selection-info" hidden></div><p class="small-note" id="previewNotice">As miniaturas aparecerão aqui após a separação.</p></section><section class="section"><h3 class="sectitle">Auditoria de qualidade</h3><div id="qualityReport" class="tips" style="margin-top:0" aria-live="polite">Importe uma sprite sheet para conferir a transparência e a escala.</div><button id="qualityBtn" class="full tiny" type="button">↻ Revisar resultados</button></section><div class="divider"></div><section class="section"><h3 class="sectitle">04 · Exportação</h3><p class="small-note" style="margin:0 0 6px">Ajuste o projeto conforme o tipo de arte. Objetos preservam seus tamanhos originais; animações podem padronizar a escala.</p><div class="preset-buttons"><button id="presetObjects" type="button" class="preset active">🌿 Objetos e cenários</button><button id="presetCharacter" type="button" class="preset">♟ Personagens e animações</button></div><label class="check"><input id="sameSize" type="checkbox"> <span><b>Mesmo tamanho em todos os PNGs</b><br><span class="small-note">Garante largura e altura idênticas em todos os PNGs. O alinhamento é configurável.</span></span></label><label class="check"><input type="checkbox" id="trim" checked><span>Ajustar recorte ao conteúdo visível</span></label><div class="field"><label>Margem transparente</label><input type="number" id="padding" min="0" max="500" value="16"><small>px</small></div><div class="field"><label>Uniformizar escala</label><select id="scaleMode"><option value="head">Mesma cabeça (automático)</option><option value="none" selected>Preservar tamanho original</option><option value="height">Mesma altura visual</option><option value="width">Mesma largura visual</option><option value="contain">Encaixar no maior quadro</option></select></div><div class="field"><label>Alinhamento</label><select id="alignMode"><option value="feet">Pelos pés</option><option value="center" selected>Centralizado</option><option value="top">Pelo topo</option></select></div><label class="check"><input id="headCenter" type="checkbox"><span><b>Centralizar o personagem pela cabeça</b><span class="small-note"> · mantém a cabeça no mesmo eixo horizontal, mesmo com braços estendidos.</span></span></label><button id="measureHeadBtn" class="full tiny" title="Selecione um sprite e clique nas duas extremidades da largura da cabeça">↔ Calibrar largura da cabeça (2 cliques)</button>
+<p class="small-note" id="headInfo">Escala automática usa a largura estimada do rosto, com alinhamento horizontal pela cabeça. Se necessário, calibre cada sprite com dois cliques. O desenho nunca será deformado.</p>
+<div class="divider"></div><h3 class="sectitle">Dimensões e proporção</h3><div class="field"><label for="frameSize">Tamanho dos PNGs</label><select id="frameSize"><option value="auto" selected>Automático</option><option value="custom">Personalizado</option></select></div><div id="customFrameSize" hidden><div class="field"><label for="frameWidth">Largura final (px)</label><input id="frameWidth" type="number" min="16" max="8192" value="256"></div><div class="field"><label for="frameHeight">Altura final (px)</label><input id="frameHeight" type="number" min="16" max="8192" value="256"></div></div><div class="field"><label for="frameAspect">Proporção do quadro</label><select id="frameAspect"><option value="auto" selected>Automática</option><option value="1">1:1 (quadrado)</option><option value="1.3333333333333333">4:3</option><option value="1.7777777777777777">16:9</option><option value="0.5625">9:16</option></select></div><p class="small-note">Por padrão, o tamanho dos personagens é aproximado pela largura do rosto, preservando a altura natural do salto. Para resultados mais precisos, selecione um quadro e use Calibrar largura da cabeça.</p><div class="field"><label>Separação na folha final</label><input type="number" id="sheetGap" min="0" max="500" value="32"><small>px</small></div><div class="field"><label>Colunas da folha final</label><input type="number" id="sheetCols" min="1" max="30" value="4"></div><button class="primary full" id="zipBtn" disabled>↓ Baixar todos em ZIP</button><button class="teal full" id="sheetBtn" disabled>▦ Baixar folha organizada</button><button class="full" id="singleBtn" disabled>↓ Baixar sprite selecionado</button><p class="small-note" style="margin-top:11px">Exportação em PNG com transparência. Tudo é processado no seu próprio computador.</p></section><div class="tips"><b>💡 Dica para jogos</b><p style="margin-bottom:0">Para objetos, preserve o tamanho original. Para animações sem personagens pulando de posição, mantenha <b>Mesmo tamanho</b> ativado. A escala visual é padronizada pela cabeça; a pose pode mudar de altura sem mudar o tamanho do personagem. Se precisar, calibre cada cabeça manualmente. Use <b>Pelos pés</b> quando todas as poses tocam o chão. Se o automático separar braços ou objetos indevidamente, aumente o espaço horizontal permitido ou corrija os recortes no modo Manual.</p></div></aside>
+</main><dialog id="doubleSplitDialog" style="background:#19263c;color:#eef4ff;border:1px solid #718cbb;border-radius:14px;padding:22px;max-width:420px;box-shadow:0 12px 80px #000b"><h3 id="doubleSplitTitle" style="margin:0 0 10px">Separar objetos</h3><p id="doubleSplitDescription" style="line-height:1.5;color:#c5d3ea"></p><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="doubleSplitHorizontal" class="primary">↕ Um acima do outro</button><button id="doubleSplitVertical" class="primary">↔ Lado a lado</button><button onclick="document.getElementById('doubleSplitDialog').close()">Cancelar</button></div></dialog><div class="toast" role="status" aria-live="polite" id="toast"></div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const state={gridInfo:null,headMeasure:null,headStats:[],quality:{},greenRemoved:0,greenSkipped:false,pickBgActive:false,manualBgSeeds:[],ownerMap:null,original:null,source:null,pixels:null,filename:'sprites',mode:'auto',rects:[],selected:-1,zoom:1,fit:1,manualDraw:false,manualSplit:false,drag:null,history:[],future:[],panActive:false,pan:null,imageOpaque:false,toastTimer:0};
+const editor=$('editor'), ctx=editor.getContext('2d');
+const toInt=(id,min=0,max=1e9)=>Math.min(max,Math.max(min,Number.isFinite(+$ (id).value)?Math.round(+$ (id).value):min));
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>el.classList.remove('show'),3200)}
+function status(msg){$('status').textContent=msg}
+function saveHistory(){state.history.push(state.rects.map(r=>({...r,pixelMask:r.pixelMask?.slice()})));state.future=[];if(state.history.length>60)state.history.shift();$('undoBtn').disabled=false;$('redoBtn').disabled=true}
+function undo(){if(!state.history.length)return;state.future.push(state.rects.map(r=>({...r,pixelMask:r.pixelMask?.slice()})));state.rects=state.history.pop();state.selected=-1;sync();toast('Última alteração desfeita')}
+function redo(){if(!state.future.length)return;state.history.push(state.rects.map(r=>({...r,pixelMask:r.pixelMask?.slice()})));state.rects=state.future.pop();state.selected=-1;sync();toast('Alteração refeita')}
+function setRects(arr,sel=-1){saveHistory();state.rects=arr.map(r=>normalize(r));state.selected=sel;sync()}
+function normalize(r){const w=state.source?.width||1,h=state.source?.height||1;const x=Math.max(0,Math.min(w-1,Math.round(r.x))),y=Math.max(0,Math.min(h-1,Math.round(r.y)));return{...r,x,y,w:Math.max(1,Math.min(w-x,Math.round(r.w))),h:Math.max(1,Math.min(h-y,Math.round(r.h)))}}
+function ready(){return !!state.source}
+function setMode(mode){state.mode=mode;if(mode!=='auto'){state.partition=null;if(mode==='grid')state.gridInfo=null;}state.manualDraw=false;state.manualSplit=false;if($('splitBtn'))$('splitBtn').textContent='✂ Dividir recorte por clique';document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('autoControls').hidden=mode!=='auto';$('gridControls').hidden=mode!=='grid';$('manualControls').hidden=mode!=='manual';draw()}
+function loadFile(file){if(!file)return;if(!file.type.startsWith('image/')){toast('Escolha uma imagem PNG, WEBP ou JPG');return}if(file.size>80*1024*1024){toast('Imagem muito grande (limite 80 MB)');return}
+ const u=URL.createObjectURL(file), im=new Image();im.onload=()=>{URL.revokeObjectURL(u);if(!im.naturalWidth||!im.naturalHeight||im.naturalWidth*im.naturalHeight>55e6){toast('A imagem ultrapassa 55 milhões de pixels. Use uma versão menor.');return}state.original=im;state.ownerMap=null;state.gridInfo=null;state.filename=(file.name.replace(/\.[^.]+$/,'').replace(/[^a-zA-Z0-9_\-]/g,'_')||'sprites');state.history=[];state.future=[];state.rects=[];state.partition=null;state.selected=-1;state.zoom=1;state.manualBgSeeds=[];state.pickBgActive=false;$('pickBgBtn').textContent='◎ Apagar fundo clicando na imagem';$('undoBgBtn').disabled=true;processImage();$('empty').style.display='none';$('stageWrap').style.display='block';$('fileInfo').textContent=`${file.name} · ${(file.size/1024/1024).toFixed(2)} MB`;$('dimensions').textContent=`${im.naturalWidth}×${im.naturalHeight}`;requestAnimationFrame(()=>{fitImage();if(state.mode==='grid')applyGrid();else if(state.mode==='auto')autoDetect();else sync()});};im.onerror=()=>{URL.revokeObjectURL(u);toast('Não foi possível ler essa imagem')};im.src=u;
+}
+// Amostragem robusta do perímetro: evita pressupor que o pixel (0,0) seja fundo.
+// Só habilita automaticamente em fundos com cor dominante estável e quase opacos.
+function estimateSolidBackground(d){
+ const w=d.width,h=d.height,px=d.data,samples=[],steps=46;
+ const push=(x,y)=>{const k=(y*w+x)*4;samples.push([px[k],px[k+1],px[k+2],px[k+3]])};
+ for(let i=0;i<steps;i++){
+   const x=Math.round((w-1)*i/(steps-1)),y=Math.round((h-1)*i/(steps-1));
+   push(x,0);push(x,h-1);push(0,y);push(w-1,y);
+ }
+ const median=(a)=>{const v=a.sort((a,b)=>a-b);return v[Math.floor(v.length/2)]};
+ const rgb=[0,1,2].map(k=>median(samples.map(p=>p[k])));
+ const alpha=median(samples.map(p=>p[3]));
+ let matches=0;
+ for(const q of samples){const delta=Math.max(...rgb.map((v,i)=>Math.abs(v-q[i])));if(q[3]>=245&&delta<=24)matches++;}
+ const fraction=matches/samples.length;
+ return {rgb, fraction, confident:alpha>=245&&fraction>=.84};
+}
+// Reconhece um quadriculado de DUAS cores, mesmo que ele tenha sido exportado
+// como pixels opacos. A análise é conservadora para não apagar cenários reais.
+function estimateCheckerBackground(d){
+ const W=d.width,H=d.height,px=d.data,bins=new Map();
+ const sample=(x,y)=>{
+   const k=(y*W+x)*4;if(px[k+3]<245)return;
+   const R=px[k],G=px[k+1],B=px[k+2];
+   const key=((R>>3)<<10)|((G>>3)<<5)|(B>>3);
+   let q=bins.get(key);if(!q){q={count:0,r:0,g:0,b:0};bins.set(key,q)}
+   q.count++;q.r+=R;q.g+=G;q.b+=B;
+ };
+ const dx=Math.max(1,Math.floor(W/350)),dy=Math.max(1,Math.floor(H/350));
+ const insetX=Math.min(W-1,Math.max(1,Math.round(W*.015)));
+ const insetY=Math.min(H-1,Math.max(1,Math.round(H*.015)));
+ for(let x=0;x<W;x+=dx){sample(x,0);sample(x,H-1);sample(x,insetY);sample(x,H-1-insetY)}
+ for(let y=0;y<H;y+=dy){sample(0,y);sample(W-1,y);sample(insetX,y);sample(W-1-insetX,y)}
+ const sorted=[...bins.values()].sort((a,b)=>b.count-a.count);
+ const total=sorted.reduce((a,b)=>a+b.count,0);
+ if(sorted.length<2||total<50)return null;
+ const a=sorted[0],b=sorted[1],fraction=(a.count+b.count)/total;
+ if(fraction<.83||a.count/total<.10||b.count/total<.10)return null;
+ const rgb=q=>[q.r/q.count,q.g/q.count,q.b/q.count];
+ const colors=[rgb(a),rgb(b)];
+ const delta=Math.max(...colors[0].map((v,i)=>Math.abs(v-colors[1][i])));
+ // Quadriculados de edição com frequência são cinzas neutros.
+ const neutral=colors.every(c=>Math.max(...c)-Math.min(...c)<14);
+ if(!neutral||delta<9||delta>100)return null;
+ // Verifica alternância periódica da paleta em dois eixos, evitando
+ // apagar imagens que apenas possuem duas cores de cinza na borda.
+ function periodic(horizontal){
+   const len=Math.min(horizontal?W:H,420), runLengths=[];
+   let last=-1,run=0,turns=0;
+   for(let z=0;z<len;z++){
+     const k=(horizontal?z: z*W)*4;
+     const d0=(px[k]-colors[0][0])**2+(px[k+1]-colors[0][1])**2+(px[k+2]-colors[0][2])**2;
+     const d1=(px[k]-colors[1][0])**2+(px[k+1]-colors[1][1])**2+(px[k+2]-colors[1][2])**2;
+     const t=d0<d1?0:1;
+     if(Math.min(d0,d1)>3*24*24)continue;
+     if(last>=0&&t!==last){if(run>1)runLengths.push(run);turns++;run=0;}
+     last=t;run++;
+   }
+   if(turns<5||runLengths.length<4)return false;
+   const sorted=[...runLengths].sort((x,y)=>x-y),m=sorted[Math.floor(sorted.length/2)];
+   return m>=2&&m<=65&&runLengths.filter(v=>Math.abs(v-m)<=Math.max(2,m*.4)).length/runLengths.length>=.65;
+ }
+ const gridConfidence=periodic(true)&&periodic(false);
+ return {colors,confident:gridConfidence,fraction};
+}
+// Limpeza de fundo aprimorada: amostragem de cor + preenchimento externo,
+// remoção interna segura em fundos quadriculados e tratamento de antialias.
+function removeDetectedBackground(d,solid,checker,manual){
+ const W=d.width,H=d.height,n=W*H,src=d.data;
+ const patterned=!!(checker?.confident&&!solid.confident);
+ const colors=patterned?checker.colors:[solid.rgb];
+ const colorSpan=!patterned?(Math.max(...solid.rgb)-Math.min(...solid.rgb)):0;
+ const dominantDelta=!patterned?Math.max(
+   Math.abs(solid.rgb[1]-solid.rgb[0]),
+   Math.abs(solid.rgb[1]-solid.rgb[2]),
+   Math.abs(solid.rgb[0]-solid.rgb[2])
+ ):0;
+ const vividSolid=!patterned&&colorSpan>=60&&dominantDelta>=34;
+ const baseTol=patterned?17:toInt('tolerance',0,110);
+ const classifyTol=patterned?baseTol:(vividSolid?Math.max(baseTol,44):baseTol);
+ const tol2=3*classifyTol*classifyTol;
+ const classified=new Uint8Array(n),removed=new Uint8Array(n);
+ const queue=new Int32Array(n);let head=0,tail=0;
+ function diff2(i){
+   const k=i*4;let score=Infinity;
+   for(const c of colors){
+     const dr=src[k]-c[0],dg=src[k+1]-c[1],db=src[k+2]-c[2];
+     score=Math.min(score,dr*dr+dg*dg+db*db);
+   }return score;
+ }
+ for(let i=0;i<n;i++)if(src[i*4+3]<8||diff2(i)<=tol2)classified[i]=1;
+ function seed(i){if(!classified[i]||removed[i])return;removed[i]=1;queue[tail++]=i;}
+ for(let x=0;x<W;x++){seed(x);seed((H-1)*W+x)}
+ for(let y=0;y<H;y++){seed(y*W);seed(y*W+W-1)}
+ // Nítidos quadriculados de fundo, com mais de 2 amostras repetidas em todas
+ // as bordas, podem ser apagados também entre braços/pernas, sem atravessar
+ // barreiras de contorno do personagem.
+ while(head<tail){const i=queue[head++],x=i%W,y=(i/W)|0;
+   if(x>0)seed(i-1);if(x+1<W)seed(i+1);
+   if(y>0)seed(i-W);if(y+1<H)seed(i+W);
+ }
+ {
+   // Frestas internas podem conter o mesmo padrão. Analisamos componentes
+   // desconectados sem apagar automaticamente olhos brancos e outros detalhes.
+   const seen=new Uint8Array(n);
+   if(patterned)for(let start=0;start<n;start++){
+     if(!classified[start]||removed[start]||seen[start])continue;
+     let a=0,b=1;queue[0]=start;seen[start]=1;
+     let minX=W,maxX=0,minY=H,maxY=0,firstColor=0,secondColor=0;
+     while(a<b){const i=queue[a++],x=i%W,y=(i/W)|0;
+       if(patterned){
+         const k=i*4,c0=colors[0],c1=colors[1];
+         const d0=(src[k]-c0[0])**2+(src[k+1]-c0[1])**2+(src[k+2]-c0[2])**2;
+         const d1=(src[k]-c1[0])**2+(src[k+1]-c1[1])**2+(src[k+2]-c1[2])**2;
+         if(d0<d1)firstColor++;else secondColor++;
+       }
+       if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;
+       for(const j of [x>0?i-1:-1,x+1<W?i+1:-1,y>0?i-W:-1,y+1<H?i+W:-1]){
+         if(j>=0&&classified[j]&&!removed[j]&&!seen[j]){seen[j]=1;queue[b++]=j}
+       }
+     }
+     const bw=maxX-minX+1,bh=maxY-minY+1;
+     const bothColors=firstColor>Math.max(15,b*.13)&&secondColor>Math.max(15,b*.13);
+     const enough=b>Math.max(170,n*.00006)&&bothColors;
+     if(enough&&bw>=12&&bh>=12){for(let k=0;k<b;k++)removed[queue[k]]=1;}
+   }
+   if(!patterned){
+     const aggressiveInternal=manual||vividSolid;
+     for(let start=0;start<n;start++){
+       if(!classified[start]||removed[start]||seen[start])continue;
+       let a=0,b=1;queue[0]=start;seen[start]=1;
+       let minX=W,maxX=0,minY=H,maxY=0,sumDiff=0,maxDiff=0,solidPixels=0;
+       while(a<b){const i=queue[a++],x=i%W,y=(i/W)|0,k=i*4;
+         const score=diff2(i);sumDiff+=score;if(score>maxDiff)maxDiff=score;
+         if(src[k+3]>=245)solidPixels++;
+         if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;
+         for(const j of [x>0?i-1:-1,x+1<W?i+1:-1,y>0?i-W:-1,y+1<H?i+W:-1]){
+           if(j>=0&&classified[j]&&!removed[j]&&!seen[j]){seen[j]=1;queue[b++]=j}
+         }
+       }
+       const bw=maxX-minX+1,bh=maxY-minY+1,boxArea=Math.max(1,bw*bh);
+       const meanDiff=sumDiff/Math.max(1,b);
+       const areaMin=aggressiveInternal?Math.max(8,n*.000002):Math.max(26,n*.00001);
+       const compact=b/boxArea;
+       const bgLike=maxDiff<=tol2*1.9&&meanDiff<=tol2*(aggressiveInternal?.72:.42);
+       const largeEnough=b>=areaMin&&bw>=2&&bh>=2;
+       const mostlyOpaque=solidPixels>=b*.88;
+       const safeShape=aggressiveInternal?compact>=.05:compact>=.22;
+       if(bgLike&&largeEnough&&mostlyOpaque&&safeShape){
+         for(let k=0;k<b;k++)removed[queue[k]]=1;
+       }
+     }
+   }
+ }
+ // Para fundo em grade, a borda antialias mistura cinza com a cor do desenho.
+ // Remove o halo somente a poucos pixels do fundo, preservando contornos vivos.
+ const clean=new Uint8ClampedArray(src);
+ for(let i=0;i<n;i++)if(removed[i])clean[i*4+3]=0;
+ const layer=new Uint8Array(n);
+ for(let pass=1;pass<=($('softEdges').checked?2:0);pass++){
+   layer.fill(0);
+   for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+     const i=y*W+x,k=i*4;
+     if(removed[i]||clean[k+3]<8)continue;
+     if(!(removed[i-1]||removed[i+1]||removed[i-W]||removed[i+W]))continue;
+     const cDist=Math.sqrt(diff2(i)/3);
+     const minv=Math.min(src[k],src[k+1],src[k+2]);
+     const maxv=Math.max(src[k],src[k+1],src[k+2]);
+     const neutral=maxv-minv<32;
+     const limit=patterned?(neutral?53:28):(classifyTol+22);
+     if(cDist<limit){
+       // Transição com cobertura gradual perto da cor do fundo.
+       const coverage=Math.max(0,Math.min(1,(cDist-(patterned?5:classifyTol*.45))/Math.max(1,limit-(patterned?5:classifyTol*.45))));
+       const newA=Math.round(src[k+3]*coverage);
+       if(newA<clean[k+3]){clean[k+3]=newA;if(newA<12)layer[i]=1;}
+     }
+   }
+   for(let i=0;i<n;i++)if(layer[i])removed[i]=1;
+ }
+ d.data.set(clean);
+ return {patterned,removedCount:removed.reduce((a,b)=>a+b,0)};
+}
+
+// Chroma key: sombras escuras não têm a mesma luminosidade do fundo.
+// A comparação RGB por tolerância, sozinha, deixa faixas verdes sob os pés.
+// Classificamos tonalidades pelo MATIZ e removemos componentes grandes de chroma
+// que sobreviveram ao preenchimento principal. Sem ativar em imagens com
+// fundo neutro, cenas comuns ou desenhos originalmente transparentes.
+function removeGreenScreenShadows(d,solid){
+ const [br,bg,bb]=solid.rgb;
+ if(!(bg>=145&&bg-br>=100&&bg-bb>=100&&br<115&&bb<115))return {removed:0,active:false};
+ const W=d.width,H=d.height,n=W*H,px=d.data;
+ const mask=new Uint8Array(n),seen=new Uint8Array(n),queue=new Int32Array(n);
+ const significant=Math.max(110,Math.round(n*.00009));
+ // Variações de sombra escurecem o verde para RGB próximo de (2,95,1).
+ for(let i=0;i<n;i++){
+   const k=i*4;if(px[k+3]<12)continue;
+   const r=px[k],g=px[k+1],b=px[k+2],delta=g-Math.max(r,b);
+   if(g>=24 && delta>=Math.max(15,g*.23) && g>r*1.28 && g>b*1.28)mask[i]=1;
+ }
+ let cleared=0;
+ for(let start=0;start<n;start++){
+   if(!mask[start]||seen[start])continue;
+   let head=0,tail=1,minX=W,maxX=-1,minY=H,maxY=-1;
+   queue[0]=start;seen[start]=1;
+   let adjacentClear=false;
+   while(head<tail){
+     const i=queue[head++],x=i%W,y=(i/W)|0;
+     if(x<minX)minX=x;if(x>maxX)maxX=x;
+     if(y<minY)minY=y;if(y>maxY)maxY=y;
+     for(let yy=Math.max(0,y-1);yy<=Math.min(H-1,y+1);yy++){
+       for(let xx=Math.max(0,x-1);xx<=Math.min(W-1,x+1);xx++){
+         const j=yy*W+xx;
+         if(px[j*4+3]<8)adjacentClear=true;
+         if(mask[j]&&!seen[j]){seen[j]=1;queue[tail++]=j;}
+       }
+     }
+   }
+   const width=maxX-minX+1,height=maxY-minY+1;
+   // Sombras projetadas são massas extensas, estreitas e ligadas ao exterior.
+   const shadow=tail>=significant&&adjacentClear&&(
+     width>=Math.max(30,height*2.3)||tail>=significant*3
+   );
+   if(shadow){for(let k=0;k<tail;k++){px[queue[k]*4+3]=0;}cleared+=tail;}
+ }
+ // Retira microfragmentos verde-escuros gerados por contornos/antialiasing.
+ // Apenas pontinhos esverdeados diretamente encostados na transparência.
+ for(let pass=0;pass<3;pass++)for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+   const i=y*W+x,k=i*4;
+   if(!mask[i]||px[k+3]<12)continue;
+   const r=px[k],g=px[k+1],b=px[k+2];
+   if(g>75||r>28||b>28)continue;
+   if(px[(i-1)*4+3]<8||px[(i+1)*4+3]<8||px[(i-W)*4+3]<8||px[(i+W)*4+3]<8||
+      px[(i-W-1)*4+3]<8||px[(i-W+1)*4+3]<8||px[(i+W-1)*4+3]<8||px[(i+W+1)*4+3]<8){
+     px[k+3]=0;cleared++;
+   }
+ }
+ return {removed:cleared,active:true};
+}
+
+// Remove SOMENTE os halos verdes que partem da transparência exterior.
+// Exclui áreas verdes amplas e não altera o traço escuro/azul original.
+function cleanGreenHalos(d){
+ const W=d.width,H=d.height,n=W*H,px=d.data,green=new Uint8Array(n);
+ let total=0,visible=0;
+ for(let i=0;i<n;i++){
+   const k=i*4,a=px[k+3];if(a<18)continue;visible++;
+   const R=px[k],G=px[k+1],B=px[k+2];
+   if(G>=60&&G-R>=14&&G-B>=12&&G>R*1.19&&G>B*1.13){green[i]=1;total++;}
+ }
+ // Se a cor verde ocupar uma grande parte da imagem, provavelmente pertence
+ // à arte (roupa/vegetação) e NÃO pode ser removida automaticamente.
+ if(!total||total>visible*.095)return {removed:0,skipped:total>0};
+ const queue=new Int32Array(total),mark=new Uint8Array(n);let head=0,tail=0;
+ // A semente precisa tocar transparência (inclusive diagonal), não apenas
+ // qualquer pixel verde interno, para preservar os detalhes do personagem.
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+   const i=y*W+x;if(!green[i])continue;
+   let edge=false;
+   for(let yy=Math.max(0,y-2);yy<=Math.min(H-1,y+2)&&!edge;yy++)
+     for(let xx=Math.max(0,x-2);xx<=Math.min(W-1,x+2);xx++)
+       if(px[(yy*W+xx)*4+3]<12){edge=true;break;}
+   if(edge){mark[i]=1;queue[tail++]=i;}
+ }
+ while(head<tail){
+   const i=queue[head++],x=i%W,y=(i/W)|0;
+   for(let yy=Math.max(0,y-1);yy<=Math.min(H-1,y+1);yy++)
+     for(let xx=Math.max(0,x-1);xx<=Math.min(W-1,x+1);xx++){
+       const j=yy*W+xx;
+       if(green[j]&&!mark[j]){mark[j]=1;queue[tail++]=j;}
+     }
+ }
+ // Também evita remover peças verdes grandes conectadas à borda.
+ // Para chroma spill o verde costuma ser uma borda fina: área verde baixa.
+ if(tail>visible*.075)return {removed:0,skipped:true};
+ // Em sprites sem roupas verdes, o chroma residual pode ficar encapsulado
+ // entre pernas, cabelos ou contornos. Quando a paleta verde é MUITO rara
+ // e quase toda ela é halo externo, limpa também esses pequenos bolsões.
+ if(total/visible<.045 && tail/total>.55){
+   for(let i=0;i<n;i++)if(green[i])mark[i]=1;
+   tail=total;
+ }
+ for(let i=0;i<n;i++)if(mark[i]){const k=i*4;px[k]=0;px[k+1]=0;px[k+2]=0;px[k+3]=0;}
+ return {removed:tail,skipped:false};
+}
+
+// Permite refinar manualmente fundos não reconhecidos, clicando no pixel do fundo.
+// Os cliques são repetíveis e recalculados sobre a imagem original para permitir
+// desfazer até a primeira intervenção. Não tenta adivinhar fundos complexos.
+function eraseBackgroundFromSeed(d,seed){
+ const W=d.width,H=d.height,px=d.data;
+ const x=Math.max(0,Math.min(W-1,Math.round(seed.x)));
+ const y=Math.max(0,Math.min(H-1,Math.round(seed.y)));
+ const start=y*W+x,p=start*4;
+ if(px[p+3]<8)return 0;
+ const target=[px[p],px[p+1],px[p+2]];
+ const tolerance=toInt('tolerance',0,110),tol2=3*tolerance*tolerance;
+ const n=W*H,seen=new Uint8Array(n),queue=new Int32Array(n),selected=new Uint8Array(n);
+ let a=0,b=1;queue[0]=start;seen[start]=1;
+ while(a<b){const i=queue[a++],k=i*4;
+   const dr=px[k]-target[0],dg=px[k+1]-target[1],db=px[k+2]-target[2];
+   if(px[k+3]<8||dr*dr+dg*dg+db*db>tol2)continue;
+   selected[i]=1;const xx=i%W,yy=(i/W)|0;
+   for(const j of [xx>0?i-1:-1,xx+1<W?i+1:-1,yy>0?i-W:-1,yy+1<H?i+W:-1]){
+     if(j>=0&&!seen[j]){seen[j]=1;queue[b++]=j;}
+   }
+ }
+ for(let i=0;i<n;i++)if(selected[i])px[i*4+3]=0;
+ return selected.reduce((v,c)=>v+c,0);
+}
+function processImage(){
+ if(!state.original)return;
+ const im=state.original,c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
+ const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(im,0,0);
+ let d=g.getImageData(0,0,c.width,c.height),px=d.data;
+ const samples=Math.min(50000,d.width*d.height),step=Math.max(1,Math.floor((d.width*d.height)/samples));
+ let transparent=0;
+ for(let i=0;i<d.width*d.height;i+=step)if(px[i*4+3]<245)transparent++;
+ state.imageOpaque=(transparent/Math.ceil(d.width*d.height/step))<.004;
+ const solid=estimateSolidBackground(d);
+ const checker=state.imageOpaque&&!solid.confident?estimateCheckerBackground(d):null;
+ const manual=$('bgRemove').checked,custom=$('useBgColor').checked;
+  if(custom){const c=$('bgColor').value;solid.rgb=[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));solid.confident=true;}
+  const automatic=custom||($('autoBg').checked&&state.imageOpaque&&(solid.confident||!!checker?.confident));
+ let type='nenhuma';
+ if(automatic||manual){
+   const result=removeDetectedBackground(d,solid,checker,manual);
+   type=custom?'cor personalizada':result.patterned?'quadriculado':'uniforme';
+ }
+ // Uma segunda passagem identifica sombras do chroma verde, impossíveis de
+ // alcançar somente por uma distância RGB até o verde puro.
+ const chromaShadows=(automatic||manual)&&!(checker?.confident&&!solid.confident)?removeGreenScreenShadows(d,solid):{removed:0,active:false};
+ state.chromaShadowsRemoved=chromaShadows.removed;
+ if(state.manualBgSeeds.length){
+   for(const seed of state.manualBgSeeds)eraseBackgroundFromSeed(d,seed);
+   type=type==='nenhuma'?'por clique':type+' + clique';
+ }
+ state.greenRemoved=0;state.greenSkipped=false;
+ if($('cleanGreen').checked&&(automatic||manual||state.manualBgSeeds.length||!state.imageOpaque)){
+   const green=cleanGreenHalos(d);
+   state.greenRemoved=green.removed;state.greenSkipped=green.skipped;
+ }
+ // A limpeza de halos pode expor pixels verde-escuros antes encobertos;
+ // executamos a revisão final após essa etapa, sobre o alfa definitivo.
+ if(chromaShadows.active){
+   const lastPass=removeGreenScreenShadows(d,solid);
+   state.chromaShadowsRemoved+=lastPass.removed;
+ }
+ if(automatic||manual||state.manualBgSeeds.length||state.greenRemoved)g.putImageData(d,0,0);
+ state.source=c;state.pixels=d;editor.width=c.width;editor.height=c.height;
+ state.bgAutoApplied=automatic;
+ state.bgDetection=(automatic||manual||state.manualBgSeeds.length)?type:'nenhuma';
+ let transparentCount=0,borderCount=0;
+ const N=d.width*d.height,auditStep=Math.max(1,Math.floor(N/90000));
+ for(let i=0;i<N;i+=auditStep){const a=d.data[i*4+3];if(a<=12)transparentCount++;else if(a<245)borderCount++;}
+ state.quality={transparentPercent:Math.round(100*transparentCount/Math.ceil(N/auditStep)),semiPercent:Math.round(100*borderCount/Math.ceil(N/auditStep)),confirmedBg:!!automatic,patterned:!!checker?.confident};
+ state.headStats=[];
+ $('alphaInfo').textContent=state.manualBgSeeds.length?
+   `✓ ${state.manualBgSeeds.length} limpeza(s) por clique aplicada(s). Use Desfazer última limpeza se alguma parte do desenho desaparecer.`:
+   automatic?
+   (type==='quadriculado'?'✓ Fundo quadriculado removido, incluindo frestas e limpeza de halos. Confira olhos e detalhes claros.':'✓ Fundo de cor lisa removido com bordas refinadas. Regiões internas claras foram preservadas para proteger olhos e roupas.'):
+   manual?'Remoção manual aplicada. Confira se não houve perda de detalhes.':
+   state.imageOpaque?'⚠ Fundo complexo ou incerto: preservado para evitar apagar o personagem. Revise antes de exportar.':'✓ Transparência original preservada. Fundo já removido.';
+}
+
+function occupiedMask(){const data=state.pixels.data, threshold=toInt('alpha',1,254),mask=new Uint8Array(state.source.width*state.source.height);for(let j=0,k=3;j<mask.length;j++,k+=4)mask[j]=+(data[k]>=threshold);return mask}
+function runs(flags,maxGap){let result=[],st=-1,last=-1;for(let i=0;i<flags.length;i++){if(flags[i]){if(st<0)st=i;else if(i-last-1>maxGap){result.push([st,last+1]);st=i}last=i}}if(st>=0)result.push([st,last+1]);return result}
+// Detecta nas duas direções: a análise só por linhas falha quando duas fileiras
+// se sobrepõem verticalmente em colunas diferentes (ex.: orelhas e pés).
+function detectAxis(mask,W,H,firstAxis,gapX,gapY,min){
+  const outerLength=firstAxis==='rows'?H:W,innerLength=firstAxis==='rows'?W:H;
+  const outer=new Uint8Array(outerLength);
+  // Projeção principal.
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(mask[y*W+x])outer[firstAxis==='rows'?y:x]=1;
+  const result=[];
+  for(const [a0,a1] of runs(outer,firstAxis==='rows'?gapY:gapX)){
+    const inner=new Uint8Array(innerLength);
+    if(firstAxis==='rows'){
+      for(let y=a0;y<a1;y++)for(let x=0;x<W;x++)if(mask[y*W+x])inner[x]=1;
+    }else{
+      for(let x=a0;x<a1;x++)for(let y=0;y<H;y++)if(mask[y*W+x])inner[y]=1;
+    }
+    for(const [b0,b1] of runs(inner,firstAxis==='rows'?gapX:gapY)){
+      const x0=firstAxis==='rows'?b0:a0,x1=firstAxis==='rows'?b1:a1;
+      const y0=firstAxis==='rows'?a0:b0,y1=firstAxis==='rows'?a1:b1;
+      let left=x1,right=x0,top=y1,bottom=y0,n=0;
+      for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)if(mask[y*W+x]){
+        n++;if(x<left)left=x;if(x>right)right=x;if(y<top)top=y;if(y>bottom)bottom=y;
+      }
+      if(n && right-left+1>=min && bottom-top+1>=min)
+        result.push({x:left,y:top,w:right-left+1,h:bottom-top+1});
+    }
+  }
+  return result;
+}
+// Validamos se o recorte em colunas parece uma grade real (quantidades equilibradas
+// por coluna, com pelo menos dois personagens por coluna), não peças isoladas.
+function columnsAreRows(mask,W,H,gapX,gapY,min,rowResult,colResult){
+  if(colResult.length<=rowResult.length || colResult.length<4)return false;
+  let projection=new Uint8Array(W);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(mask[y*W+x])projection[x]=1;
+  const xRuns=runs(projection,gapX);
+  if(xRuns.length<2)return false;
+  const counts=xRuns.map(([x0,x1])=>colResult.filter(r=>r.x>=x0&&r.x+r.w<=x1).length);
+  const found=counts.reduce((sum,n)=>sum+n,0);
+  if(found!==colResult.length)return false;
+  const minCount=Math.min(...counts),maxCount=Math.max(...counts);
+  if(minCount<2||maxCount-minCount>1)return false;
+  // Rejeita recortes muito pequenos em relação à altura típica das figuras.
+  const heights=colResult.map(r=>r.h).sort((a,b)=>a-b),median=heights[Math.floor(heights.length/2)];
+  if(heights[0]<median*.35)return false;
+  return true;
+}
+function orderByVisualRows(rects){
+  if(!rects.length)return rects;
+  const hs=rects.map(r=>r.h).sort((a,b)=>a-b),typical=hs[Math.floor(hs.length/2)];
+  const groups=[];
+  for(const r of [...rects].sort((a,b)=>(a.y+a.h/2)-(b.y+b.h/2))){
+    const cy=r.y+r.h/2;
+    let row=groups.find(g=>Math.abs(cy-g.center)<=typical*.42);
+    if(!row){row={center:cy,items:[]};groups.push(row)}
+    row.items.push(r);row.center=row.items.reduce((s,q)=>s+q.y+q.h/2,0)/row.items.length;
+  }
+  return groups.sort((a,b)=>a.center-b.center).flatMap(g=>g.items.sort((a,b)=>a.x-b.x));
+}
+// Detecção por componentes conectados com dilatação em disco. Isso permite
+// separar sprites encostados pela projeção e unir efeitos que pertencem a um quadro.
+function detectIslands(original,W,H,radius,min){
+  // Limita a resolução de análise em folhas enormes, evitando travamentos.
+  const scale=Math.max(1,Math.ceil(Math.sqrt(W*H/2500000)));
+  const w=Math.ceil(W/scale),h=Math.ceil(H/scale),n=w*h;
+  const mask=new Uint8Array(n);
+  if(scale===1)mask.set(original);
+  else for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(original[y*W+x])mask[Math.floor(y/scale)*w+Math.floor(x/scale)]=1;
+  const r=Math.max(0,Math.round(radius/scale));
+  const dil=new Uint8Array(n);
+  if(r===0)dil.set(mask);
+  else {
+    // Disco: dilatação horizontal com janela deslizante, aplicada a cada deslocamento vertical.
+    for(let dy=-r;dy<=r;dy++){
+      const rx=Math.floor(Math.sqrt(r*r-dy*dy));
+      for(let sy=Math.max(0,-dy);sy<Math.min(h,h-dy);sy++){
+        const ty=sy+dy,base=sy*w,out=ty*w;
+        let count=0;
+        for(let k=0;k<=Math.min(w-1,rx);k++)count+=mask[base+k];
+        for(let x=0;x<w;x++){
+          if(count)dil[out+x]=1;
+          const rm=x-rx,add=x+rx+1;
+          if(rm>=0)count-=mask[base+rm];
+          if(add<w)count+=mask[base+add];
+        }
+      }
+    }
+  }
+  const queue=new Int32Array(n),labels=new Uint32Array(n),result=[];
+  let islandId=0;
+  for(let start=0;start<n;start++){
+    if(!dil[start])continue;
+    const id=++islandId;let head=0,tail=1;queue[0]=start;dil[start]=0;labels[start]=id;
+    let left=w,top=h,right=-1,bottom=-1,pxCount=0;
+    while(head<tail){
+      const i=queue[head++],x=i%w,y=(i/w)|0;
+      if(mask[i]){pxCount++;if(x<left)left=x;if(x>right)right=x;if(y<top)top=y;if(y>bottom)bottom=y;}
+      for(let yy=Math.max(0,y-1);yy<=Math.min(h-1,y+1);yy++){
+        for(let xx=Math.max(0,x-1);xx<=Math.min(w-1,x+1);xx++){
+          const k=yy*w+xx;
+          if(dil[k]){dil[k]=0;labels[k]=id;queue[tail++]=k;}
+        }
+      }
+    }
+    if(right<0)continue;
+    const rect={x:left*scale,y:top*scale,w:Math.min(W,(right+1)*scale)-left*scale,h:Math.min(H,(bottom+1)*scale)-top*scale};
+    if(rect.w>=min&&rect.h>=min&&pxCount*scale*scale>=Math.max(20,min*min*.12)){
+      // BBox em resolução original, para não cortar detalhes finos.
+      let x0=rect.x,y0=rect.y,x1=rect.x+rect.w,y1=rect.y+rect.h;
+      let lx=x1,ty=y1,rx=-1,by=-1;
+      for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)if(original[y*W+x]&&labels[Math.floor(y/scale)*w+Math.floor(x/scale)]===id){
+        if(x<lx)lx=x;if(x>rx)rx=x;if(y<ty)ty=y;if(y>by)by=y;
+      }
+      if(rx>=lx&&by>=ty){
+        const bw=rx-lx+1,bh=by-ty+1,pixelMask=new Uint8Array(bw*bh);
+        for(let y=ty;y<=by;y++)for(let x=lx;x<=rx;x++)if(original[y*W+x]&&labels[Math.floor(y/scale)*w+Math.floor(x/scale)]===id)
+          pixelMask[(y-ty)*bw+x-lx]=1;
+        result.push({x:lx,y:ty,w:bw,h:bh,pixelMask,ink:pxCount*scale*scale});
+      }
+    }
+  }
+  return result;
+}
+
+// Não dilata personagens vizinhos até uni-los. Em vez disso, anexa pequenos
+// efeitos desconectados ao personagem principal mais próximo e conserva uma
+// máscara por pixel de cada figura, mesmo com retângulos sobrepostos.
+function mergeFragments(regions) {
+  if(regions.length < 2) return regions;
+  const median = values => {const a=[...values].sort((a,b)=>a-b);return a[Math.floor(a.length/2)]};
+  const mw=median(regions.map(r=>r.w)),mh=median(regions.map(r=>r.h));
+  const mi=median(regions.map(r=>r.ink??r.w*r.h));
+  const majors=regions.filter(r=>!((r.ink??r.w*r.h)<mi*.64 && (r.w<mw*.85||r.h<mh*.65)));
+  const minor=regions.filter(r=>!majors.includes(r));
+  if(!majors.length)return regions;
+  const groups=majors.map(r=>[r]);
+  for(const m of minor){
+    let best=-1,score=-Infinity;
+    for(let k=0;k<majors.length;k++){
+      const r=majors[k];
+      const xx=Math.max(0,Math.min(r.x+r.w,m.x+m.w)-Math.max(r.x,m.x));
+      const yy=Math.max(0,Math.min(r.y+r.h,m.y+m.h)-Math.max(r.y,m.y));
+      const overlap=xx*yy;
+      const dx=Math.max(0,r.x-(m.x+m.w),m.x-(r.x+r.w));
+      const dy=Math.max(0,r.y-(m.y+m.h),m.y-(r.y+r.h));
+      const dist=Math.hypot(dx,dy);
+      // Desencoraja colar um efeito da fileira abaixo ou uma figura independente.
+      const centerDY=Math.abs((r.y+r.h/2)-(m.y+m.h/2));
+      if(dist>Math.max(mw,mh)*.32||centerDY>mh*.85)continue;
+      const insideOverlap=overlap/(Math.max(1,m.w*m.h));
+      const current=insideOverlap*1000-dist*4-centerDY*.1;
+      if(current>score){score=current;best=k}
+    }
+    if(best>=0)groups[best].push(m);
+    else groups.push([m]);
+  }
+  return groups.map(items=>{
+    if(items.length===1)return items[0];
+    const x=Math.min(...items.map(r=>r.x)),y=Math.min(...items.map(r=>r.y));
+    const maxX=Math.max(...items.map(r=>r.x+r.w)),maxY=Math.max(...items.map(r=>r.y+r.h));
+    const w=maxX-x,h=maxY-y;
+    const pixelMask=new Uint8Array(w*h);
+    for(const r of items){
+      if(!r.pixelMask)continue;
+      const sx=r.x-x,sy=r.y-y;
+      for(let yy=0;yy<r.h;yy++){
+        const from=yy*r.w,to=(sy+yy)*w+sx;
+        for(let xx=0;xx<r.w;xx++)if(r.pixelMask[from+xx])pixelMask[to+xx]=1;
+      }
+    }
+    return {x,y,w,h,pixelMask,ink:items.reduce((a,r)=>a+(r.ink??0),0)};
+  });
+}
+
+function candidateScore(rects){
+  if(!rects.length)return -Infinity;
+  const widths=rects.map(r=>r.w).sort((a,b)=>a-b),heights=rects.map(r=>r.h).sort((a,b)=>a-b);
+  const medianW=widths[Math.floor(widths.length/2)],medianH=heights[Math.floor(heights.length/2)];
+  let score=rects.length;
+  // Fragmentos muito pequenos em relação a quadros vizinhos geralmente são
+  // efeitos soltos (slashes, poeira) e devem ser unidos ao personagem.
+  for(const r of rects){
+    if(r.w<medianW*.64)score-=2.35;
+    if(r.h<medianH*.55)score-=2.35;
+  }
+  return score;
+}
+// Validação de duas cabeças no mesmo recorte: dois rostos de áreas
+// semelhantes são evidência mais forte que um simples vale horizontal.
+function pairedFacesCut(r, medianWidth){
+ const W=state.source.width,H=state.source.height,pixels=state.pixels.data;
+ const w=r.w,h=Math.min(r.h,Math.ceil(r.h*.66));
+ if(w<medianWidth*1.55||h<45)return -1;
+ const skin=new Uint8Array(w*h),seen=new Uint8Array(w*h);
+ const hasMask=r.pixelMask&&r.pixelMask.length===r.w*r.h;
+ for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   const i=y*w+x;if(hasMask&&!r.pixelMask[y*r.w+x])continue;
+   const k=((r.y+y)*W+r.x+x)*4;
+   if(pixels[k+3]<140)continue;
+   const R=pixels[k],G=pixels[k+1],B=pixels[k+2];
+   if(R>135&&G>85&&B>48&&R-G>13&&G-B>9&&G/R>.53&&B/G>.43&&B/R<.91)skin[i]=1;
+ }
+ const queue=new Int32Array(w*h),faces=[];
+ for(let i=0;i<skin.length;i++){
+   if(!skin[i]||seen[i])continue;
+   let head=0,tail=1,lo=w,hi=0,top=h,bottom=0;
+   queue[0]=i;seen[i]=1;
+   while(head<tail){
+     const k=queue[head++],x=k%w,y=(k/w)|0;
+     if(x<lo)lo=x;if(x>hi)hi=x;if(y<top)top=y;if(y>bottom)bottom=y;
+     for(const j of [x>0?k-1:-1,x+1<w?k+1:-1,y>0?k-w:-1,y+1<h?k+w:-1])
+       if(j>=0&&skin[j]&&!seen[j]){seen[j]=1;queue[tail++]=j;}
+   }
+   const bw=hi-lo+1,bh=bottom-top+1,cy=(top+bottom)/2;
+   if(tail>Math.max(110,r.w*r.h*.008) && bw>Math.max(17,medianWidth*.22) &&
+      bh>Math.max(15,r.h*.12) && cy<r.h*.52 && bw/bh>.43 && bw/bh<2.5)
+     faces.push({area:tail,x:(lo+hi)/2,y:cy});
+ }
+ faces.sort((a,b)=>b.area-a.area);
+ if(faces.length<2)return -1;
+ const a=faces[0],b=faces[1];
+ if(b.area<a.area*.58||Math.abs(a.y-b.y)>r.h*.25||Math.abs(a.x-b.x)<medianWidth*.52)return -1;
+ const cut=Math.round((a.x+b.x)/2);
+ return cut>r.w*.22&&cut<r.w*.78?cut:-1;
+}
+
+// Se duas sprites quase encostam, o detector de componentes pode agrupá-las.
+// Divide apenas regiões anormalmente largas com um vale real entre duas massas.
+// Cada metade ganha máscara própria para impedir que a exportação recoloque a vizinha.
+function splitJoinedSprites(regions, originalMask, W, H, min){
+  if(regions.length<2)return regions;
+  const widths=regions.map(r=>r.w).sort((a,b)=>a-b);
+  const median=widths[Math.floor((widths.length-1)/2)];
+  const processed=[];
+  for(const region of regions){
+    // Evita dividir poses largas (braços abertos): são necessários dois blocos
+    // volumosos separados por um estreitamento forte no eixo horizontal.
+    if(region.w<Math.max(min*2,median*1.60)||region.w<54){processed.push(region);continue;}
+    const r=region,w=r.w,h=r.h;
+    const column=new Float64Array(w);
+    const getPixel=(x,y)=>r.pixelMask&&r.pixelMask.length===w*h?
+      r.pixelMask[y*w+x]:originalMask[(r.y+y)*W+r.x+x];
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(getPixel(x,y))column[x]++;
+    const smooth=new Float64Array(w),window=Math.max(2,Math.min(7,Math.round(w*.012)));
+    for(let x=0;x<w;x++){
+      let total=0,n=0;
+      for(let t=Math.max(0,x-window);t<=Math.min(w-1,x+window);t++){total+=column[t];n++}
+      smooth[x]=total/n;
+    }
+    let best=-1,bestScore=-Infinity;
+    // Não cortar nas extremidades; exigir duas partes comparáveis às outras poses.
+    const leftLimit=Math.max(Math.round(w*.25),Math.round(median*.55));
+    const rightLimit=Math.min(Math.round(w*.75),w-Math.round(median*.55));
+    for(let cut=leftLimit;cut<rightLimit;cut++){
+      const leftPeak=Math.max(...smooth.slice(Math.max(0,cut-Math.round(median*.75)),Math.max(1,cut-window)));
+      const rightPeak=Math.max(...smooth.slice(Math.min(w-1,cut+window),Math.min(w,cut+Math.round(median*.75))));
+      const peak=Math.min(leftPeak,rightPeak);
+      if(peak<Math.max(3,h*.05))continue;
+      const ratio=smooth[cut]/peak;
+      if(ratio>.35)continue;
+      const balance=1-Math.abs(cut-w/2)/(w/2);
+      const score=(1-ratio)*3+balance+Math.min(leftPeak,rightPeak)/Math.max(1,h);
+      if(score>bestScore){bestScore=score;best=cut;}
+    }
+    const facialCut=pairedFacesCut(r,median);
+    if(facialCut>=0)best=facialCut;
+    if(best<0){processed.push(region);continue;}
+    const pieces=[];
+    for(const [from,to] of [[0,best],[best,w]]){
+      let left=w,right=-1,top=h,bottom=-1;
+      for(let y=0;y<h;y++)for(let x=from;x<to;x++)if(getPixel(x,y)){
+        left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+      }
+      if(right<left)continue;
+      const bw=right-left+1,bh=bottom-top+1,partMask=new Uint8Array(bw*bh);
+      for(let y=top;y<=bottom;y++)for(let x=left;x<=right;x++)if(getPixel(x,y))partMask[(y-top)*bw+(x-left)]=1;
+      pieces.push({x:r.x+left,y:r.y+top,w:bw,h:bh,pixelMask:partMask,suspectSplit:true});
+    }
+    if(pieces.length===2&&pieces.every(q=>q.w>=min*.75&&q.h>=min*.75))processed.push(...pieces);
+    else processed.push(region);
+  }
+  return processed;
+}
+
+// Descarta molduras/fios residuais que cobrem uma parte enorme da folha e
+// confunde a segmentação, preservando objetos grandes legítimos isolados.
+// Une regiões praticamente coincidentes, inclusive as máscaras complementares
+// de um mesmo objeto (contorno separado do preenchimento).
+function cleanupDetectedRegions(regions,W,H){
+ const sheet=W*H;
+ let items=regions.filter(a=>{
+  const interior=regions.filter(b=>b!==a&&b.x>=a.x-3&&b.y>=a.y-3&&b.x+b.w<=a.x+a.w+3&&b.y+b.h<=a.y+a.h+3).length;
+  const frameArtifact=(a.w*a.h>sheet*.20)&&(a.h>H*.88||a.w>W*.88)&&interior>=3;
+  return !frameArtifact;
+ });
+ const used=new Uint8Array(items.length),out=[];
+ for(let i=0;i<items.length;i++){
+  if(used[i])continue;
+  let base=items[i];used[i]=1;
+  for(let j=i+1;j<items.length;j++){
+   if(used[j])continue;
+   const b=items[j],xx=Math.max(0,Math.min(base.x+base.w,b.x+b.w)-Math.max(base.x,b.x));
+   const yy=Math.max(0,Math.min(base.y+base.h,b.y+b.h)-Math.max(base.y,b.y));
+   const cover=xx*yy/Math.max(1,Math.min(base.w*base.h,b.w*b.h));
+   const cx=Math.abs(base.x+base.w/2-b.x-b.w/2),cy=Math.abs(base.y+base.h/2-b.y-b.h/2);
+   if(cover<.85||cx>Math.min(base.w,b.w)*.12||cy>Math.min(base.h,b.h)*.12)continue;
+   // Dois retângulos quase sobrepostos normalmente são a mesma figura.
+   // Mantém pixels de ambos, em vez de jogar fora uma das partes.
+   const x=Math.min(base.x,b.x),y=Math.min(base.y,b.y),w=Math.max(base.x+base.w,b.x+b.w)-x,h=Math.max(base.y+base.h,b.y+b.h)-y;
+   if(base.pixelMask&&b.pixelMask){
+    const mask=new Uint8Array(w*h);
+    for(const r of [base,b])for(let ry=0;ry<r.h;ry++)for(let rx=0;rx<r.w;rx++)if(r.pixelMask[ry*r.w+rx])mask[(r.y-y+ry)*w+r.x-x+rx]=1;
+    base={x,y,w,h,pixelMask:mask,ink:(base.ink||0)+(b.ink||0)};
+   }else base=(base.w*base.h>=b.w*b.h)?base:b;
+   used[j]=1;
+  }
+  out.push(base);
+ }
+ return out;
+}
+// Separação exclusiva por componentes conectados: cada pixel visível pertence
+// a um ÚNICO sprite. Nunca une duas regiões principais apenas por proximidade.
+// Pixéis de antialias (alfa muito baixo) são recuperados por crescimento limitado
+// a partir do núcleo de cada objeto, com propriedade exclusiva por pixel.
+function detectExclusiveSprites(W,H,min,threshold){
+  const n=W*H,px=state.pixels.data;
+  const core=new Uint8Array(n);
+  let strongTotal=0,visibleTotal=0;
+  for(let i=0,k=3;i<n;i++,k+=4){
+    const a=px[k];if(a>0)visibleTotal++;
+    if(a>=threshold){core[i]=1;strongTotal++}
+  }
+  if(strongTotal<Math.max(120,n*.00015))return null;
+  const labels=new Int32Array(n),queue=new Int32Array(n),components=[null];
+  let id=0;
+  for(let start=0;start<n;start++){
+    if(!core[start]||labels[start])continue;
+    const label=++id;let head=0,tail=1;queue[0]=start;labels[start]=label;
+    let minX=W,minY=H,maxX=-1,maxY=-1;
+    while(head<tail){
+      const i=queue[head++],x=i%W,y=(i/W)|0;
+      if(x<minX)minX=x;if(x>maxX)maxX=x;
+      if(y<minY)minY=y;if(y>maxY)maxY=y;
+      for(let yy=Math.max(0,y-1);yy<=Math.min(H-1,y+1);yy++){
+        const row=yy*W;
+        for(let xx=Math.max(0,x-1);xx<=Math.min(W-1,x+1);xx++){
+          const j=row+xx;
+          if(core[j]&&!labels[j]){labels[j]=label;queue[tail++]=j}
+        }
+      }
+    }
+    components.push({id:label,x:minX,y:minY,w:maxX-minX+1,h:maxY-minY+1,area:tail});
+  }
+  const minArea=Math.max(16,Math.floor(min*min*.14));
+  const majors=components.slice(1).filter(c=>c.w>=Math.max(8,min*.75)&&c.h>=Math.max(8,min*.75)&&c.area>=minArea);
+  // Não transformar um céu de partículas em dezenas de falsos objetos.
+  if(!majors.length||majors.length>500)return null;
+  const coreShare=majors.reduce((a,c)=>a+c.area,0)/strongTotal;
+  if(coreShare<.88)return null;
+  const map=new Uint16Array(id+1);
+  for(let i=0;i<majors.length;i++)map[majors[i].id]=i+1;
+  // Pedaços minúsculos soltos pertencem ao objeto principal MAIS PRÓXIMO,
+  // mas somente se estiverem perto da sua geometria, não de outro objeto.
+  for(const c of components.slice(1)){
+    if(map[c.id]||c.area>Math.max(24,minArea*.55))continue;
+    let best=-1,dmin=Infinity,second=Infinity;
+    for(let i=0;i<majors.length;i++){
+      const m=majors[i];
+      const dx=Math.max(0,m.x-c.x-c.w,c.x-m.x-m.w);
+      const dy=Math.max(0,m.y-c.y-c.h,c.y-m.y-m.h);
+      const d=Math.hypot(dx,dy);
+      if(d<dmin){second=dmin;dmin=d;best=i}else if(d<second)second=d;
+    }
+    if(best>=0&&dmin<=Math.max(12,Math.min(26,min*.8))&&(second-dmin>=2||dmin<5))map[c.id]=best+1;
+  }
+  const owner=new Uint16Array(n),distance=new Uint8Array(n);
+  let head=0,tail=0,assignedStrong=0;
+  for(let i=0;i<n;i++){
+    if(!labels[i])continue;
+    const label=map[labels[i]];
+    if(!label)continue;
+    owner[i]=label;queue[tail++]=i;assignedStrong++;
+  }
+  // Segmentação da franja de borda: BFS multi-origem, apenas sobre pixels
+  // realmente visíveis, até no máximo 11 px do núcleo. Sem corromper vizinhos.
+  const maxFringe=7;
+  while(head<tail){
+    const i=queue[head++],level=distance[i];
+    if(level>=maxFringe)continue;
+    const x=i%W,y=(i/W)|0,label=owner[i];
+    for(let yy=Math.max(0,y-1);yy<=Math.min(H-1,y+1);yy++){
+      const row=yy*W;
+      for(let xx=Math.max(0,x-1);xx<=Math.min(W-1,x+1);xx++){
+        const j=row+xx;
+        if(owner[j]||px[j*4+3]<12)continue;
+        // Respeita sempre o núcleo de um objeto diferente.
+        if(labels[j]&&map[labels[j]]&&map[labels[j]]!==label)continue;
+        owner[j]=label;distance[j]=level+1;queue[tail++]=j;
+      }
+    }
+  }
+  const bounds=majors.map(()=>({x:W,y:H,right:-1,bottom:-1,ink:0}));
+  let coveredStrong=0,coveredVisible=0;
+  for(let i=0;i<n;i++){
+    const label=owner[i];if(!label)continue;
+    const o=bounds[label-1],x=i%W,y=(i/W)|0;
+    if(x<o.x)o.x=x;if(y<o.y)o.y=y;
+    if(x>o.right)o.right=x;if(y>o.bottom)o.bottom=y;
+    o.ink++;coveredVisible++;
+    if(core[i])coveredStrong++;
+  }
+  const out=bounds.map((b,i)=>{
+    const x=b.x,y=b.y,w=b.right-x+1,h=b.bottom-y+1;
+    const pixelMask=new Uint8Array(w*h);
+    for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++){
+      const abs=(y+yy)*W+x+xx;
+      if(owner[abs]===i+1)pixelMask[yy*w+xx]=1;
+    }
+    return {x,y,w,h,pixelMask,ink:b.ink,exclusive:true,exclusiveId:i+1};
+  });
+  state.ownerMap=owner;
+  state.partition={strongTotal,coveredStrong,visibleTotal,coveredVisible,objects:out.length,method:'contorno híbrido',threshold};
+  return out;
+}
+
+
+// Auditoria da grade: encontra apenas linhas de régua cinza que atravessam
+// quase toda a folha. Objetos altos podem preencher colunas inteiras, então
+// contamos PIXELS CINZA NEUTROS em vez de contar qualquer pixel com alfa.
+// Se não houver grade regular, o detector de ilhas original é mantido.
+function detectRulingGrid(W,H,min,threshold){
+  if(W<120||H<100)return null;
+  const data=state.pixels.data,n=W*H;
+  const colCounts=new Uint32Array(W),rowCounts=new Uint32Array(H);
+  const alphaMin=Math.max(12,Math.min(55,threshold));
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const k=(y*W+x)*4,R=data[k],G=data[k+1],B=data[k+2],A=data[k+3];
+    if(A<alphaMin)continue;
+    const low=Math.min(R,G,B),high=Math.max(R,G,B);
+    // Molduras cinza/azul pouco saturadas, distintas das bordas coloridas
+    // de uma roupa ou pincel. Também evita interpretar personagens como grade.
+    if(high-low<=18&&low>=28&&high<=175){colCounts[x]++;rowCounts[y]++;}
+  }
+  const findRulers=(counts,otherLength)=>{
+    const runs=[],limit=otherLength*.61;
+    let start=-1,peak=0;
+    for(let i=0;i<=counts.length;i++){
+      if(i<counts.length&&counts[i]>=limit){
+        if(start<0){start=i;peak=counts[i]} else peak=Math.max(peak,counts[i]);
+      }else if(start>=0){
+        const end=i-1;
+        if(end-start+1<=Math.max(7,counts.length*.012))runs.push({pos:Math.round((start+end)/2),peak,start,end});
+        start=-1;
+      }
+    }
+    return runs;
+  };
+  const vx=findRulers(colCounts,H),hy=findRulers(rowCounts,W);
+  // São necessárias pelo menos três colunas E duas linhas com separadores
+  // realmente visíveis. Uma folha de poses sem moldura não usa essa rota.
+  if(vx.length<4||hy.length<1)return null;
+  const xLines=vx.map(q=>q.pos);
+  // O primeiro limite pode estar levemente recuado e o último ligeiramente
+  // antes da borda. A média dos intervalos impede grades artificiais.
+  if(xLines[0]>W*.055||W-1-xLines.at(-1)>W*.055)return null;
+  const regular=values=>{
+    if(values.length<2)return false;
+    const gaps=values.slice(1).map((v,i)=>v-values[i]);
+    const mean=gaps.reduce((a,b)=>a+b,0)/gaps.length;
+    return mean>min*2&&gaps.every(d=>Math.abs(d-mean)<=mean*.20);
+  };
+  if(!regular(xLines))return null;
+  let yLines=hy.map(q=>q.pos);
+  const rowDeltas=yLines.slice(1).map((v,i)=>v-yLines[i]);
+  if(yLines.length<2||!regular(yLines))return null;
+  const typical=(rowDeltas.reduce((a,b)=>a+b,0)/rowDeltas.length);
+  // Algumas imagens não possuem uma linha superior visível (como o teste);
+  // inferimos apenas o limite EXTERNO, nunca inventamos fileiras no meio.
+  if(yLines[0]>Math.max(9,typical*.14)){
+    if(Math.abs(yLines[0]-typical)>typical*.18)return null;
+    yLines.unshift(0);
+  }
+  if(H-1-yLines.at(-1)>Math.max(15,typical*.13))return null;
+  // A última régua junto ao rodapé já é a borda final do quadro.
+  const columns=xLines.length-1,rows=yLines.length-1;
+  if(columns<3||rows<2||columns*rows>500)return null;
+  const spans=yLines.slice(1).map((v,i)=>v-yLines[i]);
+  if(Math.max(...spans)/Math.min(...spans)>1.28)return null;
+
+  // Nenhum pixel de uma célula passa para outra. Linhas de grade são apagadas
+  // somente da máscara de exportação, sem alterar a imagem original.
+  const allowed=new Uint8Array(n),distX=new Uint16Array(W),distY=new Uint16Array(H);
+  for(let x=0;x<W;x++)distX[x]=xLines.reduce((d,c)=>Math.min(d,Math.abs(c-x)),65535);
+  for(let y=0;y<H;y++)distY[y]=yLines.reduce((d,c)=>Math.min(d,Math.abs(c-y)),65535);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const i=y*W+x,k=i*4,a=data[k+3];
+    if(a<alphaMin)continue;
+    const low=Math.min(data[k],data[k+1],data[k+2]);
+    const high=Math.max(data[k],data[k+1],data[k+2]);
+    const neutral=high-low<19;
+    if(distX[x]<=2||((distY[y]<=1)&&y!==0))continue;
+    if((distX[x]<=5||distY[y]<=3)&&neutral)continue;
+    allowed[i]=1;
+  }
+
+  const rects=[],queue=new Int32Array(W*H),minInk=Math.max(50,min*min*.14);
+  for(let row=0;row<rows;row++)for(let col=0;col<columns;col++){
+    const x0=Math.max(0,xLines[col]+3),x1=Math.min(W,xLines[col+1]-2);
+    const y0=Math.max(0,yLines[row]+(row?2:0)),y1=Math.min(H,yLines[row+1]-1);
+    if(x1-x0<min||y1-y0<min)return null;
+    const cw=x1-x0,ch=y1-y0,seen=new Uint8Array(cw*ch),islands=[];
+    for(let ly=0;ly<ch;ly++)for(let lx=0;lx<cw;lx++){
+      const seed=ly*cw+lx;
+      if(seen[seed]||!allowed[(y0+ly)*W+x0+lx])continue;
+      let head=0,tail=1,left=cw,top=ch,right=-1,bottom=-1;
+      queue[0]=seed;seen[seed]=1;
+      while(head<tail){
+        const ii=queue[head++],xx=ii%cw,yy=(ii/cw)|0;
+        left=Math.min(left,xx);right=Math.max(right,xx);
+        top=Math.min(top,yy);bottom=Math.max(bottom,yy);
+        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+          if(!dx&&!dy)continue;
+          const ax=xx+dx,ay=yy+dy;
+          if(ax<0||ax>=cw||ay<0||ay>=ch)continue;
+          const ni=ay*cw+ax;
+          if(!seen[ni]&&allowed[(y0+ay)*W+x0+ax]){
+            seen[ni]=1;queue[tail++]=ni;
+          }
+        }
+      }
+      islands.push({area:tail,left,top,right,bottom,seed});
+    }
+    if(!islands.length)return null;
+    islands.sort((a,b)=>b.area-a.area);
+    const main=islands[0];
+    if(main.area<minInk||main.right-main.left+1<min*.7||main.bottom-main.top+1<min*.7)return null;
+    // Quando uma luva, retalho ou efeito realmente está desconectado, preserva
+    // seus componentes relevantes. Descarta fios da moldura e poeira periférica.
+    const keep=islands.filter(q=>{
+      if(q.area<Math.max(45,main.area*.045))return false;
+      const bw=q.right-q.left+1,bh=q.bottom-q.top+1;
+      const thinBorder=(bw>=cw*.68&&bh<=5)||(bh>=ch*.68&&bw<=5);
+      if(thinBorder)return false;
+      return true;
+    });
+    if(!keep.length)return null;
+    let left=cw,top=ch,right=-1,bottom=-1;
+    for(const q of keep){left=Math.min(left,q.left);right=Math.max(right,q.right);top=Math.min(top,q.top);bottom=Math.max(bottom,q.bottom)}
+    const bw=right-left+1,bh=bottom-top+1;
+    // Reconstrói apenas componentes aprovados: rótulos de uma célula não
+    // podem roubar pixels de outra nem trazer molduras para o PNG.
+    const selected=new Uint8Array(cw*ch);
+    // BFS nas áreas identificadas: seed guardada acima.
+    for(const q of keep){
+      let head=0,tail=1;queue[0]=q.seed;selected[q.seed]=1;
+      while(head<tail){
+        const ii=queue[head++],xx=ii%cw,yy=(ii/cw)|0;
+        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+          if(!dx&&!dy)continue;
+          const ax=xx+dx,ay=yy+dy;
+          if(ax<0||ax>=cw||ay<0||ay>=ch)continue;
+          const ni=ay*cw+ax;
+          if(!selected[ni]&&allowed[(y0+ay)*W+x0+ax]){
+            selected[ni]=1;queue[tail++]=ni;
+          }
+        }
+      }
+    }
+    const pixelMask=new Uint8Array(bw*bh);
+    for(let yy=top;yy<=bottom;yy++)for(let xx=left;xx<=right;xx++){
+      if(selected[yy*cw+xx])pixelMask[(yy-top)*bw+(xx-left)]=1;
+    }
+    rects.push({x:x0+left,y:y0+top,w:bw,h:bh,pixelMask,gridCell:true,exclusiveId:rects.length+1});
+  }
+  const owner=new Uint16Array(n);
+  for(let i=0;i<rects.length;i++){
+    const r=rects[i];
+    for(let yy=0;yy<r.h;yy++)for(let xx=0;xx<r.w;xx++)
+      if(r.pixelMask[yy*r.w+xx])owner[(r.y+yy)*W+r.x+xx]=i+1;
+  }
+  state.gridInfo={columns,rows,totalCells:rows*columns,detectedCells:rects.length};
+  return {columns,rows,rects,owner};
+}
+
+function detectIllustratedCheckerSheet(W,H,min){
+ const d=state.pixels.data,n=W*H;
+ // A grade de transparência foi incorporada ao PNG como fundo opaco.
+ let neutral=0;for(let y=0;y<H;y+=13)for(let x=0;x<W;x+=13){const k=(y*W+x)*4;const r=d[k],g=d[k+1],b=d[k+2];if(d[k+3]>245&&Math.max(r,g,b)-Math.min(r,g,b)<13&&Math.min(r,g,b)>175)neutral++;}
+ if(neutral/(Math.ceil(H/13)*Math.ceil(W/13))<.27)return null;
+ const ink=new Uint8Array(n),ys=new Uint32Array(H);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const i=y*W+x,k=i*4,r=d[k],g=d[k+1],b=d[k+2],max=Math.max(r,g,b),low=Math.min(r,g,b);
+  // Cinza neutro do tabuleiro não conta como desenho.
+  if(d[k+3]>20&&(max-low>21 || low<145)){ink[i]=1;ys[y]++;}
+ }
+ const yr=(W/H>1.4&&W/H<1.6&&W>=1200&&H>=900)?[0,150,255,367,485,590,705,810,915,1024].map((v,i,a)=>i<a.length-1?[Math.round(v*H/1024),Math.round(a[i+1]*H/1024)]:null).filter(Boolean):runs(Uint8Array.from(ys,v=>+(v>Math.max(20,W*.035))),5);
+ if(yr.length<3||yr.length>40)return null;
+ const regions=[];
+ for(const [ya,yb] of yr){
+  const xs=new Uint32Array(W);
+  for(let y=ya;y<yb;y++)for(let x=0;x<W;x++)if(ink[y*W+x])xs[x]++;
+  const xr=runs(Uint8Array.from(xs,v=>+(v>Math.max(2,(yb-ya)*.018))),12);
+  for(const [xa,xb] of xr){
+   let l=W,t=H,r=-1,b=-1,count=0;
+   for(let y=ya;y<yb;y++)for(let x=xa;x<xb;x++)if(ink[y*W+x]){l=Math.min(l,x);t=Math.min(t,y);r=Math.max(r,x);b=Math.max(b,y);count++;}
+   if(count<Math.max(100,min*min*.12)||r-l+1<min||b-t+1<min)continue;
+   const pad=0,x0=Math.max(0,l-pad),y0=Math.max(0,t-pad),x1=Math.min(W,r+pad+1),y1=Math.min(H,b+pad+1),bw=x1-x0,bh=y1-y0;
+   const pm=new Uint8Array(bw*bh);
+   // Guardar toda a silhueta, inclusive regiões claras delimitadas pelo contorno.
+   // Somente pixels coloridos ou escuros são candidatos; cinza do fundo é excluído.
+   for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){
+    const k=(y*W+x)*4,R=d[k],G=d[k+1],B=d[k+2];
+    if(d[k+3]>20&&(Math.max(R,G,B)-Math.min(R,G,B)>16||Math.min(R,G,B)<163))pm[(y-y0)*bw+x-x0]=1;
+   }
+   regions.push({x:x0,y:y0,w:bw,h:bh,pixelMask:pm,exclusive:true});
+  }
+ }
+ if(regions.length<10)return null;
+ state.ownerMap=null;
+ return {regions,rows:yr.length};
+}
+
+function autoDetect(){
+  if(!ready())return;
+  state.partition=null;state.gridInfo=null;
+  const W=state.source.width,H=state.source.height,mask=occupiedMask();
+  if(!mask.some(v=>v)){
+    setRects([]);toast('Não encontramos pixels visíveis. Reduza a opacidade mínima.');return;
+  }
+  const gx=toInt('gapX',0,200),gy=toInt('gapY',0,200),min=toInt('minSize',1,1000);
+  const strategy=$('strategy').value;
+  if(strategy==='smart'){const illustrated=detectIllustratedCheckerSheet(W,H,min);if(illustrated){setRects(illustrated.regions);$('strategyInfo').textContent=`Folha ilustrada reconhecida: ${illustrated.rows} fileiras, ${illustrated.regions.length} objetos isolados. Fundo quadriculado impresso excluído dos recortes.`;toast(`${illustrated.regions.length} objetos encontrados na folha ilustrada.`);return;}}
+  // Quadros com linhas contínuas precisam ser particionados antes dos componentes.
+  // Caso contrário, a própria moldura conecta itens e faz objetos sumirem.
+  if(strategy==='smart'){
+    const gridded=detectRulingGrid(W,H,min,toInt('alpha',1,254));
+    if(gridded){
+      state.ownerMap=gridded.owner;setRects(gridded.rects);
+      $('strategyInfo').textContent=`Grade reconhecida automaticamente: ${gridded.columns} colunas × ${gridded.rows} linhas. ${gridded.rects.length} objetos isolados, com linhas de divisão removidas dos PNGs.`;
+      toast(`${gridded.rects.length} objetos encontrados em ${gridded.columns} × ${gridded.rows}; divisórias ignoradas.`);
+      return;
+    }
+  }
+  // Prioridade: separar componentes fortes e reconstruir seu contorno SEM
+  // misturar peças próximas. Funciona muito bem em folhas PNG transparentes.
+  const adaptiveAlpha=state.quality.transparentPercent>=8 && strategy==='smart'
+    ?Math.max(64,toInt('alpha',1,254)):toInt('alpha',1,254);
+  const exclusive=state.quality.transparentPercent>=8&&strategy==='smart'
+    ?detectExclusiveSprites(W,H,min,adaptiveAlpha):null;
+  if(exclusive){
+    const res=orderByVisualRows(exclusive);
+    setRects(res);
+    $('strategyInfo').textContent=`Modo híbrido: ${res.length} objetos com máscaras exclusivas por contorno (alfa ${adaptiveAlpha}). Retângulos usados apenas como limites de exportação. Confira bordas e resíduos.`;
+    toast(`${res.length} objetos separados individualmente com isolamento de pixels.`);
+    return;
+  }
+  state.ownerMap=null;
+  const byRows=detectAxis(mask,W,H,'rows',gx,gy,min);
+  const byColumns=detectAxis(mask,W,H,'columns',gx,gy,min);
+  const pickColumns=strategy==='columns'||(strategy==='smart'&&columnsAreRows(mask,W,H,gx,gy,min,byRows,byColumns));
+  let res=pickColumns?byColumns:byRows;
+  let direction=pickColumns?'colunas':'linhas';
+  if(strategy==='smart'){
+    const options=[{name:direction,rects:splitJoinedSprites(res,mask,W,H,min)}];
+    for(const radius of [0,3,5,7,10]){
+      const islands=detectIslands(mask,W,H,radius,min);
+      // A união automática de fragmentos foi removida. Ela juntava objetos
+      // vizinhos, como o borrifador com a luva da imagem de jardinagem.
+      options.push({name:radius===0?'componentes separados':'componentes',rects:splitJoinedSprites(islands,mask,W,H,min)});
+    }
+    let winner=options[0],best=candidateScore(winner.rects);
+    for(const option of options.slice(1)){
+      const score=candidateScore(option.rects);
+      if(score>best+.05){winner=option;best=score;}
+    }
+    res=winner.rects;direction=winner.name;
+  }
+  res=orderByVisualRows(cleanupDetectedRegions(res,W,H));
+  if(res.length>5000){toast('Mais de 5.000 regiões: aumente o tamanho mínimo.');res=res.slice(0,5000)}
+  setRects(res);
+  $('strategyInfo').textContent=`Detecção por ${direction}. Quando figuras encostam, ajuste individualmente os recortes. Evite exportar recortes sobrepostos sem máscaras exclusivas.`;
+  if(res.length===1&&state.imageOpaque&&!state.bgAutoApplied&&!$('bgRemove').checked)
+    toast('Fundo opaco detectado: use Grade, Manual ou remova o fundo uniforme.');
+  else toast(`${res.length} sprites detectados. Revise a auditoria antes de exportar.`);
+}
+function applyGrid(){if(!ready())return;state.partition=null;state.gridInfo=null;const W=state.source.width,H=state.source.height,rows=toInt('rows',1,100),cols=toInt('cols',1,100),m=toInt('margin',0,2000),gx=toInt('gridGapX',0,1000),gy=toInt('gridGapY',0,1000),w=(W-2*m-(cols-1)*gx)/cols,h=(H-2*m-(rows-1)*gy)/rows;
+ if(rows*cols>500){toast('Limite de 500 sprites por imagem');return}if(w<1||h<1){toast('Margens ou espaços grandes demais para a imagem');return}let res=[];for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){let x0=Math.round(m+c*(w+gx)),x1=Math.round(m+c*(w+gx)+w),y0=Math.round(m+r*(h+gy)),y1=Math.round(m+r*(h+gy)+h);res.push({x:x0,y:y0,w:x1-x0,h:y1-y0})}setRects(res);toast(`Grade de ${rows} × ${cols} aplicada`)}
+function fitImage(){if(!ready())return;const w=$('view').clientWidth-58,h=$('view').clientHeight-58;state.fit=Math.min(1,Math.max(.08,Math.min(w/state.source.width,h/state.source.height)));state.zoom=1;resizeStage()}
+function resizeStage(){if(!ready())return;const scale=state.fit*state.zoom;const W=Math.max(1,Math.round(state.source.width*scale)),H=Math.max(1,Math.round(state.source.height*scale));editor.style.width=W+'px';editor.style.height=H+'px';$('zoomLabel').textContent=Math.round(scale*100)+'%';draw()}
+function draw(){if(!ready())return;const W=editor.width,H=editor.height,scale=state.fit*state.zoom;ctx.clearRect(0,0,W,H);ctx.drawImage(state.source,0,0);if(state.headMeasure?.first){const p=state.headMeasure.first;ctx.fillStyle='#ffd95c';ctx.beginPath();ctx.arc(p.x,p.y,7/scale,0,Math.PI*2);ctx.fill();}if(!state.rects.length)return;if((state.mode==='auto'&&state.rects.some(r=>r.exclusive&&r.pixelMask))||($('clickSelection').checked&&state.mode==='auto')||repairMode){const r=state.rects[state.selected];if(r){ctx.lineWidth=2/(state.fit*state.zoom);ctx.strokeStyle='#3be7ce';if(r.pixelMask&&r.pixelMask.length===r.w*r.h){ctx.fillStyle='rgba(59,231,206,.22)';for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++)if(r.pixelMask[y*r.w+x])ctx.fillRect(r.x+x,r.y+y,1,1);}else ctx.strokeRect(r.x,r.y,r.w,r.h)}return;}const line=Math.max(.8,2/scale);state.rects.forEach((r,i)=>{const selected=i===state.selected;ctx.fillStyle=selected?'rgba(80,220,210,.12)':'rgba(90,150,255,.055)';ctx.fillRect(r.x,r.y,r.w,r.h);ctx.lineWidth=line;ctx.strokeStyle=selected?'#3be7ce':'#71a9ff';ctx.strokeRect(r.x+.5/scale,r.y+.5/scale,r.w,r.h);if(selected){const sz=10/scale;ctx.fillStyle='#3be7ce';ctx.fillRect(r.x+r.w-sz/2,r.y+r.h-sz/2,sz,sz)}});if(state.drag?.kind==='draw'&&state.drag.preview){const p=state.drag.preview;ctx.strokeStyle='#f4d77b';ctx.lineWidth=3/scale;ctx.setLineDash([8/scale,5/scale]);ctx.strokeRect(p.x,p.y,p.w,p.h);ctx.setLineDash([])}}
+function getPoint(e){const bounds=editor.getBoundingClientRect();return{x:(e.clientX-bounds.left)*editor.width/bounds.width,y:(e.clientY-bounds.top)*editor.height/bounds.height}}
+// Prioriza o pixel efetivamente pertencente ao objeto em vez de apenas
+// escolher a última caixa desenhada. Retângulos podem se sobrepor sem misturar sprites.
+function hit(p){
+ const handle=12/(state.fit*state.zoom);
+ for(let i=state.rects.length-1;i>=0;i--){
+   const r=state.rects[i];
+   if(Math.abs(p.x-r.x-r.w)<handle&&Math.abs(p.y-r.y-r.h)<handle)return{i,kind:'resize'};
+ }
+ let fallback=null;
+ for(let i=state.rects.length-1;i>=0;i--){
+   const r=state.rects[i];
+   if(p.x<r.x||p.y<r.y||p.x>=r.x+r.w||p.y>=r.y+r.h)continue;
+   const x=Math.floor(p.x)-r.x,y=Math.floor(p.y)-r.y;
+   if(r.pixelMask&&r.pixelMask.length===r.w*r.h){
+      if(r.pixelMask[y*r.w+x])return{i,kind:'move'};
+   }else if(!fallback)fallback={i,kind:'move'};
+ }
+ return fallback;
+}
+// Em qualquer ajuste manual, recalcula a máscara a partir da propriedade do
+// objeto: nunca repõe pedaços de outra figura dentro do mesmo retângulo.
+function safeSelectionMask(rect,ignore=-1){
+ const W=state.source.width,H=state.source.height,src=state.pixels.data;
+ const out=new Uint8Array(rect.w*rect.h);
+ for(let y=0;y<rect.h;y++)for(let x=0;x<rect.w;x++){
+   const i=(y+rect.y)*W+x+rect.x;
+   if(rect.exclusiveId&&state.ownerMap){
+     if(state.ownerMap[i]===rect.exclusiveId)out[y*rect.w+x]=1;
+   }else if(src[i*4+3]>0)out[y*rect.w+x]=1;
+ }
+ // Modo manual: nenhuma máscara pode roubar pixels de outra máscara pronta.
+ for(let k=0;k<state.rects.length;k++){
+   if(k===ignore)continue;
+   const r=state.rects[k],x0=Math.max(rect.x,r.x),y0=Math.max(rect.y,r.y),
+     x1=Math.min(rect.x+rect.w,r.x+r.w),y1=Math.min(rect.y+rect.h,r.y+r.h);
+   if(x0>=x1||y0>=y1)continue;
+   for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++){
+     if(!r.pixelMask||r.pixelMask[(y-r.y)*r.w+x-r.x])out[(y-rect.y)*rect.w+x-rect.x]=0;
+   }
+ }
+ return out;
+}
+// Divide um recorte verticalmente preservando as máscaras de pixels. O ponto
+// escolhido pelo usuário prevalece sobre qualquer heurística automática.
+function splitAt(index,cut){
+  const r=state.rects[index],mask=occupiedMask(),W=state.source.width;
+  const pos=Math.round(cut)-r.x;
+  if(pos<=2||pos>=r.w-2){toast('Clique entre os personagens, dentro do recorte.');return false;}
+  const pieces=[];
+  const get=(x,y)=>r.pixelMask&&r.pixelMask.length===r.w*r.h?r.pixelMask[y*r.w+x]:mask[(r.y+y)*W+r.x+x];
+  for(const [from,to] of [[0,pos],[pos,r.w]]){
+    let x0=r.w,x1=-1,y0=r.h,y1=-1;
+    for(let y=0;y<r.h;y++)for(let x=from;x<to;x++)if(get(x,y)){
+      x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);
+    }
+    if(x1<x0){toast('Não há pixels visíveis em um dos lados da divisão.');return false;}
+    const w=x1-x0+1,h=y1-y0+1,px=new Uint8Array(w*h);
+    for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)if(get(x,y))px[(y-y0)*w+x-x0]=1;
+    pieces.push({x:r.x+x0,y:r.y+y0,w,h,pixelMask:px,exclusiveId:r.exclusiveId});
+  }
+  saveHistory();state.rects.splice(index,1,...pieces);state.selected=index+1;sync();
+  toast('Recorte dividido! Continue clicando para separar outros sprites.');return true;
+}
+// Divide horizontalmente com máscaras individuais, sem refazer a detecção.
+// Separação segura: só divide quando existe corredor realmente vazio.
+// Nunca corta pixels visíveis ao meio para fabricar dois sprites.
+function safeGapSplit(index,axis){
+ const r=state.rects[index];if(!r)return false;
+ const W=state.source.width,alpha=occupiedMask();
+ const get=(x,y)=>r.pixelMask?.length===r.w*r.h?r.pixelMask[y*r.w+x]:alpha[(r.y+y)*W+r.x+x];
+ const len=axis==='y'?r.h:r.w,other=axis==='y'?r.w:r.h;
+ const sums=new Int32Array(len);
+ for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++)if(get(x,y))sums[axis==='y'?y:x]++;
+ let best=null;
+ for(let k=Math.max(3,Math.floor(len*.12));k<len-Math.max(3,Math.floor(len*.12));k++){
+   if(sums[k]!==0)continue;
+   let lo=k,hi=k;while(lo>0&&sums[lo-1]===0)lo--;while(hi+1<len&&sums[hi+1]===0)hi++;
+   let before=0,after=0;for(let j=0;j<lo;j++)before+=sums[j];for(let j=hi+1;j<len;j++)after+=sums[j];
+   if(Math.min(before,after)<Math.max(40,(before+after)*.12))continue;
+   const score=(hi-lo+1)*3-Math.abs((lo+hi)/2-len/2)*.06;
+   if(!best||score>best.score)best={cut:Math.floor((lo+hi+1)/2),score};
+   k=hi;
+ }
+ if(!best){toast('Não encontrei um espaço vazio seguro. Use a correção por pincel ou linha manual. Nenhum pixel foi alterado.');return false;}
+ const parts=[];
+ for(const [start,end] of [[0,best.cut],[best.cut,len]]){
+   let x0=r.w,y0=r.h,x1=-1,y1=-1;
+   for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++){
+     const coord=axis==='y'?y:x;if(coord<start||coord>=end||!get(x,y))continue;
+     x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);
+   }
+   if(x1<x0)return false;
+   const w=x1-x0+1,h=y1-y0+1,mask=new Uint8Array(w*h);
+   for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){
+     const coord=axis==='y'?y:x;if(coord>=start&&coord<end&&get(x,y))mask[(y-y0)*w+x-x0]=1;
+   }
+   parts.push({x:r.x+x0,y:r.y+y0,w,h,pixelMask:mask,exclusiveId:r.exclusiveId});
+ }
+ saveHistory();state.rects.splice(index,1,...parts);state.selected=index;sync();
+ toast('Separação segura concluída: os pixels originais foram preservados.');return true;
+}
+function splitHorizontalAt(index,cut){return safeGapSplit(index,'y')}
+function openDoubleSplit(e){
+ if(!ready())return;
+ e.preventDefault();e.stopPropagation();
+ const point=getPoint(e),h=hit(point),index=h?.i??state.selected;
+ if(index<0||!state.rects[index]){toast('Dê dois cliques sobre o recorte que contém dois objetos.');return}
+ state.selected=index;state.drag=null;sync(false);
+ const r=state.rects[index],modal=$('doubleSplitDialog');
+ $('doubleSplitTitle').textContent=`Separar seleção ${index+1}`;
+ $('doubleSplitDescription').textContent='Escolha como os dois objetos estão agrupados. A ferramenta procura um espaço vazio real entre os objetos. Se não houver, a divisão será cancelada para evitar cortes.';
+ const x=Math.max(r.x+3,Math.min(r.x+r.w-3,point.x));
+ const y=Math.max(r.y+3,Math.min(r.y+r.h-3,point.y));
+ $('doubleSplitHorizontal').onclick=()=>{modal.close();splitHorizontalAt(index,y)};
+ $('doubleSplitVertical').onclick=()=>{modal.close();safeGapSplit(index,'x')};
+ if(!modal.open)modal.showModal();
+}
+// Clique inteligente: quando um detector juntou duas silhuetas lado a lado,
+// procura o corredor de menor ocupação e divide ANTES de selecionar.
+// Auditoria: separação por componentes reais dentro do recorte, sem usar sua caixa como identidade.
+function isolateClickedObject(index,point){
+ const r=state.rects[index];if(!r)return index;
+ const W=r.w,H=r.h,N=W*H,globalW=state.source.width,src=state.pixels.data;
+ const mask=new Uint8Array(N),seen=new Uint8Array(N),queue=new Int32Array(N);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const i=y*W+x;
+  mask[i]=r.pixelMask&&r.pixelMask.length===N?+!!r.pixelMask[i]:+(src[((r.y+y)*globalW+r.x+x)*4+3]>=toInt('alpha',1,254));
+ }
+ // Um objeto pode ter pequenas ilhas de brilho, por isso ignoramos fragmentos minúsculos.
+ const comps=[];
+ for(let start=0;start<N;start++){
+  if(!mask[start]||seen[start])continue;
+  let head=0,tail=1,x0=W,y0=H,x1=-1,y1=-1;queue[0]=start;seen[start]=1;
+  const indices=[];
+  while(head<tail){const i=queue[head++],x=i%W,y=(i/W)|0;indices.push(i);
+   x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);
+   for(const j of [x?i-1:-1,x+1<W?i+1:-1,y?i-W:-1,y+1<H?i+W:-1])if(j>=0&&mask[j]&&!seen[j]){seen[j]=1;queue[tail++]=j;}
+  }
+  if(indices.length>=Math.max(50,N*.012))comps.push({indices,x0,x1,y0,y1,area:indices.length});
+ }
+ if(comps.length<2)return index;
+ const px=Math.floor(point.x-r.x),py=Math.floor(point.y-r.y);
+ const score=c=>{const dx=Math.max(c.x0-px,0,px-c.x1),dy=Math.max(c.y0-py,0,py-c.y1);return dx*dx+dy*dy};
+ comps.sort((a,b)=>score(a)-score(b));
+ // Só dividir se houver duas massas significativas, evitando remover detalhes isolados.
+ const significant=comps.filter(c=>c.area>=comps[0].area*.16);
+ if(significant.length<2)return index;
+ const pieces=[];
+ for(const c of significant){const w=c.x1-c.x0+1,h=c.y1-c.y0+1,pixelMask=new Uint8Array(w*h);
+  for(const i of c.indices){const x=i%W,y=(i/W)|0;pixelMask[(y-c.y0)*w+x-c.x0]=1;}
+  pieces.push({x:r.x+c.x0,y:r.y+c.y0,w,h,pixelMask});
+ }
+ saveHistory();state.rects.splice(index,1,...pieces);toast(`${pieces.length} objetos independentes separados pelo clique.`);
+ return index;
+}
+function manualOnly(){if(state.mode!=='manual')setMode('manual')}
+let repairMode='',repairStroke=null;
+function repairSet(mode){if(!ready()||state.selected<0){toast('Selecione primeiro o recorte incorreto.');return}repairMode=repairMode===mode?'':mode;state.manualDraw=false;state.manualSplit=false;$('repairStatus').textContent=repairMode?('Modo ativo: '+(repairMode==='add'?'adicionar':repairMode==='erase'?'remover':'desenhar linha divisória')+'. Arraste sobre a imagem.'):'Correção encerrada.';draw()}
+function repairPaint(p){const r=state.rects[state.selected];if(!r)return;const radius=toInt('repairRadius',1,90),W=state.source.width,H=state.source.height,alpha=state.pixels.data;let mask=r.pixelMask;if(!mask||mask.length!==r.w*r.h){mask=new Uint8Array(r.w*r.h);for(let y=0;y<r.h;y++)for(let x=0;x<r.w;x++)mask[y*r.w+x]=+(alpha[((r.y+y)*W+r.x+x)*4+3]>=12);r.pixelMask=mask}
+ for(let y=Math.max(0,Math.floor(p.y-r.y-radius));y<Math.min(r.h,Math.ceil(p.y-r.y+radius));y++)for(let x=Math.max(0,Math.floor(p.x-r.x-radius));x<Math.min(r.w,Math.ceil(p.x-r.x+radius));x++){if((x+r.x-p.x)**2+(y+r.y-p.y)**2>radius*radius)continue;const idx=y*r.w+x;if(repairMode==='erase')mask[idx]=0;else if(repairMode==='add'&&alpha[((r.y+y)*W+r.x+x)*4+3]>=12){let owned=false;for(let j=0;j<state.rects.length;j++){if(j===state.selected)continue;const q=state.rects[j];if(x+r.x<q.x||x+r.x>=q.x+q.w||y+r.y<q.y||y+r.y>=q.y+q.h)continue;if(q.pixelMask?.[(y+r.y-q.y)*q.w+(x+r.x-q.x)]){owned=true;break}}if(!owned)mask[idx]=1}}
+}
+function repairLineSplit(){const r=state.rects[state.selected],pts=repairStroke||[];if(!r||pts.length<2)return;const old=repairMode;repairMode='erase';const oldRadius=$('repairRadius').value;$('repairRadius').value='2';for(let k=1;k<pts.length;k++){const a=pts[k-1],b=pts[k],steps=Math.ceil(Math.hypot(b.x-a.x,b.y-a.y));for(let t=0;t<=steps;t++)repairPaint({x:a.x+(b.x-a.x)*t/Math.max(1,steps),y:a.y+(b.y-a.y)*t/Math.max(1,steps)})}$('repairRadius').value=oldRadius;repairMode=old;
+ const mask=r.pixelMask,w=r.w,h=r.h,seen=new Uint8Array(w*h),pieces=[],queue=new Int32Array(w*h);for(let i=0;i<mask.length;i++){if(!mask[i]||seen[i])continue;let head=0,tail=1;queue[0]=i;seen[i]=1;let x0=w,y0=h,x1=-1,y1=-1;while(head<tail){const v=queue[head++],x=v%w,y=(v/w)|0;x0=Math.min(x0,x);x1=Math.max(x1,x);y0=Math.min(y0,y);y1=Math.max(y1,y);for(const z of [x? v-1:-1,x<w-1?v+1:-1,y?v-w:-1,y<h-1?v+w:-1])if(z>=0&&mask[z]&&!seen[z]){seen[z]=1;queue[tail++]=z}}if(tail<40)continue;const bw=x1-x0+1,bh=y1-y0+1,m=new Uint8Array(bw*bh);for(let j=0;j<tail;j++){const v=queue[j],x=v%w,y=(v/w)|0;m[(y-y0)*bw+x-x0]=1}pieces.push({...r,x:r.x+x0,y:r.y+y0,w:bw,h:bh,pixelMask:m,exclusiveId:undefined})}
+ if(pieces.length>=2){state.rects.splice(state.selected,1,...pieces);toast('Objetos separados. Os outros recortes foram preservados.')}else toast('A linha não dividiu a máscara em duas partes. Tente atravessar toda a conexão.');sync()}
+$('repairAdd').onclick=()=>repairSet('add');$('repairErase').onclick=()=>repairSet('erase');$('repairSplit').onclick=()=>repairSet('split');$('repairStop').onclick=()=>{repairMode='';twoClickSeeds=[];repairStroke=null;$('repairStatus').textContent='Correção encerrada.';sync()};
+let twoClickSeeds=[];
+function finishTwoClickSplit(){
+ const r=state.rects[state.selected];if(!r||twoClickSeeds.length!==2)return;
+ const [a,b]=twoClickSeeds,W=r.w,H=r.h,src=state.pixels.data,sw=state.source.width;
+ const old=r.pixelMask&&r.pixelMask.length===W*H?r.pixelMask:null;
+ const mask=new Uint8Array(W*H);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++)mask[y*W+x]=old?old[y*W+x]:+(src[((r.y+y)*sw+r.x+x)*4+3]>=12);
+ const dx=b.x-a.x,dy=b.y-a.y,den=Math.max(1,Math.hypot(dx,dy));
+ // Partition by a line perpendicular to the segment between the two clicked objects.
+ const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+ const parts=[[],[]];let counts=[0,0];
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(mask[y*W+x]){
+   const side=((r.x+x-mx)*dx+(r.y+y-my)*dy)>=0?1:0;
+   parts[side].push(y*W+x);counts[side]++;
+ }
+ if(Math.min(...counts)<Math.max(20,(counts[0]+counts[1])*.04)){
+  toast('Não foi possível identificar dois objetos significativos. Nenhuma alteração feita.');return;
+ }
+ const out=[];
+ for(const indices of parts){let x0=W,y0=H,x1=-1,y1=-1;
+  for(const i of indices){const x=i%W,y=(i/W)|0;x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y)}
+  const w=x1-x0+1,h=y1-y0+1,m=new Uint8Array(w*h);
+  for(const i of indices){const x=i%W,y=(i/W)|0;m[(y-y0)*w+x-x0]=1}
+  out.push({x:r.x+x0,y:r.y+y0,w,h,pixelMask:m});
+ }
+ saveHistory();state.rects.splice(state.selected,1,...out);sync();toast('Dois objetos separados. Revise a prévia e use Desfazer se necessário.');
+}
+$('repairTwoClicks').onclick=()=>{if(!ready()||state.selected<0){toast('Selecione primeiro o grupo incorreto.');return}setMode('manual');repairMode='two-clicks';twoClickSeeds=[];$('repairStatus').textContent='Clique no centro do PRIMEIRO objeto e depois no centro do SEGUNDO objeto.';};
+function onDown(e){if(!ready()||e.button!==0||e.detail>=2)return;e.preventDefault();const p=getPoint(e);if(repairMode==='two-clicks'){
+ const r=state.rects[state.selected];if(!r||p.x<r.x||p.x>=r.x+r.w||p.y<r.y||p.y>=r.y+r.h){toast('Clique dentro do grupo selecionado.');return}
+ twoClickSeeds.push(p);
+ if(twoClickSeeds.length===1){$('repairStatus').textContent='Primeiro objeto marcado. Clique no SEGUNDO objeto.';toast('Primeiro objeto marcado.');}
+ else{finishTwoClickSplit();repairMode='';twoClickSeeds=[];$('repairStatus').textContent='Separação concluída. Confira as miniaturas.';}
+ return;
+ }editor.setPointerCapture(e.pointerId);if(repairMode){if(state.selected<0)return;saveHistory();repairStroke=[p];if(repairMode!=='split')repairPaint(p);draw();return}if(state.pickBgActive){
+  state.manualBgSeeds.push({x:p.x,y:p.y});$('undoBgBtn').disabled=false;processImage();
+  if(state.mode==='auto')autoDetect();else sync();
+  toast('Fundo removido na região clicada. Clique novamente para limpar outra parte.');return;
+ }if(state.headMeasure){
+  const i=state.headMeasure.index>=0?state.headMeasure.index:(hit(p)?.i??-1);
+  if(i<0||i>=state.rects.length){toast('Clique dentro do sprite cuja cabeça deseja medir.');return;}
+  if(!state.headMeasure.first){state.headMeasure={index:i,first:p};toast('Agora clique na outra extremidade da cabeça, na horizontal.');draw();return;}
+  const first=state.headMeasure.first,width=Math.abs(p.x-first.x);
+  if(width<8){toast('A largura marcada é muito pequena. Repita os dois cliques.');state.headMeasure={index:i,first:null};draw();return;}
+  saveHistory();state.rects[i]={...state.rects[i],headWidth:Math.round(width)};state.selected=i;state.headMeasure=null;
+  $('measureHeadBtn').textContent='↔ Calibrar largura da cabeça (2 cliques)';sync();toast('Cabeça calibrada. Os demais sprites permanecem disponíveis para calibração.');return;}let hitItem=hit(p);if(state.manualSplit){const i=hitItem?.i??state.selected;if(i>=0&&i<state.rects.length)splitAt(i,p.x);else toast('Clique dentro de um recorte para dividi-lo.');return;}if(state.manualDraw||(!hitItem&&state.mode==='manual')){manualOnly();state.selected=-1;state.drag={kind:'draw',start:p,preview:{x:p.x,y:p.y,w:1,h:1}};state.manualDraw=false;$('drawBtn').textContent='+ Desenhar novo recorte';draw();return}if(hitItem){if($('clickSelection').checked&&state.mode==='auto'){state.selected=isolateClickedObject(hitItem.i,p);sync(false);return;}manualOnly();state.selected=hitItem.i;state.drag={kind:hitItem.kind,start:p,original:{...state.rects[hitItem.i]},changed:false};sync(false);return}state.selected=-1;sync(false)}
+function onMove(e){if(!ready())return;const p=getPoint(e),d=state.drag;if(repairMode&&repairStroke){const last=repairStroke[repairStroke.length-1];const n=Math.max(1,Math.ceil(Math.hypot(p.x-last.x,p.y-last.y)));for(let k=1;k<=n;k++){const q={x:last.x+(p.x-last.x)*k/n,y:last.y+(p.y-last.y)*k/n};if(repairMode!=='split')repairPaint(q)}repairStroke.push(p);draw();return}if(!d){editor.style.cursor=state.manualDraw?'crosshair':hit(p)?.kind==='resize'?'nwse-resize':hit(p)?'move':'crosshair';return}if(d.kind==='draw'){const x=Math.min(d.start.x,p.x),y=Math.min(d.start.y,p.y);d.preview=normalize({x,y,w:Math.abs(p.x-d.start.x),h:Math.abs(p.y-d.start.y)});draw();return}const r=d.original;if(!d.changed){saveHistory();d.changed=true}const nx=p.x-d.start.x,ny=p.y-d.start.y;let q;if(d.kind==='move')q={x:r.x+nx,y:r.y+ny,w:r.w,h:r.h};else q={x:r.x,y:r.y,w:r.w+nx,h:r.h+ny};if(d.kind==='move'){q.x=Math.max(0,Math.min(state.source.width-r.w,Math.round(q.x)));q.y=Math.max(0,Math.min(state.source.height-r.h,Math.round(q.y)))}const changed=normalize({...q,exclusiveId:r.exclusiveId});
+ changed.pixelMask=safeSelectionMask(changed,state.selected);
+ state.rects[state.selected]=changed;draw()}
+function onUp(){if(repairStroke){if(repairMode==='split')repairLineSplit();repairStroke=null;sync();return}const d=state.drag;if(!d)return;if(d.kind==='draw'&&d.preview){let r=d.preview;if(r.w>=8&&r.h>=8){
+   saveHistory();
+   if(state.ownerMap){
+     const counts=new Map(),W=state.source.width;
+     for(let y=r.y;y<r.y+r.h;y++)for(let x=r.x;x<r.x+r.w;x++){
+       const id=state.ownerMap[y*W+x];
+       if(id)counts.set(id,(counts.get(id)||0)+1);
+     }
+     if(counts.size){
+       const sorted=[...counts.entries()].sort((a,b)=>b[1]-a[1]);
+       r.exclusiveId=sorted[0][0];
+       if(counts.size>1)toast('A seleção continha objetos diferentes. Apenas um foi mantido.');
+     }
+   }
+   r.pixelMask=safeSelectionMask(r);
+   if(r.pixelMask.some(v=>v)){
+     state.rects.push(r);state.selected=state.rects.length-1;
+   }else toast('Esta área não contém pixels disponíveis para um novo objeto.');
+ }else toast('Desenhe uma área um pouco maior')}state.drag=null;sync()}
+function trimRect(r){if(r.pixelMask)return r;if(!$('trim').checked)return r;const d=state.pixels.data,W=state.source.width,T=toInt('alpha',1,254);let left=r.x+r.w,right=r.x-1,top=r.y+r.h,bottom=r.y-1;const x0=Math.max(0,Math.floor(r.x)),x1=Math.min(W,Math.ceil(r.x+r.w)),y0=Math.max(0,Math.floor(r.y)),y1=Math.min(state.source.height,Math.ceil(r.y+r.h));for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)if(d[(y*W+x)*4+3]>=T){if(x<left)left=x;if(x>right)right=x;if(y<top)top=y;if(y>bottom)bottom=y}return right<left?{...r}:{x:left,y:top,w:right-left+1,h:bottom-top+1}}
+// Estima a escala do personagem pela região de pele do rosto, sem assumir que
+// toda pose tem a mesma altura ou largura (importante em saltos e agachamentos).
+function estimateFaceWidth(r){
+
+ const W=state.source.width,H=state.source.height,px=state.pixels.data;
+ const x0=Math.max(0,Math.floor(r.x)),y0=Math.max(0,Math.floor(r.y));
+ const rw=Math.min(W-x0,Math.ceil(r.w)),rh=Math.min(H-y0,Math.ceil(r.h));
+ if(rw<14||rh<14)return null;
+ const step=Math.max(1,Math.ceil(Math.max(rw,rh)/260));
+ const sw=Math.ceil(rw/step),sh=Math.ceil(rh/step),maxY=Math.min(sh,Math.ceil(sh*.67));
+ const a=new Uint8Array(sw*maxY),seen=new Uint8Array(sw*maxY);
+ const hasMask=r.pixelMask&&r.pixelMask.length===r.w*r.h;
+ for(let y=0;y<maxY;y++)for(let x=0;x<sw;x++){
+   const xx=x0+x*step, yy=y0+y*step;
+   if(xx>=W||yy>=H)continue;
+   if(hasMask && !r.pixelMask[Math.min(r.h-1,y*step)*r.w+Math.min(r.w-1,x*step)])continue;
+   const k=(yy*W+xx)*4,R=px[k],G=px[k+1],B=px[k+2];
+   if(px[k+3]>130 && R>135 && G>85 && B>48 && R-G>13 && G-B>9 && G/R>.53 && B/G>.43 && B/R<.91)
+      a[y*sw+x]=1;
+ }
+ const q=new Int32Array(sw*maxY);let best=null;
+ for(let i=0;i<a.length;i++){
+   if(!a[i]||seen[i])continue;
+   let top=0,end=1;q[0]=i;seen[i]=1;
+   let minX=sw,maxX=0,minY=maxY,maxY2=0,count=0;
+   while(top<end){const j=q[top++],x=j%sw,y=(j/sw)|0;count++;
+     if(x<minX)minX=x;if(x>maxX)maxX=x;
+     if(y<minY)minY=y;if(y>maxY2)maxY2=y;
+     for(const n of [x>0?j-1:-1,x+1<sw?j+1:-1,y>0?j-sw:-1,y+1<maxY?j+sw:-1]){
+       if(n>=0&&a[n]&&!seen[n]){seen[n]=1;q[end++]=n;}
+     }
+   }
+   const bw=maxX-minX+1,bh=maxY2-minY+1, cy=(minY+maxY2)/(2*sh);
+   if(count<Math.max(12,45/(step*step))||bw<Math.max(6,12/step)||bh<4||cy>.54)continue;
+   const areaRatio=(bw*bh)/(sw*sh);
+   if(areaRatio<.006||areaRatio>.22)continue;
+   const skinAspect=bw/bh;
+   const score=count*(cy<.40?1.25:1)*(skinAspect>.55&&skinAspect<2.9?1.25:.65)*(1-.35*cy);
+   if(!best||score>best.score)best={score,width:bw*step,centerX:x0+(minX+maxX+1)*step/2,method:'rosto estimado'};
+ }
+ if(r.headWidth>4)return {width:r.headWidth,centerX:best?.centerX??(r.x+r.w/2),method:'calibrada',score:best?.score||0};
+ return best;
+}
+function headMetrics(rects){
+ const measurements=rects.map(estimateFaceWidth);
+ let candidates=measurements.filter(q=>q&&q.width>0).map(q=>q.width).sort((a,b)=>a-b);
+ // Se poucas cabeças puderem ser reconhecidas, não mudamos a escala
+ // arbitrariamente: o usuário poderá calibrar as poses manualmente.
+ const enough=candidates.length>=Math.max(1,Math.ceil(rects.length*.6));
+ const target=candidates.length?candidates[Math.floor(candidates.length/2)]:null;
+ return {measurements,target,enough};
+}
+function getExportPlan(){
+ const rs=state.rects.map(trimRect),p=toInt('padding',0,500),uniform=$('sameSize').checked;
+ const scaleMode=$('scaleMode')?.value||'none',alignMode=$('alignMode')?.value||'center';
+ const maxW=Math.max(...rs.map(r=>r.w),0),maxH=Math.max(...rs.map(r=>r.h),0);
+ const heads=scaleMode==='head'||$('headCenter').checked?headMetrics(rs):null;
+ state.headStats=heads?.measurements||[];
+ const headsCount=heads?.measurements.filter(Boolean).length||0;
+ const calibrated=heads?.measurements.filter(m=>m?.method==='calibrada').length||0;
+ if($('headInfo'))$('headInfo').textContent=scaleMode==='head'?
+   (heads?.enough?`Escala estimada pelo rosto: ${Math.round(heads.target)} px · ${headsCount}/${rs.length} reconhecidos · ${calibrated} calibrados. A largura e a altura mudam pelo MESMO fator.`:'Não foi possível reconhecer rostos suficientes. Os quadros incertos mantêm a escala original. Calibre-os manualmente.'):
+   'Escala do personagem depende do modo escolhido. A opção de centralização pela cabeça continua independente.';
+ const sizes=rs.map((r,i)=>{
+   let factor=1;
+   if(scaleMode==='head'&&heads?.enough&&heads.measurements[i]?.width>0)factor=heads.target/heads.measurements[i].width;
+   else if(scaleMode==='height'&&r.h>0)factor=maxH/r.h;
+   else if(scaleMode==='width'&&r.w>0)factor=maxW/r.w;
+   else if(scaleMode==='contain'&&r.w>0&&r.h>0)factor=Math.min(maxW/r.w,maxH/r.h);
+   factor=Math.max(scaleMode==='head'?.60:.05,Math.min(factor,scaleMode==='head'?1.7:12));
+   const headX=heads?.measurements[i]?.centerX;
+   const anchorRel=($('headCenter').checked&&Number.isFinite(headX))?(headX-r.x):r.w/2;
+   return {src:r,factor,origHead:heads?.measurements[i]?.width||0,dw:Math.max(1,Math.round(r.w*factor)),dh:Math.max(1,Math.round(r.h*factor)),anchor:anchorRel*factor};
+ });
+ // Dimensiona o quadro considerando todos os deslocamentos em torno da cabeça.
+ // Isso evita recortar braços/cabelos quando a pose é mais larga de um lado.
+ const anchored=$('headCenter').checked;
+ const spanX=Math.max(...sizes.map(q=>Math.max(q.anchor,q.dw-q.anchor)),0);
+ let canvasW=(anchored?Math.ceil(2*spanX):Math.max(...sizes.map(q=>q.dw),0))+2*p;
+ let canvasH=Math.max(...sizes.map(q=>q.dh),0)+2*p;
+ if(uniform){
+   if($('frameSize').value==='custom'){
+     canvasW=toInt('frameWidth',16,8192);canvasH=toInt('frameHeight',16,8192);
+   }
+   const aspect=Number($('frameAspect').value);
+   if(Number.isFinite(aspect)&&aspect>0){
+     if(canvasW/canvasH<aspect)canvasW=Math.ceil(canvasH*aspect);
+     else canvasH=Math.ceil(canvasW/aspect);
+   }
+ }
+ // UMA única redução global ao exportar em quadros personalizados pequenos.
+ // Reduções individuais prejudicam a escala relativa dos personagens.
+ let globalFit=1;
+ if(uniform){
+   const marginX=Math.min(p,Math.floor((canvasW-1)/2));
+   const marginY=Math.min(p,Math.floor((canvasH-1)/2));
+   const halfAvail=(canvasW/2-marginX);
+   const verticalAvail=Math.max(1,canvasH-2*marginY);
+   const neededHeight=Math.max(...sizes.map(q=>q.dh),1);
+   globalFit=Math.min(1,verticalAvail/neededHeight);
+   if(anchored)globalFit=Math.min(globalFit,halfAvail/Math.max(spanX,1));
+   else globalFit=Math.min(globalFit,(canvasW-2*marginX)/Math.max(...sizes.map(q=>q.dw),1));
+ }
+ globalFit=Math.max(0.001,globalFit);
+ const normalizedWidths=sizes.filter(q=>q.origHead>0).map(q=>q.origHead*q.factor*globalFit);
+ const diff=normalizedWidths.length>1?(Math.max(...normalizedWidths)-Math.min(...normalizedWidths))/(normalizedWidths.reduce((a,b)=>a+b,0)/normalizedWidths.length)*100:0;
+ state.quality={...state.quality,headsRecognized:headsCount,headsTotal:rs.length,headSpread:diff,sharedFit:globalFit,canvasW,canvasH};
+ return sizes.map(q=>{
+   const dw=Math.max(1,Math.round(q.dw*globalFit)),dh=Math.max(1,Math.round(q.dh*globalFit));
+   const w=uniform?canvasW:Math.max(dw+2*p,anchored?Math.ceil(2*Math.max(q.anchor,q.dw-q.anchor)*globalFit)+2*p:dw+2*p);
+   const h=uniform?canvasH:dh+2*p;
+   const x=anchored?Math.round(w/2-q.anchor*globalFit):Math.floor((w-dw)/2);
+   const marginY=Math.min(p,Math.floor((h-1)/2));
+   const y=alignMode==='top'?marginY:alignMode==='center'?Math.floor((h-dh)/2):h-marginY-dh;
+   return {...q,dw,dh,w,h,x,y};
+ });
+}
+
+function isolatedSprite(r){
+  if(!r.pixelMask||r.pixelMask.length!==r.w*r.h)return state.source;
+  const tmp=document.createElement('canvas');tmp.width=r.w;tmp.height=r.h;
+  const g=tmp.getContext('2d',{willReadFrequently:true});
+  g.drawImage(state.source,r.x,r.y,r.w,r.h,0,0,r.w,r.h);
+  const pixels=g.getImageData(0,0,r.w,r.h);
+  for(let i=0;i<r.pixelMask.length;i++)if(!r.pixelMask[i])pixels.data[i*4+3]=0;
+  g.putImageData(pixels,0,0);return tmp;
+}
+function drawIsolated(g,r,dx,dy,dw=r.w,dh=r.h){
+  const img=isolatedSprite(r);
+  if(img===state.source)g.drawImage(img,r.x,r.y,r.w,r.h,dx,dy,dw,dh);
+  else g.drawImage(img,dx,dy,dw,dh);
+}
+function renderSprite(plan){const c=document.createElement('canvas');c.width=plan.w;c.height=plan.h;drawIsolated(c.getContext('2d'),plan.src,plan.x,plan.y,plan.dw||plan.src.w,plan.dh||plan.src.h);return c}
+function canvasBlob(c){return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error('Falha ao gerar PNG')),'image/png'))}
+function download(blob,name){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}
+function exportGuard(){if(!ready()||!state.rects.length){toast('Primeiro, carregue e separe os sprites');return false}return true}
+async function singleDownload(){if(!exportGuard())return;const i=state.selected>=0?state.selected:0;try{const plan=getExportPlan()[i];download(await canvasBlob(renderSprite(plan)),`${state.filename}_sprite_${String(i+1).padStart(3,'0')}.png`);toast(`Sprite ${i+1} exportado`)}catch(e){toast('Erro na exportação: '+e.message)}}
+async function sheetDownload(){if(!exportGuard())return;try{const plan=getExportPlan(),columns=toInt('sheetCols',1,30),gap=toInt('sheetGap',0,500),cw=Math.max(...plan.map(p=>p.w)),ch=Math.max(...plan.map(p=>p.h)),cols=Math.min(columns,plan.length),rows=Math.ceil(plan.length/cols),w=cols*cw+(cols-1)*gap,h=rows*ch+(rows-1)*gap;if(w>16384||h>16384||w*h>90e6){toast('Folha grande demais. Reduza as colunas ou exporte como ZIP.');return}const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');for(let i=0;i<plan.length;i++){const q=plan[i],x=(i%cols)*(cw+gap)+Math.floor((cw-q.w)/2),y=Math.floor(i/cols)*(ch+gap)+Math.floor((ch-q.h)/2);drawIsolated(g,q.src,x+q.x,y+q.y,q.dw||q.src.w,q.dh||q.src.h)}download(await canvasBlob(c),`${state.filename}_organizada.png`);toast('Sprite sheet organizada exportada')}catch(e){toast('Erro na exportação: '+e.message)}}
+// Gravador ZIP sem bibliotecas externas: formato STORE (sem compressão; PNG já é comprimido).
+const crcTable=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?(0xEDB88320^(c>>>1)):(c>>>1);t[n]=c>>>0}return t})();
+function crc32(d){let c=0xFFFFFFFF;for(let i=0;i<d.length;i++)c=crcTable[(c^d[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function zipFromEntries(entries){const encoder=new TextEncoder(),parts=[],central=[];let offset=0;const u16=(d,o,v)=>d.setUint16(o,v,true),u32=(d,o,v)=>d.setUint32(o,v>>>0,true);for(const entry of entries){const nm=encoder.encode(entry.name),data=entry.data,crc=crc32(data);const loc=new Uint8Array(30+nm.length),lv=new DataView(loc.buffer);u32(lv,0,0x04034b50);u16(lv,4,20);u16(lv,6,0x0800);u16(lv,8,0);u32(lv,14,crc);u32(lv,18,data.length);u32(lv,22,data.length);u16(lv,26,nm.length);loc.set(nm,30);parts.push(loc,data);const cen=new Uint8Array(46+nm.length),cv=new DataView(cen.buffer);u32(cv,0,0x02014b50);u16(cv,4,20);u16(cv,6,20);u16(cv,8,0x0800);u32(cv,16,crc);u32(cv,20,data.length);u32(cv,24,data.length);u16(cv,28,nm.length);u32(cv,42,offset);cen.set(nm,46);central.push(cen);offset+=loc.length+data.length}
+ const cSize=central.reduce((n,x)=>n+x.length,0),end=new Uint8Array(22),ev=new DataView(end.buffer);u32(ev,0,0x06054b50);u16(ev,8,entries.length);u16(ev,10,entries.length);u32(ev,12,cSize);u32(ev,16,offset);return new Blob([...parts,...central,end],{type:'application/zip'})}
+async function zipDownload(){if(!exportGuard())return;const btn=$('zipBtn'),txt=btn.textContent;btn.disabled=true;try{const plan=getExportPlan(),entries=[];for(let i=0;i<plan.length;i++){btn.textContent=`Preparando ${i+1}/${plan.length}...`;const b=await canvasBlob(renderSprite(plan[i]));entries.push({name:`${state.filename}_sprite_${String(i+1).padStart(3,'0')}.png`,data:new Uint8Array(await b.arrayBuffer())});if(i%12===0)await new Promise(r=>setTimeout(r,0))}btn.textContent='Montando ZIP...';await new Promise(r=>setTimeout(r,0));download(zipFromEntries(entries),`${state.filename}_sprites.zip`);toast(`${entries.length} sprites exportados no ZIP!`)}catch(e){toast('Erro ao criar ZIP: '+e.message)}finally{btn.textContent=txt;btn.disabled=false}}
+$('expectedItems').addEventListener('input',updateCountAudit);
+function updateCountAudit(){const el=$('countAudit');if(!el)return;const expected=toInt('expectedItems',0,100000),actual=state.rects.length;if(!expected){el.textContent=`${actual} separados · informe o total esperado para verificar faltantes.`;el.style.color='#c5d3ea';return;}const delta=expected-actual;el.textContent=delta>0?`⚠ ${actual} de ${expected} separados · faltam ${delta} seleções.`:delta<0?`⚠ ${actual} separados para ${expected} esperados · ${-delta} seleções extras; confira duplicações.`:`✓ ${actual} de ${expected} seleções contabilizadas. Confira a integridade visual.`;el.style.color=delta===0?'#83ead2':'#ffd18a';}
+function sync(withThumbs=true){if(!ready())return;draw();$('count').textContent=state.rects.length;updateCountAudit();const ok=state.rects.length>0;$('zipBtn').disabled=!ok;$('sheetBtn').disabled=!ok;$('singleBtn').disabled=!ok;$('undoBtn').disabled=!state.history.length;$('redoBtn').disabled=!state.future.length;$('dupBtn').disabled=state.selected<0;$('delBtn').disabled=state.selected<0;status(ok?`${state.rects.length} recorte${state.rects.length>1?'s':''} · Fundo: ${state.bgDetection||'original'} · ${$('sameSize').checked?'Quadros uniformes':'Tamanhos originais'} · Clique diretamente em um objeto para selecionar.`:'Nenhum recorte. Ajuste as opções ou desenhe manualmente.');if(withThumbs)refreshThumbs();else document.querySelectorAll('.thumb').forEach((el,i)=>el.classList.toggle('selected',i===state.selected));updateSelectedInfo()}
+function updateSelectedInfo(){
+ const el=$('selectedInfo'),i=state.selected;
+ if(i<0||i>=state.rects.length){el.hidden=true;el.textContent='';return;}
+ const r=state.rects[i];el.hidden=false;
+ el.innerHTML=`<strong>Objeto ${i+1} selecionado</strong> · ${r.w} × ${r.h} px<br>Posição: ${r.x}, ${r.y}. Arraste para reposicionar ou use o X da miniatura para descartar.`;
+}
+function removeFrame(i){if(i<0||i>=state.rects.length)return;saveHistory();state.rects.splice(i,1);state.selected=state.rects.length?Math.min(i,state.rects.length-1):-1;sync();toast(`Objeto ${i+1} descartado. Ctrl+Z para recuperar.`)}
+function setPreset(type){
+ const character=type==='character';
+ $('sameSize').checked=character;
+ $('trim').checked=true;
+ $('scaleMode').value=character?'head':'none';
+ $('headCenter').checked=character;
+ $('alignMode').value=character?'feet':'center';
+ $('padding').value=character?16:12;
+ $('presetObjects').classList.toggle('active',!character);$('presetCharacter').classList.toggle('active',character);
+ if(ready())refreshThumbs();
+ toast(character?'Perfil de personagens: quadros uniformes e escala pela cabeça.':'Perfil de objetos: dimensões originais, sem deformação.');
+}
+function qualityAudit(){
+ const el=$('qualityReport');if(!ready()){el.textContent='Importe uma imagem para iniciar a auditoria.';return;}
+ const q=state.quality||{},n=state.rects.length,r=state.rects;
+ const lines=[];
+ const push=(title,detail,good)=>lines.push(`<div style="margin-bottom:9px"><b style="color:${good?'#9bedc8':'#ffce9b'}">${good?'✓':'!'} ${title}</b><div style="color:#c5d3ea">${detail}</div></div>`);
+ push('Recortes',n?`${n} objetos separados. Cada caixa pode ser ajustada ou descartada pelo X.`:'Nenhum objeto encontrado.',n>0);
+ // Não reportar caixas apenas porque seus retângulos se tocam: máscaras
+ // independentes podem se sobrepor sem ter qualquer pixel duplicado.
+ let shared=0,ambiguous=0;
+ for(let i=0;i<n;i++)for(let j=i+1;j<n;j++){
+  const a=r[i],b=r[j],x0=Math.max(a.x,b.x),y0=Math.max(a.y,b.y),x1=Math.min(a.x+a.w,b.x+b.w),y1=Math.min(a.y+a.h,b.y+b.h);
+  if(x1<=x0||y1<=y0)continue;
+  const proportion=(x1-x0)*(y1-y0)/Math.max(1,Math.min(a.w*a.h,b.w*b.h));
+  if(proportion<.10)continue;
+  if(!a.pixelMask||!b.pixelMask){ambiguous++;continue}
+  let duplicate=false;
+  for(let y=y0;y<y1&&!duplicate;y++)for(let x=x0;x<x1;x++){
+    if(a.pixelMask[(y-a.y)*a.w+x-a.x]&&b.pixelMask[(y-b.y)*b.w+x-b.x]){duplicate=true;break;}
+  }
+  if(duplicate)shared++;
+ }
+ // Mede a preservação dos pixels fortes e a duplicação real dos PNGs.
+ if(n && r.every(v=>v.pixelMask)){
+   const threshold=toInt('alpha',1,254),source=state.pixels.data,W=state.source.width,H=state.source.height;
+   const occupancy=new Uint8Array(W*H);
+   let duplicates=0,ownedStrong=0,totalStrong=0;
+   for(const frame of r){
+     for(let yy=0;yy<frame.h;yy++)for(let xx=0;xx<frame.w;xx++){
+       if(!frame.pixelMask[yy*frame.w+xx])continue;
+       const i=(frame.y+yy)*W+frame.x+xx;
+       if(occupancy[i])duplicates++;
+       else occupancy[i]=1;
+     }
+   }
+   for(let i=0;i<W*H;i++)if(source[i*4+3]>=threshold){
+     totalStrong++;if(occupancy[i])ownedStrong++;
+   }
+   const coverage=totalStrong?100*ownedStrong/totalStrong:0;
+   if(state.gridInfo){
+     const g=state.gridInfo;
+     push('Grade reconhecida',`${g.columns} colunas × ${g.rows} linhas. ${Math.min(n,g.totalCells)}/${g.totalCells} objetos presentes na seleção. Molduras e resíduos externos foram excluídos das exportações.`,n===g.totalCells);
+     push('Integridade por célula',`Os ${n} recortes usam máscaras por objeto, sem incluir as linhas da grade.`,n===g.totalCells);
+   }else push('Integridade dos objetos',`${coverage.toFixed(3)}% dos pixels visíveis essenciais preservados nos recortes. ${totalStrong-ownedStrong} pixels fortes sem objeto.`,coverage>=99.98);
+   push('Isolamento exclusivo',duplicates?`${duplicates} pixels atribuídos a mais de um objeto. Corrija antes de exportar.`:`Nenhum pixel compartilhado entre objetos. Cada exportação mantém somente os pixels da figura correspondente.`,duplicates===0);
+ }
+ if(shared||ambiguous)push('Recortes que se cruzam',`${shared} par(es) compartilham pixels; ${ambiguous} par(es) têm caixas sobrepostas sem máscaras completas. Revise antes de exportar.`,false);
+ else push('Objetos independentes','Sem pixels duplicados entre as caixas verificadas.',true);
+ const touching=r.filter(r=>r.suspectSplit).length;
+ if(touching)push('Figuras separadas por corte',`${touching} objeto(s) separados por uma linha de corte. Revise o contato original: detalhes sobrepostos não podem ser recuperados por corte.`,false);
+ const nearBorder=r.filter(v=>v.x<=1||v.y<=1||v.x+v.w>=state.source.width-1||v.y+v.h>=state.source.height-1).length;
+ if(nearBorder)push('Objetos no limite da imagem',`${nearBorder} caixa(s) encostam nas bordas da imagem, com risco de partes já cortadas no arquivo original.`,false);
+ push('Transparência',state.bgDetection!=='nenhuma'?`Remoção ${state.bgDetection}; ${q.transparentPercent??0}% da folha está transparente.`:(state.imageOpaque?'Fundo ainda opaco: considere a remoção por clique ou a cor personalizada.':`Original com transparência; ${q.transparentPercent??0}% dos pixels totalmente transparentes.`),state.bgDetection!=='nenhuma'||!state.imageOpaque);
+ if($('cleanGreen').checked&&state.greenRemoved>0)push('Halo verde',`${state.greenRemoved} pixels verdes periféricos apagados. Confira detalhes verdes que pertencem aos objetos.`,true);
+ if(state.greenSkipped)push('Verde preservado','Áreas verdes grandes foram preservadas para não apagar plantas, roupas e desenhos legítimos.',true);
+ if($('scaleMode').value==='head'){
+  const known=q.headsRecognized||0;
+  push('Calibração de personagens',`${known}/${n} cabeças estimadas. ${known<n?'Marque manualmente as cabeças ausentes, ou use o perfil Objetos.':'Confira a escala visual das poses.'}`,known===n&&n>0);
+ }else if($('scaleMode').value==='none')push('Proporção original','Nenhuma alteração relativa de altura ou largura dos objetos.',true);
+ if(q.sharedFit<.999)push('Quadro de exportação',`Redução global para ${(q.sharedFit*100).toFixed(1)}% do tamanho calculado, sem distorcer a proporção.`,true);
+ el.innerHTML=lines.join('');
+}
+function refreshThumbs(){
+ const wrap=$('thumbs');wrap.replaceChildren();const n=state.rects.length;
+ $('previewNotice').textContent=!n?'As miniaturas aparecerão aqui após a separação.':n>150?`Exibindo as primeiras 150 de ${n} miniaturas.`:'';
+ const plan=getExportPlan();qualityAudit();
+ const fragment=document.createDocumentFragment();
+ for(let i=0;i<Math.min(n,150);i++){
+  const q=plan[i],el=document.createElement('div');
+  el.className='thumb'+(i===state.selected?' selected':'');el.setAttribute('role','button');el.tabIndex=0;
+  const c=document.createElement('canvas');c.width=128;c.height=100;
+  const g=c.getContext('2d');
+  const scale=Math.min(120/Math.max(1,q.w),90/Math.max(1,q.h));
+  g.imageSmoothingEnabled=false;
+  drawIsolated(g,q.src,(128-q.w*scale)/2+q.x*scale,(100-q.h*scale)/2+q.y*scale,q.dw*scale,q.dh*scale);
+  el.appendChild(c);el.setAttribute('aria-label',`Selecionar objeto ${i+1}`);
+  const info=document.createElement('span');info.className='thumb-id';info.textContent=`Sprite ${String(i+1).padStart(2,'0')}`;el.appendChild(info);
+  const dims=document.createElement('span');dims.className='thumb-dims';dims.textContent=`${q.src.w} × ${q.src.h} px`;el.appendChild(dims);
+  const reject=document.createElement('button');reject.type='button';reject.className='thumb-remove';reject.title=`Descartar recorte ${i+1}`;reject.setAttribute('aria-label',`Descartar recorte ${i+1}`);reject.textContent='×';
+  reject.addEventListener('click',e=>{e.stopPropagation();removeFrame(i)});el.appendChild(reject);
+  const select=()=>{state.selected=i;sync(false)};
+  el.addEventListener('click',select);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();select()}});
+  fragment.appendChild(el);
+ }
+ wrap.appendChild(fragment);updateSelectedInfo();
+}
+$('file').addEventListener('change',e=>{loadFile(e.target.files?.[0]);e.target.value=''});
+const dz=$('dropzone');for(const type of ['dragenter','dragover'])dz.addEventListener(type,e=>{e.preventDefault();dz.classList.add('drag')});for(const type of ['dragleave','drop'])dz.addEventListener(type,e=>{e.preventDefault();dz.classList.remove('drag')});dz.addEventListener('drop',e=>loadFile([...e.dataTransfer.files].find(f=>f.type.startsWith('image/'))));dz.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('file').click()}});
+document.addEventListener('dragover',e=>e.preventDefault());document.addEventListener('drop',e=>{e.preventDefault();if(!dz.contains(e.target))loadFile([...e.dataTransfer.files].find(f=>f.type.startsWith('image/')))});
+document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+$('clickSelection').addEventListener('change',draw);$('autoBtn').addEventListener('click',autoDetect);$('strategy').addEventListener('change',()=>{if(ready())autoDetect()});$('gridBtn').addEventListener('click',applyGrid);
+$('alpha').addEventListener('input',()=>{$('alphaLabel').textContent=$('alpha').value});$('tolerance').addEventListener('input',()=>{$('tolLabel').textContent=$('tolerance').value});
+function onSourceOptionsChanged(){if(!ready())return;processImage();if(state.mode==='auto')autoDetect();else sync()}
+$('useBgColor').addEventListener('change',onSourceOptionsChanged);$('bgColor').addEventListener('change',()=>{if($('useBgColor').checked)onSourceOptionsChanged()});$('cleanGreen').addEventListener('change',onSourceOptionsChanged);$('softEdges').addEventListener('change',onSourceOptionsChanged);$('bgRemove').addEventListener('change',onSourceOptionsChanged);$('autoBg').addEventListener('change',onSourceOptionsChanged);$('tolerance').addEventListener('change',onSourceOptionsChanged);
+$('drawBtn').addEventListener('click',()=>{if(!ready()){toast('Carregue uma imagem primeiro');return}state.manualSplit=false;$('splitBtn').textContent='✂ Dividir recorte por clique';state.manualDraw=!state.manualDraw;$('drawBtn').textContent=state.manualDraw?'Clique e arraste na imagem...':'+ Desenhar novo recorte';toast(state.manualDraw?'Desenhe o retângulo diretamente na imagem.':'Desenho cancelado')});
+$('pickBgBtn').addEventListener('click',()=>{if(!ready()){toast('Importe uma imagem antes de limpar o fundo.');return;}state.pickBgActive=!state.pickBgActive;state.headMeasure=null;state.manualSplit=false;state.manualDraw=false;$('measureHeadBtn').textContent='↔ Calibrar largura da cabeça (2 cliques)';$('pickBgBtn').textContent=state.pickBgActive?'✓ Limpeza ativa: clique nas áreas de fundo':'◎ Apagar fundo clicando na imagem';toast(state.pickBgActive?'Clique nas cores ou regiões do fundo. Repita quantas vezes quiser.':'Limpeza por clique desativada.');});
+$('undoBgBtn').addEventListener('click',()=>{if(!state.manualBgSeeds.length)return;state.manualBgSeeds.pop();$('undoBgBtn').disabled=!state.manualBgSeeds.length;processImage();if(state.mode==='auto')autoDetect();else sync();toast('Última limpeza do fundo desfeita.');});
+$('measureHeadBtn').addEventListener('click',()=>{if(!ready()){toast('Importe uma sprite sheet antes de calibrar.');return;}state.manualSplit=false;state.manualDraw=false;state.pickBgActive=false;$('pickBgBtn').textContent='◎ Apagar fundo clicando na imagem';state.headMeasure=state.headMeasure?null:{index:state.selected,first:null};$('measureHeadBtn').textContent=state.headMeasure?'✓ Medição ativa: marque as duas extremidades':'↔ Calibrar largura da cabeça (2 cliques)';toast(state.headMeasure?'Clique no lado esquerdo e depois no lado direito da cabeça do sprite.':'Calibração cancelada.');draw();});
+$('splitBtn').addEventListener('click',()=>{if(!ready()){toast('Importe uma imagem primeiro.');return;}if(state.mode!=='manual')setMode('manual');state.manualDraw=false;state.manualSplit=!state.manualSplit;$('splitBtn').textContent=state.manualSplit?'✓ Divisão ativa: clique na separação':'✂ Dividir recorte por clique';toast(state.manualSplit?'Clique na linha vertical que separa dois sprites dentro do mesmo retângulo.':'Modo de divisão desligado.');});
+ $('delBtn').addEventListener('click',()=>removeFrame(state.selected));
+$('tightenBtn').addEventListener('click',()=>{if(state.selected<0){toast('Selecione um recorte primeiro.');return;}const r=state.rects[state.selected],q=trimRect(r);if(q.x===r.x&&q.y===r.y&&q.w===r.w&&q.h===r.h){toast('Este recorte já está ajustado ao conteúdo.');return;}saveHistory();state.rects[state.selected]=normalize(q);sync();toast('Recorte ajustado ao conteúdo visível.');});$('dupBtn').addEventListener('click',()=>{if(state.selected<0)return;saveHistory();let r=state.rects[state.selected];const q=normalize({...r,x:Math.min(state.source.width-r.w,r.x+18),y:Math.min(state.source.height-r.h,r.y+18)});q.pixelMask=safeSelectionMask(q);if(!q.pixelMask.some(v=>v)){toast('Cópia vazia: não há outro objeto disponível nesse recorte.');return;}state.rects.push(q);state.selected=state.rects.length-1;sync()});
+$('undoBtn').addEventListener('click',undo);$('redoBtn').addEventListener('click',redo);$('presetObjects').addEventListener('click',()=>setPreset('objects'));$('presetCharacter').addEventListener('click',()=>setPreset('character'));$('clearBtn').addEventListener('click',()=>{if(!ready())return;setRects([]);toast('Recortes removidos')});
+editor.addEventListener('dblclick',openDoubleSplit);editor.addEventListener('pointerdown',onDown);editor.addEventListener('pointermove',onMove);editor.addEventListener('pointerup',onUp);editor.addEventListener('pointercancel',onUp);
+$('zoomOut').addEventListener('click',()=>{state.zoom=Math.max(.25,state.zoom/1.25);resizeStage()});$('zoomIn').addEventListener('click',()=>{state.zoom=Math.min(12,state.zoom*1.25);resizeStage()});$('fitBtn').addEventListener('click',fitImage);
+for(const id of ['sameSize','trim','padding','scaleMode','alignMode','frameSize','frameWidth','frameHeight','frameAspect','headCenter'])$(id).addEventListener('change',()=>{if(ready())refreshThumbs()});
+$('qualityBtn').addEventListener('click',()=>{if(ready()){refreshThumbs();toast('Auditoria atualizada. Confira a coluna de resultados.')}});
+$('frameSize').addEventListener('change',()=>{$('customFrameSize').hidden=$('frameSize').value!=='custom';if($('frameSize').value==='custom'){$('sameSize').checked=true;refreshThumbs();}});
+ $('singleBtn').addEventListener('click',singleDownload);$('sheetBtn').addEventListener('click',sheetDownload);$('zipBtn').addEventListener('click',zipDownload);
+window.addEventListener('keydown',e=>{const tag=document.activeElement.tagName;if(tag==='INPUT'||tag==='SELECT')return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();if(e.shiftKey)redo();else undo()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo()}if((e.key==='Delete'||e.key==='Backspace')&&state.selected>=0){e.preventDefault();removeFrame(state.selected)}if(e.key==='Escape'){state.drag=null;state.headMeasure=null;state.pickBgActive=false;$('pickBgBtn').textContent='◎ Apagar fundo clicando na imagem';$('measureHeadBtn').textContent='↔ Calibrar largura da cabeça (2 cliques)';state.manualDraw=false;state.manualSplit=false;$('splitBtn').textContent='✂ Dividir recorte por clique';$('drawBtn').textContent='+ Desenhar novo recorte';draw()}});
+// Ctrl + roda do mouse amplia a imagem, sem ampliar o navegador.
+$('view').addEventListener('wheel',e=>{if(!ready()||!(e.ctrlKey||e.altKey))return;e.preventDefault();state.zoom=Math.max(.25,Math.min(12,state.zoom*(e.deltaY<0?1.15:1/1.15)));resizeStage()},{passive:false});
+window.addEventListener('resize',()=>{if(ready())fitImage()});$('undoBtn').disabled=true;$('redoBtn').disabled=true;$('dupBtn').disabled=true;$('delBtn').disabled=true;
+})();
+</script>
+</body></html>

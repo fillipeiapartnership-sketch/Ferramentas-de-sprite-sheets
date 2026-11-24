@@ -1,0 +1,77 @@
+SPRITEMORPH STUDIO 0.2 — NORMALIZAÇÃO DE SPRITES POR CONTORNO
+Windows 11 | Python 3.10+ | Processamento local | Sem serviços online
+
+COMO ABRIR
+1. Descompacte SpriteMorph_Studio_v0.2.zip em uma pasta.
+2. Instale Python 3.10 ou superior, se ainda não estiver instalado.
+3. Dê dois cliques em iniciar_windows.bat. O iniciador verifica Pillow e NumPy.
+4. Clique em "Abrir ZIP do jogo" e selecione seu próprio jogo.
+5. Observe os PERSONAGENS na coluna esquerda; os MOVIMENTOS são mostrados em categorias
+   dentro de cada personagem na coluna central, com TODOS os quadros identificados.
+6. Veja cada quadro antes/depois e reproduza sua animação no controle de prévia.
+7. Confira ou ajuste a ALTURA-ALVO (valor medido no CONTORNO da figura, não no PNG).
+8. Para projetos em que o motor lê dimensões variáveis, marque "Permitir ampliar canvas".
+9. Ative/desative grupos, selecione referências, corrija agrupamentos errados quando necessário.
+10. Clique "Exportar ZIP corrigido". O arquivo original não será sobrescrito.
+11. O programa cria um novo ZIP e seu relatório *_auditoria.json.
+
+NOVIDADES DA VERSÃO 0.2
+- Análise de contorno alfa para extrair largura, altura, silhueta e massa visual.
+- Agrupamento por identidade do personagem, sem confundir walk_player com player_walk.
+- Subcategorias de movimentos: idle, walk, run, punch, kick, hit, block,
+  jump, dive, fall, getup, stun, upper e outras (quando o nome permite).
+- Leitura das quantidades de quadros declaradas em JS/HTML/JSON (como no Metro Fighters).
+- Calibração de uma altura visual de referência entre TODOS os personagens reconhecidos.
+- Escala uniforme de cada sequência, preservando proporção do corpo e poses naturais.
+- Correção isolada de quadros com escala anomalamente diferente em animações estáveis.
+- Modo de expansão do canvas para evitar cortar cabeça, braços ou pés quando a imagem precisa crescer.
+- Atlas declarados, quando ampliados, são refeitos em células iguais e na mesma ordem.
+- Auditoria de contorno obrigatória na exportação, além da estrutura, CRC e quantidade de frames.
+- Modo específico do Metro Fighters: adapta seu carregador de sprites para não desfazer
+  as correções usando fatores de escala que já existiam no JavaScript.
+
+METRO FIGHTERS — TESTE REAL DA VERSÃO 0.2
+- Arquivos analisados: metro-fighters.zip e Metro-Fighters-plataforma-corrigida.zip (versão mais recente).
+- Arquivos no jogo: 99; imagens: 95; quadros analisados: 191.
+- 4 personagens classificados: player, punk, blue e black.
+- Quadros pertencentes aos personagens: 185, distribuídos por movimentos.
+- 21 atlases com contagem explícita de frames; 120 quadros efetivamente reescalados.
+- Em CADA teste: 30 imagens e 1 script JS foram alterados; demais arquivos mantidos byte a byte.
+- Os parâmetros de posição da plataforma (MIN_LANE=32, MAX_LANE=55) da versão
+  corrigida foram preservados.
+- Nenhuma falha de processamento, nenhuma silhueta cortada e nenhuma distorção
+  não uniforme nos 120 quadros inspecionados após a exportação.
+- Altura-alvo automática dos corpos em pé (contorno): 347 pixels, antes de a engine
+  converter a escala do corpo para a altura em tela.
+- Testes de lógica automatizados: 13/13; código JS validado com Node.js.
+
+IMPORTANTE — PROPORÇÃO E ANATOMIA
+Igualar fisicamente o contorno de um personagem DEITADO ou com o braço estendido
+à caixa de outro EM PÉ causaria deformações. O que a ferramenta padroniza é o
+TAMANHO APARENTE DO CORPO, não a largura absoluta de toda pose. Um chute deve
+naturalmente ficar mais largo; um agachamento deve naturalmente ficar mais baixo.
+A transformação é UNIFORME nos dois eixos, para não alargar cabeça, pernas ou tronco.
+A medida usa a silhueta visível e jamais confunde margens transparentes do arquivo
+com a largura do corpo.
+
+LIMITAÇÕES
+- Não usa rede neural treinada. Nome, pastas, cores e silhueta informam a classificação;
+  confira manualmente grupos cuja identidade é ambígua.
+- O modo de correção funciona para PNG, WebP, BMP e GIF, com ressalvas na paleta GIF.
+- Não garante identificação de personagens em ZIPs com sprites opacos, formatos
+  proprietários, atlas sem metadados e quadros sem transparência separadora.
+- Em jogos com células e colisões fixas, ampliar o canvas pode exigir adaptações
+  específicas no motor. Por segurança, fica DESLIGADO em projetos genéricos.
+- Só o adaptador do Metro Fighters, quando identificado, pode alterar JS do jogo;
+  ele atua nos fatores visuais. Lógica de combate, mapa e controles não são alterados.
+- A ferramenta NÃO altera posições das hitboxes ou a lógica de colisão. Inspecione
+  no jogo real se o sprite visual coincide com a área de acerto/colisão.
+- Teste o jogo após exportar e guarde o ZIP original como backup. Não foi possível
+  realizar uma partida visual completa no navegador dentro deste ambiente de testes.
+- Projetos muito grandes podem exigir RAM e espaço em disco significativos.
+
+EXECUTAR TESTES
+Abra um terminal na pasta e use:
+    python -m unittest discover -s tests -v
+
+Privacidade: arquivos processados localmente, sem upload para serviços externos.

@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpriteMotion Inspector v2.4 | Auditor de animações 2D</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1020;--panel:#141d30;--card:#202d46;--line:#31405c;--txt:#f2f6ff;--muted:#aabbd8;--accent:#89a5ff;--cyan:#70e0d3;--warn:#f4c476;--danger:#ff899b}*{box-sizing:border-box}html,body{min-height:100%;margin:0}body{font-family:Inter,'Segoe UI',Arial,sans-serif;background:radial-gradient(ellipse at 65% 0,#1c2c50 0,#0b1020 55%);color:var(--txt)}button,input,select{font:inherit}button{background:#26334e;color:var(--txt);border:1px solid var(--line);border-radius:11px;padding:9px 13px;cursor:pointer;font-weight:650}button:hover:not(:disabled){background:#324565;border-color:#718ee8}button:disabled{opacity:.36;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #aad5ff;outline-offset:2px}.primary{background:linear-gradient(135deg,#7799ff,#926fec);border:0;color:white}.primary:hover:not(:disabled){background:linear-gradient(135deg,#8ea9ff,#a487f5)}.teal{background:#164843;border-color:#2e7770;color:#d7fff4}.mini{padding:7px 10px;font-size:12px}header{border-bottom:1px solid var(--line);background:#10182bba;padding:17px 26px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:14px}.logo{background:linear-gradient(135deg,#8da7fa,#5ae0c1);width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#14213f;font-size:26px;font-weight:1000}.brand h1{margin:0;font-size:21px;letter-spacing:-.6px}.brand small{font-size:12px;color:var(--muted)}.offline{font-size:12px;color:#a8c8c4;border:1px solid #36545b;border-radius:24px;padding:8px 11px}.app{display:grid;grid-template-columns:292px minmax(360px,1fr) 318px;min-height:calc(100vh - 82px);max-width:1900px;margin:auto}.side{background:#151f32db;border-right:1px solid var(--line);padding:18px;min-width:0}.side.right{border-left:1px solid var(--line);border-right:0}.label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:#a7bde6;margin:4px 0 11px}.section{margin-bottom:22px}.upload{display:block;text-align:center;border:1.5px dashed #607eab;border-radius:14px;background:linear-gradient(155deg,#263957,#1a2842);padding:19px 13px;cursor:pointer}.upload strong{display:block;margin:7px 0 6px}.upload span{font-size:12px;color:var(--muted);line-height:1.5;display:block}.filename{font-size:11px;overflow-wrap:anywhere;color:var(--cyan);margin-top:8px}.field{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;margin:12px 0;color:#dce7fb}.field input[type=number]{width:78px}.field select{width:154px}.field input[type=color]{width:65px;height:33px;padding:3px;border-radius:7px;border:1px solid var(--line);background:#1b2b44;cursor:pointer}.field input[type=number],.field select{border:1px solid #3e4b67;background:#0f192b;color:white;border-radius:8px;padding:8px}.field input[type=range]{width:130px;accent-color:#90abff}.hint{font-size:11.5px;color:var(--muted);line-height:1.6}.check{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#d4e2fb;margin:10px 0}.check input{accent-color:var(--accent)}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}.buttons button{font-size:12px}.full{width:100%;margin-top:9px}.viewer{padding:20px;min-width:0;display:flex;flex-direction:column;gap:13px}.topline{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap}.topline h2{margin:0;font-size:18px}.statline{font-size:12px;color:var(--muted)}.stage-panel{background:#111c2f;border:1px solid var(--line);border-radius:17px;padding:14px;position:relative}.stage{display:block;width:min(100%,610px);height:auto;aspect-ratio: 600/475;margin:auto;border-radius:12px;background-color:#cad4e4;background-image:linear-gradient(45deg,#b6c1d0 25%,transparent 25%),linear-gradient(-45deg,#b6c1d0 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#b6c1d0 75%),linear-gradient(-45deg,transparent 75%,#b6c1d0 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0;cursor:crosshair}.stage-empty{position:absolute;inset:25px;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;text-align:center;color:#31415c;font-size:14px}.stage-empty b{font-size:22px;color:#263e61;margin-bottom:7px}.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}.controls button{min-width:42px}.range{accent-color:#8da7ff}.timeline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.frame{background:#202d44;border:1px solid #364663;border-radius:10px;min-width:0;cursor:pointer;padding:6px;text-align:center}.frame.active{border-color:#81e1d6;box-shadow:inset 0 0 0 1px #81e1d6}.frame canvas{width:100%;height:110px;object-fit:contain;display:block}.frame span{font-size:10px;color:var(--muted)}.note{padding:12px;border:1px solid #495371;border-radius:12px;background:#21283d;color:#cbd7eb;font-size:12px;line-height:1.5}.results{display:flex;flex-direction:column;gap:10px}.result{padding:12px;border:1px solid var(--line);border-radius:12px;background:#1c2940}.result b{display:block;margin-bottom:5px;font-size:13px}.result p{font-size:12px;color:#d2deef;line-height:1.5;margin:0}.result .flag{display:inline-block;font-size:10px;letter-spacing:.04em;padding:3px 7px;border-radius:30px;margin-bottom:6px;background:#423d35;color:#f4d7a3}.flag.ok{background:#25493d;color:#a3f3ca}.flag.info{background:#2a3b61;color:#bdd0ff}.frame-count{font-size:28px;font-weight:800;letter-spacing:-1px}.frame-count small{font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:#202d46;border:1px solid #31405c;border-radius:12px;padding:13px}.stat b{font-size:25px;display:block}.stat small{color:var(--muted);font-size:11px}.joints{display:grid;grid-template-columns:1fr 1fr;gap:7px}.joints button{font-size:11px;padding:9px 5px}.joints button.active{background:#344e83;border-color:#95b4ff}.divider{height:1px;background:var(--line);margin:18px 0}.tip{font-size:11.5px;color:var(--muted);line-height:1.6}.foot{color:#9cb2d3;font-size:11px;text-align:center;padding:10px}@media(max-width:1150px){.app{grid-template-columns:245px minmax(300px,1fr) 275px}.side{padding:12px}.viewer{padding:13px}.timeline .frame canvas{height:76px}}@media(max-width:900px){.app{grid-template-columns:1fr}.side,.side.right{border-right:0;border-left:0;border-bottom:1px solid var(--line)}.timeline{grid-template-columns:repeat(3,1fr)}.stage{width:min(100%,530px)}header{padding:13px}.offline{display:none}}
+
+.crop-modal[hidden]{display:none!important}.crop-modal{position:fixed;inset:0;z-index:40;background:rgba(3,7,16,.88);display:flex;align-items:center;justify-content:center;padding:16px}.crop-window{width:min(1220px,96vw);max-height:95vh;display:flex;flex-direction:column;min-height:0;background:#152138;border:1px solid #55698b;border-radius:16px;box-shadow:0 30px 90px #0009;padding:14px;gap:11px}.crop-head,.crop-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.crop-head strong{font-size:20px}.crop-actions{justify-content:flex-start}.crop-description{font-size:12px;color:#b4c6e1;line-height:1.5}.crop-viewer{overflow:auto;min-height:200px;flex:1;background:linear-gradient(110deg,#222e42,#152136);border-radius:10px;border:1px solid #344c6b;padding:8px}.crop-zoom{display:flex;align-items:center;gap:7px;flex-wrap:wrap;border:1px solid #455d80;background:#17253b;padding:7px 10px;border-radius:10px}.crop-zoom output{font-size:12px;font-weight:800;min-width:56px;text-align:center;color:#b7fff0}.crop-actions button.active-tool{background:#164843;border-color:#6be3d2;box-shadow:inset 0 0 0 1px #6be3d2}.crop-viewer canvas{display:block;max-width:none;touch-action:none;cursor:crosshair;background:#e3e8ee;background-image:linear-gradient(45deg,#cbd4df 25%,transparent 25%),linear-gradient(-45deg,#cbd4df 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#cbd4df 75%),linear-gradient(-45deg,transparent 75%,#cbd4df 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">◌</div><div><h1>SpriteMotion <span style="color:#9db4ff">Inspector</span></h1><small>Auditoria de caminhada 2D · Sem modificar os desenhos</small></div></div><div class="offline">100% offline · Sem envio de imagens</div></header>
+<div class="app">
+<aside class="side">
+ <div class="section"><div class="label">Importar sprite sheet</div><label class="upload" for="file"><span style="font-size:31px">⇧</span><strong>Escolher imagem</strong><span>PNG, JPG ou WebP. Arraste também para esta área.</span></label><input id="file" type="file" accept="image/png,image/jpeg,image/webp" hidden><div id="filename" class="filename">Nenhuma imagem importada.</div></div>
+ <div class="section"><div class="label">Separação dos quadros</div><div class="field"><label for="columns">Colunas</label><input id="columns" type="number" min="1" max="30" value="6"></div><div class="field"><label for="rows">Fileiras</label><input id="rows" type="number" min="1" max="30" value="1"></div><div class="field"><label for="splitMode">Separação</label><select id="splitMode"><option value="auto">Automática (linhas e colunas)</option><option value="smart">Inteligente (quantidade manual)</option><option value="grid">Grade uniforme (quantidade manual)</option></select></div><button id="analyzeBtn" class="primary full" disabled>⟲ Separar e analisar</button><p class="hint">O modo automático tenta reconhecer fileiras e colunas. Quando não encontrar divisões confiáveis, avisa que a grade é provisória. Use Editar recortes para ajustar retângulos ou contornar os personagens com o laço.</p><button id="editFramesBtn" class="full teal" disabled>✎ Editar recortes sobre a folha original</button>
+  <p id="layoutInfo" class="hint" style="color:#70e0d3" aria-live="polite"></p>
+  <p class="hint" id="cutWarning" hidden style="background:#49311b;border:1px solid #c08c4b;padding:10px;border-radius:10px;color:#ffe6bd"></p></div>
+ <div class="section" id="bgSection"><div class="label">Fundo da imagem (manual)</div>
+  <p class="hint"><b>A remoção global fica desligada por padrão.</b> Os recortes feitos pelo modo <b>1. Clique</b> recebem transparência automática e uma máscara de pixels individuais. Para remover outras cores da folha inteira, use os botões abaixo. Use Restaurar para desfazer.</p>
+  <div class="field"><label for="bgColor">Cor a remover</label><input id="bgColor" type="color" value="#ffffff" aria-label="Escolher cor do fundo"></div>
+  <div class="field"><label for="bgTol">Tolerância</label><input id="bgTol" type="range" min="5" max="125" value="36"><small id="tolText">36</small></div>
+  <button id="removeBgBtn" type="button" class="full teal" disabled>Remover cor do fundo</button>
+  <button id="eraseRegionBtn" type="button" class="full mini" disabled>Apagar área clicando na prévia</button>
+  <button id="restoreBgBtn" type="button" class="full mini" disabled>Restaurar fundo original</button>
+  <p class="hint" id="bgStatus" aria-live="polite">Nenhuma remoção aplicada. Os pixels originais serão preservados.</p></div>
+ <div class="section"><div class="label">Animação</div><div class="field"><label for="fps">Velocidade</label><input id="fps" type="range" class="range" min="2" max="24" value="8"><strong id="fpsText">8 FPS</strong></div><label class="check"><input id="onion" type="checkbox"> Sobrepor quadro anterior (fantasma)</label><label class="check"><input id="guide" type="checkbox" checked> Mostrar linha de apoio</label><label class="check"><input id="showJoints" type="checkbox" checked> Mostrar articulações marcadas</label></div>
+ <div class="section"><div class="label">Marcações das pernas (opcional)</div><p class="hint">Selecione um quadro e escolha um ponto. Clique sobre a prévia para posicioná-lo. Use A e B para identificar as duas pernas ao longo do ciclo.</p><div class="joints"><button data-joint="hip">Quadril</button><button data-joint="kneeA">Joelho A</button><button data-joint="kneeB">Joelho B</button><button data-joint="footA">Pé A</button><button data-joint="footB">Pé B</button><button id="clearJoints">Limpar quadro</button></div><p class="hint" id="jointStatus">Nenhum ponto selecionado.</p><button class="full" id="reevalBtn" disabled>Reavaliar articulações</button></div>
+ <div class="section"><div class="label">Exportar</div><button id="reportBtn" class="full teal" disabled>↓ Relatório da análise (.json)</button><button id="spriteBtn" class="full" disabled>↓ PNGs padronizados (.zip)</button><p class="hint">Os PNGs recebem quadros do mesmo tamanho. Em <b>1. Clique</b>, somente os pixels da personagem são exportados; o fundo é transparente e nenhum pixel é duplicado entre sprites. Com laço e pincel, as máscaras continuam manuais.</p></div>
+</aside>
+<main class="viewer">
+ <div class="topline"><h2>Visualização do ciclo</h2><span class="statline" id="meta">Abra uma sprite sheet para começar</span></div>
+ <div class="stage-panel"><canvas id="stage" class="stage" width="600" height="475" aria-label="Prévia da caminhada"></canvas><div id="empty" class="stage-empty"><b>Análise de movimento</b><span>Importe uma sequência de caminhada</span></div></div>
+ <div class="controls"><button id="prevBtn" disabled aria-label="Quadro anterior">‹</button><button id="playBtn" class="primary" disabled>▶ Reproduzir</button><button id="nextBtn" disabled aria-label="Próximo quadro">›</button><span class="statline" id="position">Nenhum quadro</span></div>
+ <div class="topline"><h2>Quadros da animação</h2><span class="statline">Selecione para inspecionar</span></div><div class="timeline" id="timeline"></div>
+ <div class="note">A avaliação automática examina semelhanças entre silhuetas das pernas e mudanças de postura. <strong>Ela identifica suspeitas, mas não modifica os desenhos nem comprova sozinha que a animação está errada.</strong> Para estimar ângulos dos joelhos, marque as articulações nos quadros.</div>
+</main>
+<aside class="side right"><div class="label">Resultado da auditoria</div><div class="stats"><div class="stat"><b id="frameCount">0</b><small>quadros analisados</small></div><div class="stat"><b id="similarCount">–</b><small>pares de poses semelhantes</small></div></div><div class="divider"></div><div id="results" class="results"><div class="result"><span class="flag info">AGUARDANDO</span><b>Carregue uma imagem</b><p>Os resultados aparecerão aqui, junto com as limitações da análise.</p></div></div><div class="divider"></div><div class="label">Entenda o diagnóstico</div><p class="tip"><b>Repetição</b> não é necessariamente erro. Um ciclo de caminhada pode repetir poses para manter ritmo ou criar pausa.</p><p class="tip"><b>Articulação travada</b> depende de evidências do movimento dos joelhos e pés ao longo dos quadros. Marcar essas posições melhora o diagnóstico.</p><p class="tip"><b>Pés deslizando</b> só podem ser confirmados quando se conhece a trajetória do personagem no jogo e o tempo de contato dos pés com o chão.</p></aside>
+</div>
+<div id="cropModal" class="crop-modal" hidden role="dialog" aria-modal="true" aria-label="Editar recortes">
+ <div class="crop-window"><div class="crop-head"><div><strong>Editor de recortes</strong><div class="crop-description">Escolha como selecionar cada sprite: clique automático, pincel, janela retangular ou laço livre. A exportação respeita as máscaras.</div></div><button id="closeCropBtn" class="mini">Fechar</button></div>
+ <div class="crop-actions"><button id="selectCropBtn" class="mini teal">Selecionar / mover</button><button id="magicCropBtn" class="mini">☞ 1. Clique</button><button id="brushCropBtn" class="mini">◉ 2. Pincel</button><button id="windowCropBtn" class="mini">▭ 3. Janela de seleção</button><button id="lassoCropBtn" class="mini">✎ Laço livre</button><button id="drawCropBtn" class="mini">+ Novo retângulo</button><button id="undoCropBtn" class="mini" disabled>↶ Desfazer</button><button id="redoCropBtn" class="mini" disabled>↷ Refazer</button><button id="deleteCropBtn" class="mini">Excluir selecionado</button><button id="clearAllCropsBtn" class="mini">Limpar todos</button><button id="resetCropBtn" class="mini">Restaurar sugestões</button><button id="smartCropBtn" class="mini teal">◎ Sugerir margens inteligentes</button><label style="font-size:12px">Margem (px) <input id="safeMargin" type="number" min="0" max="80" value="12" style="width:62px;background:#0f192b;color:white;border:1px solid #607eab;border-radius:6px;padding:5px"></label><button id="applyCropBtn" class="mini primary">✓ Aplicar e analisar</button></div>
+ <div class="crop-brush-controls" style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;padding:8px 12px;background:#142641;border:1px solid #3d567a;border-radius:10px;font-size:12px"><label for="brushSize">Tamanho do pincel <input id="brushSize" type="range" min="2" max="120" value="24" style="vertical-align:middle;accent-color:#70e0d3"></label><output id="brushSizeLabel" style="color:#aaf5e8;font-weight:800">24 px</output><label style="display:flex;align-items:center;gap:6px"><input id="brushErase" type="checkbox"> Borracha do pincel</label><span style="color:#b8cbe5">No modo Pincel, pinte para incluir pixels ou use a borracha para excluir.</span></div>
+ <div class="crop-zoom"><strong style="font-size:12px">Zoom do editor</strong><button id="zoomOutBtn" class="mini" title="Diminuir zoom">−</button><output id="cropZoomLabel">100%</output><button id="zoomInBtn" class="mini" title="Aumentar zoom">+</button><button id="zoomFitBtn" class="mini">Ajustar à tela</button><button id="zoomActualBtn" class="mini">100%</button><span class="crop-description">Use Ctrl + roda do mouse para ampliar e as barras de rolagem para navegar.</span></div>
+ <div id="cropViewer" class="crop-viewer"><canvas id="cropCanvas" aria-label="Folha original com retângulos editáveis"></canvas></div>
+ <p class="crop-description" id="cropInfo">1. Clique: tente detectar a sprite com um toque. 2. Pincel: pinte as partes desejadas em várias passadas. 3. Janela: arraste um retângulo. Laço livre: contorne manualmente. Alterne os modos, ajuste o zoom e use Desfazer / Refazer quando precisar.</p></div>
+</div>
+ <div class="foot">SpriteMotion Inspector v2.4 · Executado localmente · Imagem original preservada · Transparência automática nos recortes por clique</div>
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const screen=$('stage'),g=screen.getContext('2d');
+const S={source:null,data:null,filename:'sprite',width:0,height:0,frames:[],index:0,playing:false,last:0,acc:0,diagnosis:{},pointMode:null,anchors:[],coordinates:null,background:[255,255,255],hasAlpha:false,renderSource:null,renderData:null,removalApplied:false,eraseRegionMode:false,manualCells:null,usingSuggestedGrid:false,cropEditing:false,cropDraw:false,cropSelected:-1,cropDrag:null,cropProposals:null,autoConfident:false,cropTool:"select",cropZoom:1,cropFit:1,cropLassoTarget:-1,cropHistory:[],cropFuture:[]};
+const NODE_NAMES={hip:'Quadril',kneeA:'Joelho A',kneeB:'Joelho B',footA:'Pé A',footB:'Pé B'};
+function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
+function num(id,lo,hi){return clamp(parseInt($(id).value,10)||lo,lo,hi)}
+function snapFileName(name){return name.replace(/\.[^.]+$/,'').replace(/[^a-z0-9áéíóúâêôãõç_-]+/gi,'_').slice(0,64)||'sprites'}
+function openFile(file){
+ if(!file)return;
+ if(!file.type.startsWith('image/')){alert('Selecione uma imagem.');return}
+ if(file.size>35*1024*1024){alert('Imagem acima de 35 MB.');return}
+ const url=URL.createObjectURL(file),img=new Image();
+ img.onload=()=>{
+  URL.revokeObjectURL(url);
+  if(img.width*img.height>18000000){alert('A imagem é grande demais para esta versão (máximo 18 megapixels).');return}
+  const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const cx=c.getContext('2d',{willReadFrequently:true});cx.drawImage(img,0,0);
+  S.source=c;S.data=cx.getImageData(0,0,c.width,c.height).data;S.width=c.width;S.height=c.height;S.filename=snapFileName(file.name);
+  S.renderSource=c;S.renderData=S.data;S.removalApplied=false;S.eraseRegionMode=false;S.manualCells=null;S.cropProposals=null;S.usingSuggestedGrid=false;$('eraseRegionBtn').textContent='Apagar área clicando na prévia';
+  $('filename').textContent=file.name;S.hasAlpha=false;
+  const sample=[];for(const [x,y] of [[0,0],[c.width-1,0],[0,c.height-1],[c.width-1,c.height-1]]){const o=4*(y*c.width+x);sample.push([S.data[o],S.data[o+1],S.data[o+2]]);if(S.data[o+3]<230)S.hasAlpha=true}
+  S.background=[0,1,2].map(k=>Math.round(sample.reduce((a,p)=>a+p[k],0)/4));
+  const toHex=v=>v.toString(16).padStart(2,'0');
+  $('bgColor').value='#'+S.background.map(toHex).join('');
+  for(let k=3;k<S.data.length;k+=4)if(S.data[k]<180){S.hasAlpha=true;break}
+  $('removeBgBtn').disabled=false;$('eraseRegionBtn').disabled=false;$('restoreBgBtn').disabled=true;
+  $('bgStatus').textContent=S.hasAlpha?'Imagem com transparência: o fundo será preservado. A remoção adicional é opcional.':'Fundo preservado. A separação não torna o fundo transparente automaticamente.';
+  $('analyzeBtn').disabled=false;
+  $('splitMode').value='auto';
+  $('columns').value=6;$('rows').value=1;
+  runAnalysis();
+ };
+ img.onerror=()=>{URL.revokeObjectURL(url);alert('Não foi possível abrir esta imagem.')};img.src=url;
+}
+function occupied(x,y){
+ const k=4*(y*S.width+x),d=S.renderData||S.data,a=d[k+3];
+ if(a<45)return false;
+ if(S.removalApplied||S.hasAlpha)return a>50;
+ // A comparação de cores a seguir ajuda SOMENTE a encontrar os recortes.
+ // Ela não altera nenhum pixel original ou remove o fundo.
+ const bg=S.background,tol=42;
+ const dr=d[k]-bg[0],dg=d[k+1]-bg[1],db=d[k+2]-bg[2];
+ return dr*dr+dg*dg+db*db>tol*tol;
+}
+function projections(){
+ const xs=new Uint16Array(S.width),ys=new Uint16Array(S.height);
+ for(let y=0;y<S.height;y++){for(let x=0;x<S.width;x++)if(occupied(x,y)){xs[x]++;ys[y]++}}
+ return {xs,ys};
+}
+function seams(proj,size,count,smart){
+ const out=[0];
+ for(let i=1;i<count;i++){
+  const target=size*i/count;
+  if(!smart){out.push(Math.round(target));continue}
+  const radius=Math.max(3,Math.floor(size/count*.21));let best=null,bestScore=Infinity;
+  for(let x=Math.max(out[out.length-1]+2,Math.floor(target-radius));x<=Math.min(size-2,Math.ceil(target+radius));x++){
+   const v=proj[x]; // an empty vertical or horizontal seam is ideal
+   const score=v+Math.abs(x-target)*.085;
+   if(score<bestScore){bestScore=score;best=x}
+  }
+  out.push(best===null?Math.round(target):best);
+ }
+ out.push(size);return out;
+}
+function findBounds(x0,y0,x1,y1){
+ let left=x1,right=-1,top=y1,bottom=-1;
+ for(let y=y0;y<y1;y++)for(let x=x0;x<x1;x++)if(occupied(x,y)){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+ if(right<left)return null;
+ return {x:left,y:top,w:right-left+1,h:bottom-top+1};
+}
+// Sem máscara destrutiva na importação: cada quadro copia os pixels de origem.
+function isolateCrop(rect,polygon,brushStrokes,maskRuns){
+ const c=document.createElement('canvas');c.width=rect.w;c.height=rect.h;
+ const cx=c.getContext('2d');
+ // O clique automático usa a máscara EXATA do componente conectado.
+ // Isso elimina fundos dentro do contorno convexo e fragmentos soltos de outros sprites.
+ if(maskRuns?.length){
+  const w=rect.w,h=rect.h,selected=new Uint8Array(w*h);
+  for(let n=0;n<maskRuns.length;n+=3){
+   const y=maskRuns[n]-rect.y;if(y<0||y>=h)continue;
+   for(let x=Math.max(rect.x,maskRuns[n+1]);x<Math.min(rect.x+w,maskRuns[n+2]);x++)selected[y*w+x-rect.x]=1;
+  }
+  const out=cx.createImageData(w,h),dst=out.data,src=S.renderData||S.data,bg=S.background;
+  // Mesmo após a remoção manual, podem sobrar ilhas de chroma entre braços/pernas.
+  // O recorte por clique sempre trata essas ilhas como fundo.
+  const chroma=!S.hasAlpha;
+  const greenScreen=chroma&&bg[1]>bg[0]+100&&bg[1]>bg[2]+100;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   const local=y*w+x;if(!selected[local])continue;
+   const global=((rect.y+y)*S.width+rect.x+x)*4,k=local*4;
+   let alpha=src[global+3]/255,r=src[global],g=src[global+1],b=src[global+2];
+   if(chroma){
+    // Elimina pixels residuais do chroma verde, inclusive os que atravessaram
+    // o limiar de contraste por causa de compressão ou antialias.
+    if(greenScreen&&isChromaKeyPixel(r,g,b)){dst[k+3]=0;continue}
+    let nearEdge=false;
+    // Apenas os pixels na transição com o fundo recebem antialias/chroma-key.
+    for(let dy=-2;dy<=2&&!nearEdge;dy++)for(let dx=-2;dx<=2;dx++){
+     const xx=x+dx,yy=y+dy;
+     if(xx<0||yy<0||xx>=w||yy>=h||!selected[yy*w+xx]){nearEdge=true;break}
+    }
+    if(nearEdge){
+     // Na borda escura, o verde é a mistura do personagem com o chroma.
+     // Recuperamos o preto/roxo antes de armazenar a transparência.
+     const greenSpill=greenScreen&&g>45&&g>r+25&&g>b+25&&r<120&&b<120;
+     const dist=Math.hypot(r-bg[0],g-bg[1],b-bg[2]);
+     const fraction=greenSpill?clamp(1-g/Math.max(1,bg[1]),0,1):clamp((dist-35)/165,0,1);
+     alpha*=fraction;
+     if(fraction>.02&&fraction<.98){
+      r=clamp(Math.round((r-(1-fraction)*bg[0])/fraction),0,255);
+      g=clamp(Math.round((g-(1-fraction)*bg[1])/fraction),0,255);
+      b=clamp(Math.round((b-(1-fraction)*bg[2])/fraction),0,255);
+     }
+    }
+   }
+   dst[k]=r;dst[k+1]=g;dst[k+2]=b;dst[k+3]=Math.round(alpha*255);
+  }
+  cx.putImageData(out,0,0);
+  return c;
+ }
+ // Máscara não destrutiva: os pixels além do traçado não entram no PNG final.
+ // O fundo que estiver DENTRO do laço continua preservado, sem adivinhação de cores.
+ if(polygon?.length>=3){
+  cx.beginPath();cx.moveTo(polygon[0].x-rect.x,polygon[0].y-rect.y);
+  for(let i=1;i<polygon.length;i++)cx.lineTo(polygon[i].x-rect.x,polygon[i].y-rect.y);
+  cx.closePath();cx.clip();
+ }
+ cx.drawImage(S.renderSource||S.source,rect.x,rect.y,rect.w,rect.h,0,0,rect.w,rect.h);
+ if(brushStrokes?.length){
+  const mask=document.createElement('canvas');mask.width=rect.w;mask.height=rect.h;
+  const mg=mask.getContext('2d');
+  for(const stroke of brushStrokes){
+   mg.save();mg.globalCompositeOperation=stroke.erase?'destination-out':'source-over';
+   mg.lineWidth=stroke.size;mg.lineCap='round';mg.lineJoin='round';mg.strokeStyle='#ffffff';mg.fillStyle='#ffffff';
+   const points=stroke.points||[];
+   if(points.length===1){mg.beginPath();mg.arc(points[0].x-rect.x,points[0].y-rect.y,stroke.size/2,0,Math.PI*2);mg.fill()}
+   else if(points.length>1){mg.beginPath();mg.moveTo(points[0].x-rect.x,points[0].y-rect.y);for(const pt of points.slice(1))mg.lineTo(pt.x-rect.x,pt.y-rect.y);mg.stroke()}
+   mg.restore();
+  }
+  cx.globalCompositeOperation='destination-in';cx.drawImage(mask,0,0);cx.globalCompositeOperation='source-over';
+ }
+ return c;
+}
+// Em chroma verde, removemos também as ilhas internas entre pernas/cabelos.
+// Para outras cores, mantemos a abordagem conservadora conectada às bordas.
+function removeBackgroundOnRequest(){
+ if(!S.source)return;
+ const rgb=$('bgColor').value.slice(1),color=[0,2,4].map(i=>parseInt(rgb.slice(i,i+2),16));
+ const tolerance=num('bgTol',5,125),limit=tolerance*tolerance;
+ const w=S.width,h=S.height,n=w*h,original=S.renderData||S.data,copy=new Uint8ClampedArray(original);
+ const greenScreen=color[1]>color[0]+100&&color[1]>color[2]+100;
+ if(greenScreen){
+  let erased=0,softened=0;
+  for(let i=0;i<n;i++){
+   const k=i*4,a=original[k+3];if(a<15)continue;
+   let r=original[k],g=original[k+1],b=original[k+2];
+   const dr=r-color[0],dg=g-color[1],db=b-color[2];
+   if(dr*dr+dg*dg+db*db<=limit||isChromaKeyPixel(r,g,b)){
+    copy[k+3]=0;erased++;continue;
+   }
+   // Descontamina bordas escuras misturadas ao verde do fundo.
+   if(g>45&&g>r+25&&g>b+25&&r<120&&b<120){
+    const fraction=clamp(1-g/Math.max(1,color[1]),0,1);
+    if(fraction<.06){copy[k+3]=0;erased++;continue}
+    copy[k]=clamp(Math.round((r-(1-fraction)*color[0])/fraction),0,255);
+    copy[k+1]=clamp(Math.round((g-(1-fraction)*color[1])/fraction),0,255);
+    copy[k+2]=clamp(Math.round((b-(1-fraction)*color[2])/fraction),0,255);
+    copy[k+3]=Math.round(a*fraction);softened++;
+   }
+  }
+  if(!erased&&!softened){$('bgStatus').textContent='Nenhum pixel correspondente ao chroma selecionado foi encontrado.';return}
+  const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+  canvas.getContext('2d',{willReadFrequently:true}).putImageData(new ImageData(copy,w,h),0,0);
+  S.renderSource=canvas;S.renderData=copy;S.removalApplied=true;
+  $('restoreBgBtn').disabled=false;
+  $('bgStatus').textContent=`Chroma removido inclusive dos espaços internos (${erased.toLocaleString('pt-BR')} pixels apagados; ${softened.toLocaleString('pt-BR')} bordas suavizadas).`;
+  runAnalysis();return;
+ }
+ const visited=new Uint8Array(n),queue=new Int32Array(n);let read=0,write=0;
+ const enter=i=>{
+   if(i<0||i>=n||visited[i])return;
+   visited[i]=1;
+   const off=i*4;
+   if(original[off+3]<15)return;
+   const r=original[off]-color[0],g=original[off+1]-color[1],b=original[off+2]-color[2];
+   if(r*r+g*g+b*b>limit)return;
+   queue[write++]=i;
+ };
+ for(let x=0;x<w;x++){enter(x);enter((h-1)*w+x)}
+ for(let y=0;y<h;y++){enter(y*w);enter(y*w+w-1)}
+ while(read<write){
+   const k=queue[read++],x=k%w;
+   if(x>0)enter(k-1);
+   if(x<w-1)enter(k+1);
+   if(k>=w)enter(k-w);
+   if(k<n-w)enter(k+w);
+ }
+ if(write===0){$('bgStatus').textContent='Nenhuma área correspondente foi encontrada nas bordas. Confira a cor e a tolerância.';return}
+ for(let i=0;i<write;i++)copy[queue[i]*4+3]=0;
+ const canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;
+ canvas.getContext('2d',{willReadFrequently:true}).putImageData(new ImageData(copy,w,h),0,0);
+ S.renderSource=canvas;S.renderData=copy;S.removalApplied=true;
+ $('restoreBgBtn').disabled=false;
+ $('bgStatus').textContent=`Remoção manual aplicada em ${write.toLocaleString('pt-BR')} pixels. Clique em Restaurar fundo original para desfazer.`;
+ runAnalysis();
+}
+// Apaga SOMENTE a região conectada ao ponto onde o usuário clicou.
+// Permite remover painéis de cor diferente que não encostam na borda da folha.
+function eraseRegionAt(ix,iy){
+ if(!S.source)return;
+ const w=S.width,h=S.height,x=clamp(Math.round(ix),0,w-1),y=clamp(Math.round(iy),0,h-1);
+ const current=S.renderData||S.data,start=(y*w+x)*4;
+ if(current[start+3]<15){$('bgStatus').textContent='Esta região já está transparente. Clique sobre uma parte visível do fundo.';return}
+ const rgb=[current[start],current[start+1],current[start+2]],limit=num('bgTol',5,125)**2;
+ const copy=new Uint8ClampedArray(current),seen=new Uint8Array(w*h),q=new Int32Array(w*h);
+ let head=0,tail=0;
+ const enter=i=>{
+  if(i<0||i>=w*h||seen[i])return;
+  seen[i]=1;const k=i*4;
+  if(copy[k+3]<15)return;
+  const r=copy[k]-rgb[0],g=copy[k+1]-rgb[1],b=copy[k+2]-rgb[2];
+  if(r*r+g*g+b*b>limit)return;
+  q[tail++]=i;
+ };
+ enter(y*w+x);
+ while(head<tail){const k=q[head++],px=k%w;
+  if(px>0)enter(k-1);if(px<w-1)enter(k+1);
+  if(k>=w)enter(k-w);if(k<w*h-w)enter(k+w);
+ }
+ if(tail===0)return;
+ for(let i=0;i<tail;i++)copy[q[i]*4+3]=0;
+ const c=document.createElement('canvas');c.width=w;c.height=h;
+ c.getContext('2d',{willReadFrequently:true}).putImageData(new ImageData(copy,w,h),0,0);
+ S.renderSource=c;S.renderData=copy;S.removalApplied=true;
+ $('restoreBgBtn').disabled=false;
+ $('bgStatus').textContent=`Área removida manualmente (${tail.toLocaleString('pt-BR')} pixels). Clique em outra região para continuar ou restaure o original.`;
+ runAnalysis();
+}
+function restoreBackground(){
+ if(!S.source)return;
+ S.renderSource=S.source;S.renderData=S.data;S.removalApplied=false;S.eraseRegionMode=false;
+ $('eraseRegionBtn').textContent='Apagar área clicando na prévia';
+ $('restoreBgBtn').disabled=true;
+ $('bgStatus').textContent='Fundo original restaurado. Nenhuma remoção ativa.';
+ runAnalysis();
+}
+// Reconhece bandas ocupadas nas duas direções. Nunca depende apenas da
+// quantidade fixa de colunas: folhas com várias fileiras são lidas por linha.
+function getActiveRuns(project,axisLength){
+ const max=Math.max(0,...project),threshold=Math.max(2,Math.min(9,Math.floor(max*.012)));
+ const runMin=Math.max(12,Math.floor(axisLength*.018));
+ const gapTol=Math.max(2,Math.round(axisLength*.002));
+ const raw=[];let a=-1;
+ for(let i=0;i<=axisLength;i++){
+  const on=i<axisLength&&project[i]>=threshold;
+  if(on&&a<0)a=i;
+  else if(!on&&a>=0){raw.push([a,i]);a=-1;}
+ }
+ const merged=[];
+ for(const r of raw){const last=merged[merged.length-1];
+  if(last&&r[0]-last[1]<=gapTol)last[1]=r[1];
+  else merged.push([...r]);
+ }
+ return merged.filter(([a,b])=>b-a>=runMin);
+}
+function projectXForBand(y0,y1){
+ const xs=new Uint16Array(S.width);
+ for(let y=y0;y<y1;y++)for(let x=0;x<S.width;x++)if(occupied(x,y))xs[x]++;
+ return xs;
+}
+function smartSeamsFromRuns(runs,total){
+ const cuts=[0];for(let i=1;i<runs.length;i++)cuts.push(Math.round((runs[i-1][1]+runs[i][0])/2));
+ cuts.push(total);return cuts;
+}
+function buildAutomaticCells(){
+ const pro=projections(),yruns=getActiveRuns(pro.ys,S.height);
+ // Uma folha com uma única fileira pode ter silhuetas sobrepostas no eixo X.
+ // Nesse caso preservamos a configuração informada pelo usuário.
+ if(yruns.length<1 || yruns.length>30)return null;
+ const rowCuts=smartSeamsFromRuns(yruns,S.height),cells=[];
+ let columnCounts=[];
+ for(let j=0;j<yruns.length;j++){
+  const y0=rowCuts[j],y1=rowCuts[j+1];
+  const xruns=getActiveRuns(projectXForBand(y0,y1),S.width);
+  if(!xruns.length || xruns.length>30)return null;
+  columnCounts.push(xruns.length);
+  const xc=smartSeamsFromRuns(xruns,S.width);
+  for(let k=0;k<xruns.length;k++)cells.push({x0:xc[k],y0,x1:xc[k+1],y1});
+ }
+ const minCount=Math.min(...columnCounts),maxCount=Math.max(...columnCounts);
+ // Não aceitar fileiras artificiais criadas por uma faixa escura no fundo.
+ // Folhas verdadeiras costumam ter altura e distribuição semelhantes em cada linha.
+ const heights=yruns.map(([a,b])=>b-a);
+ const smallest=Math.min(...heights),largest=Math.max(...heights);
+ if(minCount<2 || maxCount-minCount>1 || smallest<largest*.58)return null;
+ // Uma única linha com vários personagens também pode ser reconhecida. Porém
+ // só aceitamos se houver lacunas significativas entre os elementos visíveis.
+ if(yruns.length===1){
+  const xrs=getActiveRuns(projectXForBand(yruns[0][0],yruns[0][1]),S.width);
+  if(xrs.length<2)return null;
+  const medianGap=xrs.slice(1).map((r,i)=>r[0]-xrs[i][1]).sort((a,b)=>a-b);
+  if(medianGap[Math.floor(medianGap.length/2)]<Math.max(3,S.width*.004))return null;
+ }
+
+ return {cells,rows:yruns.length,columns:Math.max(...columnCounts),columnCounts};
+}
+function makeFrames(){
+ S.usingSuggestedGrid=false;S.autoConfident=false;
+ let cols=num('columns',1,30),rows=num('rows',1,30),auto=null;
+ let cells=[];
+ if(S.manualCells?.length){cells=S.manualCells.map(r=>({x0:r.x,y0:r.y,x1:r.x+r.w,y1:r.y+r.h,polygon:r.polygon,brushStrokes:r.brushStrokes,maskRuns:r.maskRuns}));S.autoConfident=true;}
+ if(!cells.length && $('splitMode').value==='auto'){
+  auto=buildAutomaticCells();
+  // Se a detecção achou MENOS figuras do que o usuário espera, não confiar nela.
+  // Exemplo real: seis posições com apenas três lacunas separadas.
+  if(auto && auto.cells.length<cols*rows)auto=null;
+  if(auto){
+   cols=auto.columns;rows=auto.rows;
+   $('columns').value=cols;$('rows').value=rows;
+   cells=auto.cells;S.autoConfident=true;
+   $('layoutInfo').textContent=`Detectado automaticamente: ${rows} fileira${rows>1?'s':''}, ${auto.columnCounts.join(' e ')} sprite${Math.max(...auto.columnCounts)>1?'s':''} por fileira (${cells.length} no total).`;
+  }else{
+   $('layoutInfo').textContent='A detecção não confirmou todos os personagens. A grade mostrada é apenas uma sugestão. Use Editar recortes para revisar as divisões.';
+  }
+ }else $('layoutInfo').textContent=`Divisão manual: ${rows} fileira${rows>1?'s':''} × ${cols} coluna${cols>1?'s':''}.`;
+ if(!cells.length){
+  // Quando a detecção automática não encontra uma grade confiável, a grade
+  // uniforme é a opção SEGURA para fundos opacos e fundos mistos. As linhas
+  // baseadas em contraste podem atravessar o corpo e criar sprites mutilados.
+  S.usingSuggestedGrid=$('splitMode').value==='auto';
+  const opaque=!S.hasAlpha&&!S.removalApplied;
+  const smart=$('splitMode').value==='smart' || ($('splitMode').value==='auto'&&!opaque);
+  const pro=smart?projections():null;
+  const xc=smart?seams(pro.xs,S.width,cols,true):seams(null,S.width,cols,false);
+  const yc=smart?seams(pro.ys,S.height,rows,true):seams(null,S.height,rows,false);
+  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++)cells.push({x0:xc[i],y0:yc[j],x1:xc[i+1],y1:yc[j+1]});
+  if($('splitMode').value==='auto' && opaque){
+    $('layoutInfo').textContent=`⚠ Grade PROVISÓRIA de ${cols} × ${rows}. Personagens podem estar atravessados pelas divisões. Abra Editar recortes e ajuste os retângulos antes de exportar.`;
+  }
+ }
+ if(cells.length>180){alert('Limite de 180 quadros por folha.');return false}
+ const fs=[];
+ for(const {x0,y0,x1,y1,polygon,brushStrokes,maskRuns} of cells){
+  // REGRA DE SEGURANÇA: em imagens opacas, a máscara de cor é utilizada
+  // APENAS para estimar o arranjo das células; nunca para recortar os pixels
+  // visíveis de uma célula. Isso preserva cabeça, tronco, mãos, pernas e fundo.
+  const opaque=!S.hasAlpha&&!S.removalApplied;
+  const rect=(opaque||polygon?.length||brushStrokes?.length||maskRuns?.length)?{x:x0,y:y0,w:x1-x0,h:y1-y0}:findBounds(x0,y0,x1,y1);
+  if(!rect || rect.w<1 || rect.h<1)continue;
+  const canvas=isolateCrop(rect,polygon,brushStrokes,maskRuns);
+  fs.push({rect,canvas,polygon:polygon||null,brushStrokes:brushStrokes||null,maskRuns:maskRuns||null,cellY0:y0,cellX0:x0});
+ }
+ S.frames=fs;
+ S.cropProposals=cells.map(({x0,y0,x1,y1})=>({x:Math.max(0,Math.round(x0)),y:Math.max(0,Math.round(y0)),w:Math.round(x1-x0),h:Math.round(y1-y0)}));
+ const maxW=Math.max(1,...fs.map(f=>f.rect.w)),maxH=Math.max(1,...fs.map(f=>f.rect.h));
+ const pad=Math.max(18,Math.min(80,Number($('safeMargin').value)||12));
+ S.frameW=maxW+pad*2;S.frameH=maxH+pad*2;
+ for(const f of fs){
+   const c=document.createElement('canvas');c.width=S.frameW;c.height=S.frameH;
+   const x=Math.floor((S.frameW-f.rect.w)/2),y=S.frameH-pad-f.rect.h;
+   c.getContext('2d').drawImage(f.canvas,x,y);f.standard=c;
+ }
+ S.anchors=fs.map(()=>({hip:null,kneeA:null,kneeB:null,footA:null,footB:null}));
+ S.index=0;return true;
+}
+function maskSignatures(){
+ const w=170,h=265,sign=[];
+ for(const f of S.frames){
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const cx=c.getContext('2d',{willReadFrequently:true});cx.drawImage(f.standard,0,0,w,h);
+  const d=cx.getImageData(0,0,w,h).data;
+  const legs=new Uint8Array(w*h),full=new Uint8Array(w*h);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+   const k=y*w+x,o=k*4,alpha=d[o+3];
+   if(alpha>100){full[k]=1;
+    if(y>=Math.floor(h*.65) && d[o]<120 && d[o+1]<120 && d[o+2]<145)legs[k]=1;
+   }
+  }
+  sign.push({legs,full});
+ }
+ return sign;
+}
+function jaccard(a,b){let and=0,or=0;for(let i=0;i<a.length;i++){if(a[i]&&b[i])and++;if(a[i]||b[i])or++}return or?and/or:0}
+function angle(a,b,c){
+ const u=[a.x-b.x,a.y-b.y],v=[c.x-b.x,c.y-b.y];const den=Math.hypot(...u)*Math.hypot(...v);if(!den)return null;
+ return Math.acos(clamp((u[0]*v[0]+u[1]*v[1])/den,-1,1))*180/Math.PI;
+}
+function jointDiagnosis(){
+ const ready=S.anchors.length>0&&S.anchors.every(a=>Object.values(a).every(Boolean));
+ if(!ready)return {complete:false,report:'Marque o quadril, os dois joelhos e os dois pés em todos os quadros para medir alterações de ângulo.'};
+ const a=[],b=[];
+ for(const pts of S.anchors){a.push(angle(pts.hip,pts.kneeA,pts.footA));b.push(angle(pts.hip,pts.kneeB,pts.footB))}
+ const range=arr=>Math.max(...arr)-Math.min(...arr);
+ return {complete:true,ranges:[range(a),range(b)],samples:{A:a,B:b},locked:range(a)<12||range(b)<12};
+}
+function assess(){
+ const signatures=maskSignatures(),n=S.frames.length,similar=[];
+ const mat=[];let nearStatic=0;
+ for(let i=0;i<n;i++){
+  mat.push([]);for(let j=0;j<n;j++){
+    const sim=jaccard(signatures[i].legs,signatures[j].legs);mat[i][j]=sim;
+    if(j<i && sim>=.74)similar.push({a:j,b:i,value:+sim.toFixed(3)});
+    if(j===i-1&&sim>.87)nearStatic++;
+  }
+ }
+ const hips=S.frames.map(f=>f.rect.y-(f.cellY0||0)),hmax=Math.max(...S.frames.map(f=>f.rect.h));
+ const range=Math.max(...hips)-Math.min(...hips),joints=jointDiagnosis();
+ S.diagnosis={count:n,similar,nearStatic,bodyTopVariation:range,maxHeight:hmax,similarityMatrix:mat.map(row=>row.map(v=>+v.toFixed(3))),joints};
+ displayDiagnosis();
+}
+function entry(flag,title,description,style=''){
+ const card=document.createElement('div');card.className='result';
+ const badge=document.createElement('span');badge.className='flag '+style;badge.textContent=flag;
+ const bold=document.createElement('b');bold.textContent=title;
+ const p=document.createElement('p');p.textContent=description;
+ card.append(badge,bold,p);return card;
+}
+function displayDiagnosis(){
+ const d=S.diagnosis,n=d.count,root=$('results');root.replaceChildren();
+ $('frameCount').textContent=n;$('similarCount').textContent=d.similar.length;
+ if(!n){root.append(entry('SEM DADOS','Nenhum quadro encontrado','Revise a divisão da imagem.','info'));return}
+ if(d.similar.length){
+  const ex=d.similar.slice(0,5).map(({a,b,value})=>`${a+1} ↔ ${b+1} (${Math.round(value*100)}%)`).join(', ');
+  root.append(entry('ATENÇÃO','Poses das pernas muito semelhantes',`Os pares de quadros ${ex} apresentam silhuetas inferiores parecidas. Verifique se não faltam poses de passagem e apoio.`));
+ }else root.append(entry('OBSERVAÇÃO','Não há poses quase idênticas','O formato das pernas varia entre os quadros; isso não garante uma caminhada natural.','ok'));
+ if(d.nearStatic)root.append(entry('ATENÇÃO','Pouca mudança em quadros consecutivos',`${d.nearStatic} transição(ões) entre quadros vizinhos apresentam pouca diferença na região inferior. Pode gerar pausa perceptível ao reproduzir.`));
+ else root.append(entry('OBSERVAÇÃO','Há mudança entre quadros vizinhos','As silhuetas inferiores mudam ao longo da sequência. Confira o ritmo na prévia.','info'));
+ if(d.bodyTopVariation>Math.max(12,d.maxHeight*.08))root.append(entry('VERIFICAR','Altura superior varia',`O topo dos recortes varia aproximadamente ${Math.round(d.bodyTopVariation)} px. Parte disso pode ser intencional (orelhas, cabelo, movimento vertical).`));
+ else root.append(entry('OBSERVAÇÃO','Topo relativamente estável','Não apareceu grande oscilação do topo dos recortes na folha.','ok'));
+ if(!d.joints.complete)root.append(entry('ANÁLISE OPCIONAL','Ângulos dos joelhos não confirmados',d.joints.report,'info'));
+ else if(d.joints.locked)root.append(entry('ATENÇÃO','Possível joelho rígido',`Amplitude estimada: perna A ${d.joints.ranges[0].toFixed(1)}°, perna B ${d.joints.ranges[1].toFixed(1)}°. Pouca flexão pode dar aparência de perna travada.`));
+ else root.append(entry('MEDIDO','Joelhos mudam de ângulo',`Amplitude estimada: perna A ${d.joints.ranges[0].toFixed(1)}°, perna B ${d.joints.ranges[1].toFixed(1)}°. Confirme se os pontos marcados estão corretos.`,'ok'));
+ root.append(entry('LIMITE DO MÉTODO','Não mede contato com o chão',`Sem dados do deslocamento no jogo, esta ferramenta não confirma deslizamento dos pés ou ciclo de marcha fisicamente correto. A pontuação de semelhança é uma heurística visual.`,'info'));
+}
+
+function paintCanvas(){
+ const W=screen.width,H=screen.height;g.clearRect(0,0,W,H);
+ if(!S.frames.length)return;
+ const src=S.frames[S.index].standard;
+ const scale=Math.min((W-64)/src.width,(H-58)/src.height),w=src.width*scale,h=src.height*scale,x=(W-w)/2,y=(H-h)/2;
+ if($('onion').checked && S.frames.length>1){g.save();g.globalAlpha=.28;g.drawImage(S.frames[(S.index+S.frames.length-1)%S.frames.length].standard,x,y,w,h);g.restore()}
+ g.imageSmoothingEnabled=true;g.drawImage(src,x,y,w,h);
+ S.coordinates={x,y,w,h};
+ if($('guide').checked){
+  const yy=y+h*(1-18/S.frameH);g.save();g.strokeStyle='#2f819f';g.lineWidth=1.8;g.setLineDash([8,8]);g.beginPath();g.moveTo(18,yy);g.lineTo(W-18,yy);g.stroke();g.setLineDash([]);g.restore();
+ }
+ const pts=S.anchors[S.index];
+ if($('showJoints').checked&&pts){
+  const loc=p=>p?{x:x+p.x*w,y:y+p.y*h}:null;
+  const line=(a,b,color)=>{if(!a||!b)return;g.strokeStyle=color;g.lineWidth=3;g.beginPath();g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.stroke()};
+  line(loc(pts.hip),loc(pts.kneeA),'#ffbe5c');line(loc(pts.kneeA),loc(pts.footA),'#ffbe5c');
+  line(loc(pts.hip),loc(pts.kneeB),'#60c5ff');line(loc(pts.kneeB),loc(pts.footB),'#60c5ff');
+  for(const key of Object.keys(NODE_NAMES)){const p=loc(pts[key]);if(!p)continue;g.fillStyle=key.endsWith('A')?'#ffbe5c':key.endsWith('B')?'#60c5ff':'#f9fcff';g.strokeStyle='#1b243c';g.lineWidth=2;g.beginPath();g.arc(p.x,p.y,6,0,2*Math.PI);g.fill();g.stroke()}
+ }
+}
+function positionLabel(){ $('position').textContent=S.frames.length?`Quadro ${S.index+1} de ${S.frames.length}`:'Nenhum quadro' }
+function selectFrame(i){if(!S.frames.length)return;S.index=(i+S.frames.length)%S.frames.length;for(const el of $('timeline').children)el.classList.toggle('active',+el.dataset.index===S.index);positionLabel();paintCanvas()}
+function fillTimeline(){const root=$('timeline');root.replaceChildren();S.frames.forEach((f,i)=>{
+ const btn=document.createElement('button');btn.className='frame';btn.dataset.index=i;
+ const c=document.createElement('canvas');c.width=145;c.height=125;const cx=c.getContext('2d');const asset=f.standard,sc=Math.min(135/asset.width,115/asset.height),w=asset.width*sc,h=asset.height*sc;cx.drawImage(asset,(145-w)/2,(125-h)/2,w,h);
+ const lab=document.createElement('span');lab.textContent=`Quadro ${i+1}`;btn.append(c,lab);btn.addEventListener('click',()=>{S.playing=false;syncPlay();selectFrame(i)});root.append(btn)
+ });selectFrame(0);
+}
+function syncPlay(){$('playBtn').textContent=S.playing?'Ⅱ Pausar':'▶ Reproduzir'}
+function renderLoop(now){
+ if(S.playing&&S.frames.length){
+  S.acc+=Math.max(0,Math.min(250,now-S.last));
+  const step=1000/num('fps',2,24);
+  if(S.acc>=step){const moves=Math.floor(S.acc/step);S.acc%=step;selectFrame(S.index+moves)}
+ }else S.acc=0;
+ S.last=now;requestAnimationFrame(renderLoop);
+}
+function runAnalysis(){if(!S.source)return;if(!makeFrames())return;const enabled=S.frames.length>0;
+ $('editFramesBtn').disabled=!enabled;
+ $('cutWarning').hidden=!S.usingSuggestedGrid;
+ $('cutWarning').textContent=S.usingSuggestedGrid?'⚠ Não foi possível confirmar que a separação preserva cada personagem inteiro. A grade é apenas uma sugestão. Clique em Editar recortes e confira as bordas. A exportação fica bloqueada até sua confirmação.':'';
+ for(const id of ['playBtn','prevBtn','nextBtn','reportBtn','spriteBtn','reevalBtn'])$(id).disabled=!enabled||S.usingSuggestedGrid;
+ $('empty').style.display=enabled?'none':'flex';$('meta').textContent=`${S.width} × ${S.height} px · ${S.frames.length} quadros`;
+ S.playing=false;syncPlay();
+ if(S.usingSuggestedGrid){
+  // NUNCA mostrar quadros recortados como corretos quando a divisão é incerta.
+  // Mostra a folha completa e exige revisão humana antes da auditoria.
+  $('meta').textContent=`${S.width} × ${S.height} px · recortes aguardando revisão`;
+  $('frameCount').textContent='?';$('similarCount').textContent='–';$('timeline').replaceChildren();
+  $('results').replaceChildren(entry('REVISÃO NECESSÁRIA','Separação não confirmada',
+    'A ferramenta não conseguiu identificar limites seguros para todos os personagens. Nenhuma análise ou exportação será feita até você conferir os recortes no editor.','info'));
+  const W=screen.width,H=screen.height;g.clearRect(0,0,W,H);g.fillStyle='#121c31';g.fillRect(0,0,W,H);
+  const sc=Math.min((W-24)/S.width,(H-78)/S.height),w=S.width*sc,h=S.height*sc;
+  g.drawImage(S.renderSource||S.source,(W-w)/2,(H-h)/2+18,w,h);
+  g.fillStyle='#f3ca88';g.font='bold 16px sans-serif';g.textAlign='center';
+  g.fillText('REVISÃO NECESSÁRIA: abra Editar recortes',W/2,26);g.textAlign='left';
+  return;
+ }
+ fillTimeline();assess();paintCanvas();
+}
+function download(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),15000)}
+const crcTable=(()=>{const t=new Uint32Array(256);for(let i=0;i<256;i++){let c=i;for(let j=0;j<8;j++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);t[i]=c>>>0}return t})();
+function crc32(data){let c=0xffffffff;for(let i=0;i<data.length;i++)c=crcTable[(c^data[i])&255]^(c>>>8);return(c^0xffffffff)>>>0}
+function makeZip(files){const enc=new TextEncoder(),parts=[],central=[];let offset=0;
+ const w16=(v,p,x)=>v.setUint16(p,x,true),w32=(v,p,x)=>v.setUint32(p,x>>>0,true);
+ for(const file of files){const b=enc.encode(file.name),d=file.data,crc=crc32(d),local=new Uint8Array(30+b.length),v=new DataView(local.buffer);w32(v,0,0x04034b50);w16(v,4,20);w16(v,6,0x0800);w32(v,14,crc);w32(v,18,d.length);w32(v,22,d.length);w16(v,26,b.length);local.set(b,30);parts.push(local,d);
+ const dir=new Uint8Array(46+b.length),cv=new DataView(dir.buffer);w32(cv,0,0x02014b50);w16(cv,4,20);w16(cv,6,20);w16(cv,8,0x0800);w32(cv,16,crc);w32(cv,20,d.length);w32(cv,24,d.length);w16(cv,28,b.length);w32(cv,42,offset);dir.set(b,46);central.push(dir);offset+=local.length+d.length;
+ }
+ const end=new Uint8Array(22),ev=new DataView(end.buffer);w32(ev,0,0x06054b50);w16(ev,8,files.length);w16(ev,10,files.length);w32(ev,12,central.reduce((n,b)=>n+b.length,0));w32(ev,16,offset);
+ return new Blob([...parts,...central,end],{type:'application/zip'});
+}
+async function exportSprites(){if(!S.frames.length)return;const btn=$('spriteBtn');btn.disabled=true;
+ try{const files=[];for(let i=0;i<S.frames.length;i++){
+  btn.textContent=`Preparando ${i+1}/${S.frames.length}...`;
+  const blob=await new Promise((res,rej)=>S.frames[i].standard.toBlob(b=>b?res(b):rej(new Error('Falha ao gerar PNG')),'image/png'));
+  files.push({name:`${S.filename}_quadro_${String(i+1).padStart(2,'0')}.png`,data:new Uint8Array(await blob.arrayBuffer())});
+  if(i%8===0)await new Promise(r=>setTimeout(r,0));
+ }
+ download(makeZip(files),`${S.filename}_padronizados.zip`)
+ }catch(e){alert('Falha ao exportar: '+e.message)}finally{btn.disabled=false;btn.textContent='↓ PNGs padronizados (.zip)'}
+}
+function exportReport(){
+ if(!S.frames.length)return;
+ const result={tool:'SpriteMotion Inspector v2.4',generated:new Date().toISOString(),source:S.filename,sourceDimensions:[S.width,S.height],frames:S.frames.map((f,i)=>({index:i+1,bounds:f.rect,mask:f.maskRuns?.length?{type:"connected-pixels",runs:f.maskRuns.length/3,backgroundTransparent:true}:f.brushStrokes?.length?{type:"brush",strokes:f.brushStrokes.length}:f.polygon?.length?{type:"lasso",points:f.polygon}:"rectangle",landmarks:S.anchors[i]})),normalizedDimensions:[S.frameW,S.frameH],backgroundRemovalManuallyApplied:S.removalApplied,fps:num('fps',2,24),analysis:S.diagnosis,warning:'A análise é heurística. Não altera sprites, não reconstrói pernas e não garante detecção de todos os problemas anatômicos.'};
+ download(new Blob([JSON.stringify(result,null,2)],{type:'application/json'}),`${S.filename}_auditoria.json`);
+}
+
+// Edição não destrutiva: um retângulo por personagem, sem divisão rígida por colunas.
+// Detecção conservadora: amostra o fundo e só sugere limites quando existe
+// contraste suficiente. Nunca modifica a imagem original.
+function smartCropSuggestions(){
+ const cells=(S.cropWorking||[]).map(r=>({...r}));
+ const data=S.renderData||S.data,w=S.width,h=S.height;
+ const margin=clamp(Number($('safeMargin').value)||0,0,80);
+ const out=[];let uncertain=0;
+ for(let i=0;i<cells.length;i++){
+  const r=cells[i];let left=r.x+r.w,right=r.x,top=r.y+r.h,bottom=r.y,found=0;
+  const corners=[[r.x,r.y],[r.x+r.w-1,r.y],[r.x,r.y+r.h-1],[r.x+r.w-1,r.y+r.h-1]];
+  const colors=corners.map(([x,y])=>{let k=(y*w+x)*4;return [data[k],data[k+1],data[k+2],data[k+3]]});
+  const bg=colors[0];const stable=colors.every(c=>Math.abs(c[0]-bg[0])+Math.abs(c[1]-bg[1])+Math.abs(c[2]-bg[2])<95);
+  if(r.polygon?.length>=3){out.push(r);continue}
+  if(!stable&&!S.hasAlpha&&!S.removalApplied){uncertain++;out.push(r);continue}
+  for(let y=r.y;y<r.y+r.h;y+=2)for(let x=r.x;x<r.x+r.w;x+=2){
+   const k=(y*w+x)*4,a=data[k+3];let fg;
+   if(S.hasAlpha||S.removalApplied)fg=a>65;
+   else {let dr=data[k]-bg[0],dg=data[k+1]-bg[1],db=data[k+2]-bg[2];fg=dr*dr+dg*dg+db*db>58*58}
+   if(fg){found++;left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}
+  }
+  if(found<30){uncertain++;out.push(r);continue}
+  out.push(normCrop({x:Math.max(0,left-margin),y:Math.max(0,top-margin),w:Math.min(w-1,right+2+margin)-Math.max(0,left-margin)+1,h:Math.min(h-1,bottom+2+margin)-Math.max(0,top-margin)+1}));
+ }
+ S.cropWorking=out;S.cropSelected=Math.min(Math.max(0,S.cropSelected),out.length-1);commitCropHistory();cropDraw();
+ const collisions=[];
+ for(let i=0;i<out.length;i++)for(let j=i+1;j<out.length;j++){
+  const a=out[i],b=out[j],ow=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x),oh=Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y);
+  if(ow>2&&oh>2)collisions.push(`${i+1} e ${j+1}`);
+ }
+ $('cropInfo').textContent=`Sugestões aplicadas com margem de ${margin}px. ${uncertain?uncertain+' recorte(s) mantidos por baixa confiança. ':''}${collisions.length?'Atenção: sobreposição entre quadros '+collisions.join(', ')+'. Confira manualmente antes de exportar.':'Confira as bordas antes de aplicar.'}`;
+}
+const crop=$('cropCanvas'),cg=crop.getContext('2d'),cropModal=$('cropModal');
+function normCrop(r){
+ const x=clamp(Math.round(r.x),0,S.width-1),y=clamp(Math.round(r.y),0,S.height-1);
+ const w=clamp(Math.round(r.w),1,S.width-x),h=clamp(Math.round(r.h),1,S.height-y);
+ return {x,y,w,h,...(r.polygon?.length>=3?{polygon:r.polygon.map(p=>({x:clamp(Math.round(p.x),0,S.width),y:clamp(Math.round(p.y),0,S.height)}))}:{}),...(r.brushStrokes?.length?{brushStrokes:r.brushStrokes.map(st=>({erase:!!st.erase,size:st.size,points:st.points.map(p=>({x:clamp(p.x,0,S.width),y:clamp(p.y,0,S.height)}))}))}:{}),...(r.maskRuns?.length?{maskRuns:r.maskRuns.slice()}:{}),...(r.clickSeed?{clickSeed:{...r.clickSeed}}:{})};
+}
+function copyCrop(r){return {...r,...(r.polygon?{polygon:r.polygon.map(p=>({...p}))}:{}),...(r.brushStrokes?{brushStrokes:r.brushStrokes.map(st=>({erase:st.erase,size:st.size,points:st.points.map(p=>({...p}))}))}:{}),...(r.maskRuns?{maskRuns:r.maskRuns.slice()}:{}),...(r.clickSeed?{clickSeed:{...r.clickSeed}}:{})}}
+function snapshotCrops(arr=S.cropWorking||[]){return arr.map(copyCrop)}
+function sameCrops(a,b){return JSON.stringify(a)===JSON.stringify(b)}
+function syncCropHistoryButtons(){$('undoCropBtn').disabled=(S.cropHistory?.length||0)<=1;$('redoCropBtn').disabled=!(S.cropFuture?.length)}
+function commitCropHistory(){const snap=snapshotCrops();if(!S.cropHistory?.length)S.cropHistory=[snap];else if(!sameCrops(S.cropHistory[S.cropHistory.length-1],snap)){S.cropHistory.push(snap);if(S.cropHistory.length>120)S.cropHistory.shift()}S.cropFuture=[];syncCropHistoryButtons()}
+function restoreCropSnapshot(snap){S.cropWorking=(snap||[]).map(copyCrop);S.cropSelected=S.cropWorking.length?Math.min(Math.max(0,S.cropSelected),S.cropWorking.length-1):-1;if(['lasso','magic','window','brush'].includes(S.cropTool))S.cropLassoTarget=S.cropSelected;cropDraw();syncCropHistoryButtons()}
+function undoCropEdit(){if((S.cropHistory?.length||0)<=1)return;const current=snapshotCrops();S.cropFuture.push(current);S.cropHistory.pop();restoreCropSnapshot(S.cropHistory[S.cropHistory.length-1]);$('cropInfo').textContent='Última ação desfeita.'}
+function redoCropEdit(){if(!(S.cropFuture?.length))return;const snap=S.cropFuture.pop();S.cropHistory.push(snap.map(copyCrop));restoreCropSnapshot(snap);$('cropInfo').textContent='Ação refeita.'}
+function suggestedCrops(){return (S.manualCells?.length?S.manualCells:S.cropProposals||[]).map(copyCrop)}
+function pointInsidePolygon(p,poly){let inside=false;
+ for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+  const a=poly[i],b=poly[j];
+  if((a.y>p.y)!==(b.y>p.y) && p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)inside=!inside;
+ }return inside;
+}
+function polygonBounds(poly){
+ const x0=clamp(Math.floor(Math.min(...poly.map(p=>p.x))),0,S.width-1);
+ const y0=clamp(Math.floor(Math.min(...poly.map(p=>p.y))),0,S.height-1);
+ const x1=clamp(Math.ceil(Math.max(...poly.map(p=>p.x)))+1,x0+1,S.width);
+ const y1=clamp(Math.ceil(Math.max(...poly.map(p=>p.y)))+1,y0+1,S.height);
+ return {x:x0,y:y0,w:x1-x0,h:y1-y0};
+}
+function polygonArea(poly){let area=0;for(let i=0;i<poly.length;i++){const q=poly[(i+1)%poly.length];area+=poly[i].x*q.y-q.x*poly[i].y}return Math.abs(area)/2}
+function simplifyLasso(poly){
+ // Limitamos a densidade de amostragem. Isso evita PNGs pesados e mantém o contorno.
+ if(poly.length<3)return poly;
+ const step=Math.max(1,Math.ceil(poly.length/700));
+ const out=poly.filter((_,i)=>i%step===0);out.push(poly[poly.length-1]);
+ return out;
+}
+function cropPath(poly){cg.beginPath();cg.moveTo(poly[0].x,poly[0].y);for(let i=1;i<poly.length;i++)cg.lineTo(poly[i].x,poly[i].y);cg.closePath()}
+// Contorno real, sem casco convexo ou retângulo envolvendo espaços vazios.
+const outlineCache=new WeakMap();
+function maskContains(r,x,y){
+ if(!r.maskRuns?.length)return false;
+ const runs=r.maskRuns;let lo=0,hi=runs.length/3-1;
+ while(lo<=hi){
+  const mid=(lo+hi)>>1,k=mid*3,ry=runs[k];
+  if(y<ry||(y===ry&&x<runs[k+1]))hi=mid-1;
+  else if(y>ry||(y===ry&&x>=runs[k+2]))lo=mid+1;
+  else return true;
+ }
+ return false;
+}
+function maskOutlineSegments(r){
+ const cached=outlineCache.get(r);
+ if(cached?.runs===r.maskRuns)return cached.segments;
+ const bits=new Uint8Array(r.w*r.h),segments=[];
+ for(let n=0;n<r.maskRuns.length;n+=3){
+  const y=r.maskRuns[n]-r.y;if(y<0||y>=r.h)continue;
+  for(let x=Math.max(r.x,r.maskRuns[n+1]);x<Math.min(r.x+r.w,r.maskRuns[n+2]);x++)bits[y*r.w+x-r.x]=1;
+ }
+ for(let n=0;n<r.maskRuns.length;n+=3){
+  const y=r.maskRuns[n],ly=y-r.y;if(ly<0||ly>=r.h)continue;
+  const from=Math.max(r.x,r.maskRuns[n+1]),to=Math.min(r.x+r.w,r.maskRuns[n+2]);
+  if(from>=to)continue;
+  segments.push(from,y,from,y+1,to,y,to,y+1);
+  for(let x=from;x<to;x++){
+   const lx=x-r.x;
+   if(ly===0||!bits[(ly-1)*r.w+lx])segments.push(x,y,x+1,y);
+   if(ly===r.h-1||!bits[(ly+1)*r.w+lx])segments.push(x,y+1,x+1,y+1);
+  }
+ }
+ outlineCache.set(r,{runs:r.maskRuns,segments});
+ return segments;
+}
+
+function boundsOfBrush(strokes){
+ let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+ for(const st of strokes){if(st.erase)continue;const rad=st.size/2+2;for(const p of st.points){x0=Math.min(x0,p.x-rad);y0=Math.min(y0,p.y-rad);x1=Math.max(x1,p.x+rad);y1=Math.max(y1,p.y+rad)}}
+ if(!Number.isFinite(x0))return null;
+ x0=clamp(Math.floor(x0),0,S.width-1);y0=clamp(Math.floor(y0),0,S.height-1);
+ x1=clamp(Math.ceil(x1),x0+1,S.width);y1=clamp(Math.ceil(y1),y0+1,S.height);
+ return {x:x0,y:y0,w:x1-x0,h:y1-y0};
+}
+function brushStrokePath(ctx,st,offX=0,offY=0){
+ const points=st.points||[];if(!points.length)return;
+ ctx.beginPath();
+ if(points.length===1){ctx.arc(points[0].x-offX,points[0].y-offY,st.size/2,0,Math.PI*2);ctx.fill();return}
+ ctx.moveTo(points[0].x-offX,points[0].y-offY);
+ for(const p of points.slice(1))ctx.lineTo(p.x-offX,p.y-offY);
+ ctx.stroke();
+}
+function selectBrushTarget(p){
+ // Prioritize the crop under the pointer, using the current selection in overlaps.
+ const arr=S.cropWorking||[];const i=S.cropSelected;
+ if(i>=0&&i<arr.length&&p.x>=arr[i].x&&p.x<=arr[i].x+arr[i].w&&p.y>=arr[i].y&&p.y<=arr[i].y+arr[i].h)return i;
+ for(let k=arr.length-1;k>=0;k--){const r=arr[k];if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h)return k}
+ return i>=0&&i<arr.length?i:-1;
+}
+function addBrushStroke(target,st){
+ let r=S.cropWorking[target];
+ if(!r)return;
+ if(!r.brushStrokes?.length){r={x:r.x,y:r.y,w:r.w,h:r.h,brushStrokes:[]}}
+ if(st.erase&&!r.brushStrokes.length)return;
+ r.brushStrokes.push({erase:!!st.erase,size:st.size,points:st.points.map(p=>({...p}))});
+ const bounds=boundsOfBrush(r.brushStrokes);
+ if(bounds)S.cropWorking[target]=normCrop({...bounds,brushStrokes:r.brushStrokes});
+}
+
+function isChromaKeyPixel(r,g,b){
+ const bg=S.background||[255,255,255];
+ // Identifica o verde do cenário, inclusive suas variações mais escuras
+ // causadas pelo antialias. Só ativa quando o fundo amostrado é verde.
+ return bg[1]>bg[0]+100&&bg[1]>bg[2]+100&&g>110&&g-r>88&&g-b>88;
+}
+function isForegroundPixel(x,y){
+ const data=S.renderData||S.data;if(!data)return false;
+ const i=(Math.floor(y)*S.width+Math.floor(x))*4,a=data[i+3];if(a<=65)return false;
+ if(!S.hasAlpha&&isChromaKeyPixel(data[i],data[i+1],data[i+2]))return false;
+ if(S.hasAlpha||S.removalApplied)return true;
+ const bg=S.background||[255,255,255],dr=data[i]-bg[0],dg=data[i+1]-bg[1],db=data[i+2]-bg[2];
+ return dr*dr+dg*dg+db*db>58*58;
+}
+function convexHull(points){if(points.length<=2)return points.slice();const pts=points.map(p=>({x:Math.round(p.x),y:Math.round(p.y)})).sort((a,b)=>a.x===b.x?a.y-b.y:a.x-b.x);const cross=(o,a,b)=>(a.x-o.x)*(b.y-o.y)-(a.y-o.y)*(b.x-o.x);const lower=[];for(const p of pts){while(lower.length>=2&&cross(lower[lower.length-2],lower[lower.length-1],p)<=0)lower.pop();lower.push(p)}const upper=[];for(let i=pts.length-1;i>=0;i--){const p=pts[i];while(upper.length>=2&&cross(upper[upper.length-2],upper[upper.length-1],p)<=0)upper.pop();upper.push(p)}upper.pop();lower.pop();return lower.concat(upper)}
+// Um clique é uma única personagem, mesmo quando cabelos ou braços se encostam.
+// A largura típica é estimada a partir das propostas de recorte da própria folha.
+function typicalSpriteWidth(){
+ const widths=(S.cropWorking||[]).map(r=>r.w).filter(w=>w>=12&&w<=S.width).sort((a,b)=>a-b);
+ const grid=S.width/Math.max(1,num('columns',1,30));
+ const median=widths.length?widths[Math.floor(widths.length/2)]:grid;
+ return clamp(Math.min(median,grid*1.35),16,S.width);
+}
+function clickCropTarget(p,unit){
+ const crops=S.cropWorking||[];let best=-1,score=Infinity;
+ for(let i=0;i<crops.length;i++){
+  const r=crops[i],c=r.clickSeed||{x:r.x+r.w/2,y:r.y+r.h/2};
+  const dx=Math.abs(p.x-c.x)/Math.max(unit,r.w*.6);
+  const dy=Math.abs(p.y-c.y)/Math.max(unit,r.h*.6);
+  const s=dx+dy*.3;
+  if(s<score){score=s;best=i}
+ }
+ // Centro de uma pessoa vizinha costuma ficar a aproximadamente uma largura
+ // de distância; não podemos reutilizar o recorte anterior nesse caso.
+ return score<.78?best:-1;
+}
+// Percorre somente os pixels ligados ao ponto clicado, em um corredor horizontal.
+// O corredor impede que o preenchimento atravesse uma personagem vizinha.
+function traceClickedSprite(p,left,right){
+ const x0=clamp(Math.floor(left),0,S.width-1),x1=clamp(Math.ceil(right),x0+1,S.width);
+ const bw=x1-x0,h=S.height,px=clamp(Math.floor(p.x),x0,x1-1),py=clamp(Math.floor(p.y),0,h-1);
+ let seed=-1;
+ if(isForegroundPixel(px,py))seed=(py*bw+px-x0);
+ else for(let rad=1;rad<=18&&seed<0;rad++){
+  for(let dy=-rad;dy<=rad&&seed<0;dy++)for(let dx=-rad;dx<=rad;dx++){
+   if(Math.max(Math.abs(dx),Math.abs(dy))!==rad)continue;
+   const x=px+dx,y=py+dy;
+   if(x>=x0&&x<x1&&y>=0&&y<h&&isForegroundPixel(x,y)){seed=y*bw+x-x0;break}
+  }
+ }
+ if(seed<0)return null;
+ const seen=new Uint8Array(bw*h),queue=new Int32Array(bw*h);
+ let head=0,tail=1,count=0,minX=S.width,maxX=0,minY=h,maxY=0;
+ const boundary=[];queue[0]=seed;seen[seed]=1;
+ while(head<tail){
+  const idx=queue[head++],x=x0+idx%bw,y=Math.floor(idx/bw);count++;
+  minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);
+  let edge=false;
+  for(const [nx,ny] of [[x-1,y],[x+1,y],[x,y-1],[x,y+1]]){
+   if(nx<x0||nx>=x1||ny<0||ny>=h||!isForegroundPixel(nx,ny)){edge=true;continue}
+   const ni=ny*bw+nx-x0;
+   if(!seen[ni]){seen[ni]=1;queue[tail++]=ni}
+  }
+  if(edge&&boundary.length<22000&&((x+y)&1)===0)boundary.push({x:x+.5,y:y+.5});
+ }
+ if(count<20)return null;
+ // Run-length encoding por linha: guarda somente os pixels ligados ao clique.
+ // As coordenadas absolutas permitem exportar o recorte sem incluir outros objetos.
+ const maskRuns=[];
+ for(let y=minY;y<=maxY;y++){
+  let begin=-1;
+  for(let x=minX;x<=maxX+1;x++){
+   const inside=x<=maxX&&seen[y*bw+x-x0]===1;
+   if(inside&&begin<0)begin=x;
+   if(!inside&&begin>=0){maskRuns.push(y,begin,x);begin=-1}
+  }
+ }
+ const pad=2;
+ const rect=normCrop({x:Math.max(x0,minX-pad),y:Math.max(0,minY-pad),w:Math.min(x1,maxX+pad+1)-Math.max(x0,minX-pad),h:Math.min(h,maxY+pad+1)-Math.max(0,minY-pad),maskRuns});
+ if(boundary.length<8)return rect;
+ let hull=convexHull(boundary);
+ if(hull.length<3)return rect;
+ const cx=hull.reduce((s,q)=>s+q.x,0)/hull.length,cy=hull.reduce((s,q)=>s+q.y,0)/hull.length;
+ hull=hull.map(q=>({x:clamp(Math.round(cx+(q.x-cx)*1.015),x0,x1),y:clamp(Math.round(cy+(q.y-cy)*1.015),0,h)}));
+ return normCrop({...polygonBounds(hull),polygon:simplifyLasso(hull),maskRuns});
+}
+function detectSingleSpriteByClick(p,unit){
+ // Busca inicialmente o componente completo em torno do clique.
+ const radius=Math.max(30,unit*1.1);
+ const candidate=traceClickedSprite(p,p.x-radius,p.x+radius);
+ if(!candidate||candidate.w<=unit*1.3)return candidate;
+ // Se o componente é largo demais, pode conter duas figuras encostadas.
+ // Procuramos a massa visual mais próxima do clique e as duas divisões
+ // verticais de menor ocupação, em vez de recortar duas silhuetas juntas.
+ const x0=candidate.x,x1=candidate.x+candidate.w,h0=candidate.y;
+ const y1=Math.min(S.height,h0+Math.ceil(candidate.h*.86));
+ const stride=Math.max(1,Math.floor(candidate.h/250));
+ const density=new Float32Array(S.width);
+ for(let x=x0;x<x1;x++)for(let y=h0;y<y1;y+=stride)if(isForegroundPixel(x,y))density[x]++;
+ const smoothRadius=Math.max(2,Math.round(unit*.03));
+ const smoothed=new Float32Array(S.width);let maxDensity=0;
+ for(let x=x0;x<x1;x++){
+  let sum=0,n=0;
+  for(let k=Math.max(x0,x-smoothRadius);k<=Math.min(x1-1,x+smoothRadius);k++){sum+=density[k];n++}
+  smoothed[x]=sum/n;maxDensity=Math.max(maxDensity,smoothed[x]);
+ }
+ const clickX=clamp(Math.round(p.x),x0,x1-1);
+ let center=clickX,best=-Infinity;
+ const centerRadius=Math.max(4,Math.round(unit*.27));
+ for(let x=Math.max(x0,clickX-centerRadius);x<=Math.min(x1-1,clickX+centerRadius);x++){
+  const score=smoothed[x]-(Math.abs(x-clickX)/unit)*maxDensity*.6;
+  if(score>best){best=score;center=x}
+ }
+ function cutAt(guess){
+  const reach=Math.max(5,Math.round(unit*.23));
+  let at=clamp(Math.round(guess),x0,x1-1),value=Infinity;
+  for(let x=Math.max(x0,at-reach);x<=Math.min(x1-1,at+reach);x++){
+   const cost=smoothed[x]+Math.abs(x-guess)/unit*maxDensity*.28;
+   if(cost<value){value=cost;at=x}
+  }
+  return at;
+ }
+ let left=cutAt(center-unit*.59),right=cutAt(center+unit*.59);
+ left=Math.min(left,clickX-2);right=Math.max(right,clickX+3);
+ if(right-left<unit*.3){left=center-unit*.55;right=center+unit*.55}
+ const isolated=traceClickedSprite(p,left,right);
+ return isolated||candidate;
+}
+function applyMagicSelection(p){
+ const unit=typicalSpriteWidth();
+ const detected=detectSingleSpriteByClick(p,unit);
+ if(!detected){$('cropInfo').textContent='Não foi possível identificar a personagem neste clique. Clique em uma parte sólida ou use o laço.';return}
+ // A grade provisória é apenas uma estimativa, não são personagens confirmados.
+ // Ao iniciar a seleção individual, descartamos essa grade sem perder o Desfazer.
+ const provisional=S.usingSuggestedGrid&&!S.manualCells?.length&&
+  S.cropHistory?.length===1&&sameCrops(S.cropWorking||[],suggestedCrops());
+ if(provisional){S.cropWorking=[];S.cropSelected=-1;commitCropHistory()}
+ const target=provisional?-1:clickCropTarget(p,unit);
+ const updated={...detected,clickSeed:{x:p.x,y:p.y}};
+ if(target>=0&&target<S.cropWorking.length){S.cropWorking[target]=updated;S.cropSelected=target}
+ else{S.cropWorking.push(updated);S.cropSelected=S.cropWorking.length-1}
+ commitCropHistory();S.cropLassoTarget=-1;cropDraw();
+ $('cropInfo').textContent='Uma personagem por clique. Clique na próxima para selecioná-la separadamente; use o laço se houver sobreposição muito complexa.';
+}
+function cropTool(tool){
+ S.cropTool=tool;S.cropDrag=null;
+ if(['lasso','magic','window','brush'].includes(tool))S.cropLassoTarget=S.cropSelected;
+ $('selectCropBtn').classList.toggle('active-tool',tool==='select');
+ $('drawCropBtn').classList.toggle('active-tool',tool==='rect');
+ $('lassoCropBtn').classList.toggle('active-tool',tool==='lasso');
+ $('magicCropBtn').classList.toggle('active-tool',tool==='magic');
+ $('brushCropBtn').classList.toggle('active-tool',tool==='brush');
+ $('windowCropBtn').classList.toggle('active-tool',tool==='window');
+ crop.style.cursor=(tool==='select')?'default':'crosshair';cropDraw();
+}
+function cropDraw(){
+ if(!S.source)return;
+ if(crop.width!==S.width)crop.width=S.width;if(crop.height!==S.height)crop.height=S.height;
+ cg.clearRect(0,0,crop.width,crop.height);cg.drawImage(S.renderSource||S.source,0,0);
+ const rects=S.cropWorking||[];
+ const thickness=Math.max(2,Math.round(Math.max(S.width,S.height)/720*1.5));
+ rects.forEach((r,i)=>{
+  const chosen=i===S.cropSelected;
+  cg.fillStyle=chosen?'rgba(30,190,170,.12)':'rgba(75,135,235,.11)';
+  cg.strokeStyle=chosen?'#1ddfc4':'#587cf0';cg.lineWidth=thickness;
+  if(r.maskRuns?.length){
+    // Exibe a mesma máscara individual que será utilizada no PNG exportado.
+    cg.fillStyle=chosen?'rgba(0,230,193,.42)':'rgba(95,155,255,.30)';
+    for(let n=0;n<r.maskRuns.length;n+=3)cg.fillRect(r.maskRuns[n+1],r.maskRuns[n],r.maskRuns[n+2]-r.maskRuns[n+1],1);
+    const segments=maskOutlineSegments(r);
+    cg.save();cg.strokeStyle=chosen?'#00ffdd':'#688dff';cg.lineWidth=Math.max(1.5,thickness*.7);cg.beginPath();
+    for(let n=0;n<segments.length;n+=4){cg.moveTo(segments[n],segments[n+1]);cg.lineTo(segments[n+2],segments[n+3])}
+    cg.stroke();cg.restore();
+   }else if(r.brushStrokes?.length){
+    // Renderiza a máscara efetiva, incluindo remoções pela borracha.
+    // A sobreposição colorida corresponde aos pixels que serão exportados.
+    const overlay=document.createElement('canvas');overlay.width=r.w;overlay.height=r.h;
+    const og=overlay.getContext('2d');og.lineCap='round';og.lineJoin='round';
+    for(const st of r.brushStrokes){og.save();og.globalCompositeOperation=st.erase?'destination-out':'source-over';og.strokeStyle=chosen?'rgba(0,230,193,.56)':'rgba(95,155,255,.52)';og.fillStyle=og.strokeStyle;og.lineWidth=st.size;brushStrokePath(og,st,r.x,r.y);og.restore()}
+    cg.drawImage(overlay,r.x,r.y);
+    cg.save();cg.strokeStyle=chosen?'#1ddfc4':'#587cf0';cg.setLineDash([7,5]);cg.strokeRect(r.x,r.y,r.w,r.h);cg.restore();
+   }else if(r.polygon?.length>=3){cropPath(r.polygon);cg.fill();cg.stroke();
+   if(chosen){const radius=Math.max(3,Math.round(Math.max(S.width,S.height)*.0035));
+    cg.fillStyle='#00edcf';for(const pt of r.polygon){cg.beginPath();cg.arc(pt.x,pt.y,radius,0,Math.PI*2);cg.fill();}
+   }
+  }else{
+   cg.fillRect(r.x,r.y,r.w,r.h);cg.strokeRect(r.x,r.y,r.w,r.h);
+   if(chosen){const size=Math.max(9,Math.round(Math.max(S.width,S.height)*.009));cg.fillStyle='#00edcf';for(const [hx,hy] of [[r.x,r.y],[r.x+r.w/2,r.y],[r.x+r.w,r.y],[r.x,r.y+r.h/2],[r.x+r.w,r.y+r.h/2],[r.x,r.y+r.h],[r.x+r.w/2,r.y+r.h],[r.x+r.w,r.y+r.h]])cg.fillRect(hx-size/2,hy-size/2,size,size)}
+  }
+ });
+ const d=S.cropDrag;
+ if((d?.type==='draw'||d?.type==='window')&&d.preview){const r=d.preview;cg.strokeStyle='#ffca56';cg.lineWidth=thickness*2;cg.strokeRect(r.x,r.y,r.w,r.h)}
+ if(d?.type==='brush'){cg.save();cg.lineCap='round';cg.lineJoin='round';cg.strokeStyle=d.erase?'#ff899b':'#ffca56';cg.fillStyle=cg.strokeStyle;cg.lineWidth=d.size;brushStrokePath(cg,{points:d.points,size:d.size});cg.restore()}
+  if(d?.type==='lasso'&&d.points.length>1){cg.save();cg.lineWidth=Math.max(2,thickness*1.5);cg.strokeStyle='#ffca56';cg.setLineDash([10,5]);cg.beginPath();cg.moveTo(d.points[0].x,d.points[0].y);for(const p of d.points.slice(1))cg.lineTo(p.x,p.y);cg.stroke();cg.restore()}
+ const selected=S.cropSelected>=0?rects[S.cropSelected]:null;
+ const instruct=S.cropTool==='brush'?'Pincel: clique e arraste para pintar os pixels desejados. Faça quantas passadas quiser; ative a borracha para retirar áreas. Cada passada tem Desfazer / Refazer.':S.cropTool==='window'?'Janela: arraste uma caixa para substituir o recorte selecionado. O modo permanece ativo e permite quantas seleções desejar.':S.cropTool==='lasso'?'Laço: arraste em volta da personagem e solte para fechar. O laço permanece ativo para você usar quantas vezes quiser. Desenhe sobre um recorte para ajustá-lo ou fora dele para criar outro. A área fora do contorno será transparente.':S.cropTool==='magic'?'Seleção por clique: cada personagem recebe sua própria máscara de pixels, com fundo removido automaticamente. Clique sobre a próxima personagem para separá-la sem incluir figuras vizinhas.':S.cropTool==='rect'?'Retângulo: arraste sobre a imagem para criar um novo recorte.':'Selecione e arraste para mover. No laço, arraste um ponto verde para corrigir o contorno; nos retângulos, ajuste pelas bordas.';
+ $('cropInfo').textContent=`${rects.length} recorte(s). ${instruct} ${selected?.polygon?'Selecionado: laço.':selected?.brushStrokes?'Selecionado: pincel.':' '} A imagem original nunca é modificada.`;
+ if(S.cropTool==='magic'&&S.usingSuggestedGrid&&S.cropHistory?.length===1){
+  $('cropInfo').textContent+=' No primeiro clique, a grade provisória será substituída pelas personagens selecionadas individualmente.';
+ }
+}
+function setCropZoom(next,anchorX,anchorY){
+ const v=$('cropViewer');const old=S.cropZoom||1;
+ const scale=clamp(Math.round(next*100)/100,.15,6);
+ const centerX=Number.isFinite(anchorX)?anchorX:v.clientWidth/2;
+ const centerY=Number.isFinite(anchorY)?anchorY:v.clientHeight/2;
+ const imgX=(v.scrollLeft+centerX)/old,imgY=(v.scrollTop+centerY)/old;
+ S.cropZoom=scale;crop.style.width=Math.round(S.width*scale)+'px';crop.style.height=Math.round(S.height*scale)+'px';
+ $('cropZoomLabel').textContent=Math.round(scale*100)+'%';
+ v.scrollLeft=Math.max(0,imgX*scale-centerX);v.scrollTop=Math.max(0,imgY*scale-centerY);
+}
+function openCropEditor(){
+ if(!S.source)return;S.playing=false;syncPlay();S.cropWorking=suggestedCrops();S.cropSelected=S.cropWorking.length?0:-1;S.cropDrag=null;S.cropHistory=[snapshotCrops()];S.cropFuture=[];
+ cropModal.hidden=false;cropDraw();syncCropHistoryButtons();
+ const v=$('cropViewer');
+ S.cropFit=clamp(Math.min((v.clientWidth-25)/S.width,(v.clientHeight-25)/S.height),.15,1);
+ S.cropZoom=1;setCropZoom(S.cropFit);cropTool('select');
+}
+function closeCropEditor(){cropModal.hidden=true;S.cropDrag=null}
+function cropPoint(e){const b=crop.getBoundingClientRect();return{x:clamp((e.clientX-b.left)*S.width/b.width,0,S.width),y:clamp((e.clientY-b.top)*S.height/b.height,0,S.height)}}
+function cropHit(p){
+ const arr=S.cropWorking||[],handle=Math.max(5/S.cropZoom,Math.max(S.width,S.height)*.004);
+ const order=[];if(S.cropSelected>=0&&S.cropSelected<arr.length)order.push(S.cropSelected);
+ for(let i=arr.length-1;i>=0;i--)if(i!==S.cropSelected)order.push(i);
+ for(const i of order){const r=arr[i];
+  if(r.maskRuns?.length){if(maskContains(r,Math.floor(p.x),Math.floor(p.y)))return{i,type:'move'};continue}
+  if(r.brushStrokes?.length){if(p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h)return{i,type:'move'};continue}
+   if(r.polygon?.length>=3){
+   if(i===S.cropSelected){let closest=-1,distance=handle*handle;
+    for(let j=0;j<r.polygon.length;j++){const q=r.polygon[j],d=(p.x-q.x)**2+(p.y-q.y)**2;if(d<distance){closest=j;distance=d}}
+    if(closest>=0)return {i,type:'vertex',vertex:closest};
+   }
+   if(pointInsidePolygon(p,r.polygon))return{i,type:'move'};
+   continue;
+  }
+  const left=r.x,right=r.x+r.w,top=r.y,bottom=r.y+r.h;
+  const nearX=p.x>=left-handle&&p.x<=right+handle,nearY=p.y>=top-handle&&p.y<=bottom+handle;
+  const l=Math.abs(p.x-left)<=handle,rr=Math.abs(p.x-right)<=handle,t=Math.abs(p.y-top)<=handle,bb=Math.abs(p.y-bottom)<=handle;
+  if(nearX&&nearY){const edgeX=l?'l':rr?'r':'',edgeY=t?'t':bb?'b':'';
+   if(edgeX||edgeY)return{i,type:'resize',edges:edgeX+edgeY};
+   if(p.x>=left&&p.x<=right&&p.y>=top&&p.y<=bottom)return{i,type:'move'};
+  }
+ }return null;
+}
+function cropDown(e){if(e.button!==0)return;e.preventDefault();const p=cropPoint(e);
+ crop.setPointerCapture(e.pointerId);
+ if(S.cropTool==='lasso'){S.cropDrag={type:'lasso',points:[p],replaceIndex:(cropHit(p)?.i??-1)};cropDraw();return}
+ if(S.cropTool==='magic'){applyMagicSelection(p);return}
+ if(S.cropTool==='brush'){const target=selectBrushTarget(p);if(target<0){$('cropInfo').textContent='Crie primeiro uma janela ou um retângulo para esta sprite.';return}S.cropSelected=target;S.cropDrag={type:'brush',target,size:num('brushSize',2,120),erase:$('brushErase').checked,points:[p]};cropDraw();return}
+ if(S.cropTool==='window'){const hit=cropHit(p);const target=hit?hit.i:-1;S.cropDrag={type:'window',target,start:p,preview:{x:p.x,y:p.y,w:1,h:1}};cropDraw();return}
+ if(S.cropTool==='rect'){S.cropDrag={type:'draw',start:p,preview:{x:p.x,y:p.y,w:1,h:1}};S.cropSelected=-1;cropDraw();return}
+ const hit=cropHit(p);
+ if(hit){S.cropSelected=hit.i;S.cropDrag={type:hit.type,vertex:hit.vertex,edges:hit.edges||'',start:p,original:copyCrop(S.cropWorking[hit.i])}}
+ else{S.cropSelected=-1;S.cropDrag=null}
+ cropDraw();
+}
+function cropMove(e){const p=cropPoint(e),d=S.cropDrag;
+ if(!d){
+  if(S.cropTool!=='select'){crop.style.cursor='crosshair';return}
+  const hit=cropHit(p);crop.style.cursor=!hit?'default':hit.type==='move'?'move':hit.type==='vertex'?'pointer':hit.edges==='l'||hit.edges==='r'?'ew-resize':hit.edges==='t'||hit.edges==='b'?'ns-resize':hit.edges==='lt'||hit.edges==='rb'?'nwse-resize':'nesw-resize';return;
+ }
+ if(d.type==='brush'){const prev=d.points[d.points.length-1];if((p.x-prev.x)**2+(p.y-prev.y)**2>=Math.max(.75,1.5/S.cropZoom)**2)d.points.push(p);
+  }else if(d.type==='lasso'){
+  const prev=d.points[d.points.length-1];
+  if((p.x-prev.x)**2+(p.y-prev.y)**2>=Math.max(1.3,2.5/S.cropZoom)**2)d.points.push(p);
+ }else if(d.type==='draw'||d.type==='window'){
+   const x=Math.min(d.start.x,p.x),y=Math.min(d.start.y,p.y);
+  d.preview=normCrop({x,y,w:Math.abs(p.x-d.start.x),h:Math.abs(p.y-d.start.y)});
+ }else{
+  const dx=p.x-d.start.x,dy=p.y-d.start.y,r=d.original;
+  if(d.type==='vertex'){
+   const poly=r.polygon.map(p=>({...p}));poly[d.vertex]={x:clamp(Math.round(p.x),0,S.width),y:clamp(Math.round(p.y),0,S.height)};
+   S.cropWorking[S.cropSelected]=normCrop({...polygonBounds(poly),polygon:poly});
+  }else if(d.type==='move'){
+   const tx=clamp(dx,-r.x,S.width-r.x-r.w),ty=clamp(dy,-r.y,S.height-r.y-r.h);
+   if(r.maskRuns?.length){
+    const mx=clamp(Math.round(tx),-r.x,S.width-r.x-r.w),my=clamp(Math.round(ty),-r.y,S.height-r.y-r.h);
+    const moved=[];
+    for(let n=0;n<r.maskRuns.length;n+=3){
+     const yy=r.maskRuns[n]+my,x0=clamp(r.maskRuns[n+1]+mx,0,S.width),x1=clamp(r.maskRuns[n+2]+mx,0,S.width);
+     if(yy>=0&&yy<S.height&&x1>x0)moved.push(yy,x0,x1);
+    }
+    const poly=r.polygon?.map(q=>({x:q.x+mx,y:q.y+my}));
+    S.cropWorking[S.cropSelected]=normCrop({x:r.x+mx,y:r.y+my,w:r.w,h:r.h,polygon:poly,maskRuns:moved,clickSeed:r.clickSeed?{x:r.clickSeed.x+mx,y:r.clickSeed.y+my}:null});
+   }else if(r.brushStrokes?.length){const strokes=r.brushStrokes.map(st=>({...st,points:st.points.map(pt=>({x:pt.x+tx,y:pt.y+ty}))}));S.cropWorking[S.cropSelected]=normCrop({x:r.x+tx,y:r.y+ty,w:r.w,h:r.h,brushStrokes:strokes})}
+    else if(r.polygon?.length){const poly=r.polygon.map(q=>({x:q.x+tx,y:q.y+ty}));S.cropWorking[S.cropSelected]=normCrop({...polygonBounds(poly),polygon:poly})}
+   else S.cropWorking[S.cropSelected]=normCrop({x:r.x+tx,y:r.y+ty,w:r.w,h:r.h});
+  }else if(d.type==='resize'){
+   let l=r.x,t=r.y,rr=r.x+r.w,bb=r.y+r.h;const min=4;
+   if(d.edges.includes('l'))l=clamp(r.x+dx,0,rr-min);
+   if(d.edges.includes('r'))rr=clamp(r.x+r.w+dx,l+min,S.width);
+   if(d.edges.includes('t'))t=clamp(r.y+dy,0,bb-min);
+   if(d.edges.includes('b'))bb=clamp(r.y+r.h+dy,t+min,S.height);
+   S.cropWorking[S.cropSelected]=normCrop({x:l,y:t,w:rr-l,h:bb-t});
+  }
+ }
+ cropDraw();
+}
+function cropUp(e){const d=S.cropDrag;if(!d)return;
+ if(d.type==='brush'){
+  addBrushStroke(d.target,{erase:d.erase,size:d.size,points:d.points});commitCropHistory();S.cropSelected=d.target;
+ }else if(d.type==='window'){
+  if(d.preview.w>=6&&d.preview.h>=6){const r=normCrop(d.preview);if(d.target>=0&&d.target<S.cropWorking.length){S.cropWorking[d.target]=r;S.cropSelected=d.target}else{S.cropWorking.push(r);S.cropSelected=S.cropWorking.length-1}commitCropHistory();S.cropLassoTarget=-1}
+ }else if(d.type==='lasso'){
+  const poly=simplifyLasso(d.points);
+  if(poly.length>=3&&polygonArea(poly)>=50){
+   const r=normCrop({...polygonBounds(poly),polygon:poly});
+   if(d.replaceIndex>=0&&d.replaceIndex<S.cropWorking.length){S.cropWorking[d.replaceIndex]=r;S.cropSelected=d.replaceIndex}
+   else{S.cropWorking.push(r);S.cropSelected=S.cropWorking.length-1}
+   commitCropHistory();
+   S.cropLassoTarget=-1;
+   $('cropInfo').textContent='Laço aplicado. Você pode continuar desenhando quantas vezes quiser; cada novo contorno cria ou ajusta uma seleção.';
+  }else $('cropInfo').textContent='Laço muito pequeno. Arraste ao redor da personagem e solte para fechar.';
+ }else if(d.type==='draw'&&d.preview.w>=12&&d.preview.h>=12){
+  S.cropWorking.push(normCrop(d.preview));S.cropSelected=S.cropWorking.length-1;commitCropHistory();cropTool('select');
+ }else if(d.type==='move'||d.type==='resize'||d.type==='vertex'){
+  if(!sameCrops([d.original],[S.cropWorking[S.cropSelected]]))commitCropHistory();
+ }
+ S.cropDrag=null;cropDraw();
+}
+$('smartCropBtn').addEventListener('click',smartCropSuggestions);
+$('editFramesBtn').addEventListener('click',openCropEditor);
+$('closeCropBtn').addEventListener('click',closeCropEditor);
+$('selectCropBtn').addEventListener('click',()=>cropTool('select'));
+$('drawCropBtn').addEventListener('click',()=>cropTool('rect'));
+$('lassoCropBtn').addEventListener('click',()=>cropTool('lasso'));
+$('magicCropBtn').addEventListener('click',()=>cropTool('magic'));
+$('brushCropBtn').addEventListener('click',()=>cropTool('brush'));
+$('windowCropBtn').addEventListener('click',()=>cropTool('window'));
+$('brushSize').addEventListener('input',()=>{$('brushSizeLabel').textContent=$('brushSize').value+' px'});
+$('undoCropBtn').addEventListener('click',undoCropEdit);
+$('redoCropBtn').addEventListener('click',redoCropEdit);
+$('zoomInBtn').addEventListener('click',()=>setCropZoom(S.cropZoom*1.25));
+$('zoomOutBtn').addEventListener('click',()=>setCropZoom(S.cropZoom/1.25));
+$('zoomActualBtn').addEventListener('click',()=>setCropZoom(1));
+$('zoomFitBtn').addEventListener('click',()=>setCropZoom(S.cropFit));
+$('cropViewer').addEventListener('wheel',e=>{if(!e.ctrlKey)return;e.preventDefault();const r=$('cropViewer').getBoundingClientRect();setCropZoom(S.cropZoom*(e.deltaY<0?1.2:1/1.2),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+$('clearAllCropsBtn').addEventListener('click',()=>{S.cropWorking=[];S.cropSelected=-1;commitCropHistory();cropDraw()});
+$('deleteCropBtn').addEventListener('click',()=>{if(S.cropSelected<0)return;S.cropWorking.splice(S.cropSelected,1);S.cropSelected=Math.min(S.cropSelected,S.cropWorking.length-1);commitCropHistory();cropDraw()});
+$('resetCropBtn').addEventListener('click',()=>{S.cropWorking=(S.cropProposals||[]).map(copyCrop);S.cropSelected=S.cropWorking.length?0:-1;commitCropHistory();cropTool('select')});
+// Costura vertical pelo caminho de menor presença de pixels entre duas poses.
+// Ao contrário de um corte reto, a costura acompanha o espaço livre entre cabelos,
+// braços e pernas, inclusive quando dois contornos quase encostam.
+function separationSeam(a,b){
+ const ax=a.clickSeed?.x??(a.x+a.w/2),bx=b.clickSeed?.x??(b.x+b.w/2);
+ const center=(ax+bx)/2,span=clamp(Math.abs(bx-ax)*.34,24,110);
+ const left=clamp(Math.floor(center-span),0,S.width-1);
+ const right=clamp(Math.ceil(center+span),left+1,S.width);
+ const cols=right-left,h=S.height;
+ const prev=new Float64Array(cols),cur=new Float64Array(cols),back=new Int16Array(cols*h);
+ for(let y=0;y<h;y++){
+  for(let k=0;k<cols;k++){
+   const x=left+k,ink=isForegroundPixel(x,y)?42:0;
+   const stay=Math.abs(x-center)*.018;
+   if(y===0){cur[k]=ink+stay;continue}
+   let best=prev[k],from=k;
+   if(k>0&&prev[k-1]+.65<best){best=prev[k-1]+.65;from=k-1}
+   if(k+1<cols&&prev[k+1]+.65<best){best=prev[k+1]+.65;from=k+1}
+   cur[k]=best+ink+stay;back[y*cols+k]=from;
+  }
+  prev.set(cur);
+ }
+ let k=0;for(let i=1;i<cols;i++)if(prev[i]<prev[k])k=i;
+ const seam=new Int16Array(h);
+ for(let y=h-1;y>=0;y--){seam[y]=left+k;if(y>0)k=back[y*cols+k]}
+ return seam;
+}
+function exclusiveClickMasks(crops){
+ const indexed=crops.map((r,i)=>r.maskRuns?.length?i:-1).filter(i=>i>=0);
+ if(indexed.length<2)return crops;
+ const ordered=indexed.slice().sort((i,j)=>(crops[i].clickSeed?.x??crops[i].x)-(crops[j].clickSeed?.x??crops[j].x));
+ const leftLimit=new Map(),rightLimit=new Map();
+ for(let k=0;k<ordered.length-1;k++){
+  const i=ordered[k],j=ordered[k+1],a=crops[i],b=crops[j];
+  const verticalOverlap=Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y);
+  if(verticalOverlap<Math.min(a.h,b.h)*.3)continue;
+  // Personagens já separados por espaço visível não precisam de costura.
+  const horizontalOverlap=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x);
+  if(horizontalOverlap< -2)continue;
+  const line=separationSeam(a,b);
+  rightLimit.set(i,line);leftLimit.set(j,line);
+ }
+ const owner=new Int16Array(S.width*S.height);owner.fill(-1);
+ function chooseOwner(i,j,x,y){
+  const a=crops[i],b=crops[j];
+  const x0=Math.max(a.x,b.x),x1=Math.min(a.x+a.w,b.x+b.w);
+  const y0=Math.max(a.y,b.y),y1=Math.min(a.y+a.h,b.y+b.h);
+  if(x1>x0&&y1>y0){
+   // Divide somente a área contestada; cada pixel pertence a UM sprite.
+   if(x1-x0<y1-y0)return x<Math.floor((x0+x1)/2)?(a.x<=b.x?i:j):(a.x<=b.x?j:i);
+   if(y1-y0<x1-x0)return y<Math.floor((y0+y1)/2)?(a.y<=b.y?i:j):(a.y<=b.y?j:i);
+  }
+  const sa=a.clickSeed||{x:a.x+a.w/2,y:a.y+a.h/2};
+  const sb=b.clickSeed||{x:b.x+b.w/2,y:b.y+b.h/2};
+  return (x-sa.x)**2+(y-sa.y)**2<=(x-sb.x)**2+(y-sb.y)**2?i:j;
+ }
+ for(const i of indexed){const runs=crops[i].maskRuns;
+  for(let n=0;n<runs.length;n+=3){const y=runs[n];
+   for(let x=runs[n+1];x<runs[n+2];x++){
+    const k=y*S.width+x,other=owner[k];
+    owner[k]=other<0?i:chooseOwner(other,i,x,y);
+   }
+  }
+ }
+ return crops.map((r,i)=>{
+  if(!r.maskRuns?.length)return r;
+  const runs=[];
+  for(let n=0;n<r.maskRuns.length;n+=3){
+   const y=r.maskRuns[n],end=r.maskRuns[n+2];let start=-1;
+   for(let x=r.maskRuns[n+1];x<=end;x++){
+    const keep=x<end&&owner[y*S.width+x]===i&&
+     (!leftLimit.has(i)||x>=leftLimit.get(i)[y])&&
+     (!rightLimit.has(i)||x<rightLimit.get(i)[y]);
+    if(keep&&start<0)start=x;
+    if(!keep&&start>=0){runs.push(y,start,x);start=-1}
+   }
+  }
+  return normCrop({...r,maskRuns:runs});
+ });
+}
+$('applyCropBtn').addEventListener('click',()=>{if(!S.cropWorking?.length){$('cropInfo').textContent='Desenhe pelo menos um recorte.';return}
+ S.manualCells=exclusiveClickMasks(S.cropWorking.map(normCrop)); // Cada pixel selecionado por clique pertence a um único recorte.
+ closeCropEditor();runAnalysis();$('layoutInfo').textContent=`${S.manualCells.length} recortes ajustados manualmente. Exportação disponível; confira a prévia quadro por quadro antes de salvar.`;
+ if(S.manualCells.some(r=>r.maskRuns?.length))$('bgStatus').textContent='Recortes por clique com fundo transparente e pixels vizinhos excluídos. A folha original permanece intacta.';
+});
+crop.addEventListener('pointerdown',cropDown);crop.addEventListener('pointermove',cropMove);crop.addEventListener('pointerup',cropUp);crop.addEventListener('pointercancel',()=>{S.cropDrag=null;cropDraw()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!cropModal.hidden)closeCropEditor();if(cropModal.hidden)return;const k=e.key.toLowerCase();if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&k==='z'){e.preventDefault();undoCropEdit()}else if(((e.ctrlKey||e.metaKey)&&k==='y')||((e.ctrlKey||e.metaKey)&&e.shiftKey&&k==='z')){e.preventDefault();redoCropEdit()}});
+
+$('file').addEventListener('change',e=>{openFile(e.target.files?.[0]);e.target.value='' });
+const upload=document.querySelector('.upload');for(const e of ['dragenter','dragover'])upload.addEventListener(e,ev=>{ev.preventDefault();upload.style.borderColor='#70e0d3'});
+for(const e of ['dragleave','drop'])upload.addEventListener(e,ev=>{ev.preventDefault();upload.style.borderColor='';if(e==='drop')openFile([...ev.dataTransfer.files].find(f=>f.type.startsWith('image/')))});
+$('analyzeBtn').addEventListener('click',runAnalysis);
+$('splitMode').addEventListener('change',()=>{S.manualCells=null;runAnalysis()});
+for(const id of ['columns','rows'])$(id).addEventListener('change',()=>{S.manualCells=null;if($('splitMode').value==='auto')$('splitMode').value='smart';runAnalysis()});
+$('bgTol').addEventListener('input',()=>{$('tolText').textContent=$('bgTol').value});
+$('removeBgBtn').addEventListener('click',removeBackgroundOnRequest);
+$('restoreBgBtn').addEventListener('click',restoreBackground);
+$('eraseRegionBtn').addEventListener('click',()=>{S.eraseRegionMode=!S.eraseRegionMode;$('eraseRegionBtn').textContent=S.eraseRegionMode?'Finalizar borracha por área':'Apagar área clicando na prévia';$('bgStatus').textContent=S.eraseRegionMode?'Clique no FUNDO da prévia, nunca sobre o personagem. Cada clique remove somente a área conectada.':'Borracha por área desativada.';});
+$('fps').addEventListener('input',()=>{$('fpsText').textContent=$('fps').value+' FPS'});
+for(const id of ['onion','guide','showJoints'])$(id).addEventListener('change',paintCanvas);
+$('prevBtn').addEventListener('click',()=>{S.playing=false;syncPlay();selectFrame(S.index-1)});
+$('nextBtn').addEventListener('click',()=>{S.playing=false;syncPlay();selectFrame(S.index+1)});
+$('playBtn').addEventListener('click',()=>{S.playing=!S.playing;S.acc=0;syncPlay()});
+$('reevalBtn').addEventListener('click',assess);
+$('reportBtn').addEventListener('click',exportReport);
+$('spriteBtn').addEventListener('click',exportSprites);
+for(const btn of document.querySelectorAll('[data-joint]'))btn.addEventListener('click',()=>{const key=btn.dataset.joint;S.pointMode=S.pointMode===key?null:key;for(const other of document.querySelectorAll('[data-joint]'))other.classList.toggle('active',other.dataset.joint===S.pointMode);$('jointStatus').textContent=S.pointMode?`Marque ${NODE_NAMES[S.pointMode]} no quadro atual.`:'Nenhum ponto selecionado.'});
+$('clearJoints').addEventListener('click',()=>{if(!S.anchors[S.index])return;S.anchors[S.index]={hip:null,kneeA:null,kneeB:null,footA:null,footB:null};paintCanvas();assess()});
+screen.addEventListener('click',ev=>{
+ if(!S.coordinates||!S.frames.length)return;
+ const rect=screen.getBoundingClientRect(),x=(ev.clientX-rect.left)*screen.width/rect.width,y=(ev.clientY-rect.top)*screen.height/rect.height;
+ const p={x:clamp((x-S.coordinates.x)/S.coordinates.w,0,1),y:clamp((y-S.coordinates.y)/S.coordinates.h,0,1)};
+ if(S.eraseRegionMode){
+  const f=S.frames[S.index],offsetX=Math.floor((S.frameW-f.rect.w)/2),offsetY=S.frameH-18-f.rect.h;
+  const srcX=f.rect.x+p.x*S.frameW-offsetX,srcY=f.rect.y+p.y*S.frameH-offsetY;
+  if(srcX<f.rect.x||srcX>=f.rect.x+f.rect.w||srcY<f.rect.y||srcY>=f.rect.y+f.rect.h){$('bgStatus').textContent='Clique sobre o fundo dentro da área do sprite.';return}
+  eraseRegionAt(srcX,srcY);return;
+ }
+ if(!S.pointMode)return;
+ S.anchors[S.index][S.pointMode]=p;paintCanvas();assess();
+});
+requestAnimationFrame(renderLoop);
+})();
+</script>
+</body>
+</html>

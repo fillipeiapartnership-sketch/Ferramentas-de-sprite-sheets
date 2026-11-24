@@ -1,0 +1,46 @@
+AUDITORIA TÉCNICA - SpriteMorph Studio 0.2
+
+PROJETO DE TESTE REAL
+Arquivos de origem: metro-fighters.zip e Metro-Fighters-plataforma-corrigida.zip
+Arquivos corrigidos: Metro_Fighters_Teste_SpriteMorph_v02.zip e
+Metro_Fighters_Plataforma_Corrigida_SpriteMorph_v02.zip
+Resultados técnicos iguais para os dois jogos testados.
+- 99 arquivos no jogo original e 99 no ZIP corrigido, mesma ordem e mesmas entradas.
+- 95 PNGs analisados; 191 quadros identificados.
+- 185 sprites dos 4 personagens (player 78, punk 36, blue 35, black 36).
+- 6 recursos não correspondentes aos personagens, preservados.
+- 21 sprite sheets com contagem exata declarada no JavaScript.
+- 120 quadros reescalados com proporção X/Y uniforme.
+- 31 arquivos modificados (30 PNG, 1 JavaScript de adaptação visual).
+- 120 silhuetas de arquivos modificados reverificadas, nenhuma distorção ou corte.
+- Nenhuma perda de frames na varredura após exportação.
+- Arquivos não modificados byte a byte inalterados.
+- ZipFile.testzip() CRC completo: PASSOU.
+- JavaScript regravado: node --check PASSOU.
+- Nenhuma falha de processamento ou aviso de corte reportado.
+- Correção anterior da plataforma preservada no JS da variante mais recente:
+  const MIN_LANE=32, MAX_LANE=55;.
+
+TESTES AUTOMATIZADOS DO CÓDIGO
+13 testes unitários e de integração: 13 PASSARAM.
+Abrangem: mover grupo, referência, origem protegida, preservação de GIFs,
+metadados de atlas, classificação de quadros horizontais, expansão de canvas,
+alinhamento de proporção, normalização uniforme por movimento, falhas de PNGs,
+conservação de documentos do ZIP e auditoria CRC.
+
+INTERFACE GRÁFICA
+Inicialização sob Xvfb/Tk: PASSOU.
+Carregamento do ZIP real e apresentação de personagens/categorias: PASSOU.
+Prévia de quadro e leitura de opções de altura-alvo/expansão: PASSOU.
+
+TESTES QUE EXIGEM O PC DO USUÁRIO
+O navegador Chromium deste ambiente bloqueou a navegação local por política
+administrativa. Assim, NÃO foi possível confirmar a experiência de gameplay
+visual em tempo real e a interação dos golpes; apenas o código JS foi verificado,
+e o conteúdo, número de frames e geometria dos sprites foram auditados.
+Teste o ZIP de jogo corrigido no Windows antes de substituir seu original.
+
+LIMITAÇÕES
+Dimensões absolutas dos contornos variam naturalmente com a pose (chute, queda,
+agachamento etc.) e diferenças artísticas. A escala física fica uniforme, sem
+esticar um eixo independentemente. Nem todo motor de jogo aceita canvas variável.
