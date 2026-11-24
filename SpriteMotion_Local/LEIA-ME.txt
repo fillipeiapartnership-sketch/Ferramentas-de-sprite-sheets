@@ -1,0 +1,381 @@
+SPRITEMOTION LOCAL v13 | RETÂNGULO COM ZOOM E ROLAGEM
+
+CORREÇÃO DA JANELA "MARQUE O PERSONAGEM"
+A antiga janela de marcação era controlada pelo OpenCV e exibia o frame
+em resolução real, sem zoom nem rolagem. Isso podia esconder os pés e
+impedir que você selecionasse todo o corpo.
+
+Agora a seleção é feita em uma janela Qt redimensionável que:
+- exibe o frame completo automaticamente ao abrir;
+- permite ampliar ou afastar a imagem pelos botões (+) e (-);
+- oferece "Ajustar à janela" e "100%";
+- mantém as barras de rolagem vertical e horizontal;
+- permite zoom com Ctrl + roda do mouse;
+- permite rolar com a roda do mouse (Shift + roda na horizontal);
+- permite mover a imagem mantendo Espaço pressionado e arrastando;
+- permite maximizar, minimizar ou restaurar a janela;
+- permite desenhar um novo retângulo mesmo após ajustar o zoom.
+
+SELEÇÃO
+1. Importe o vídeo com "Ajudar com retângulo no personagem" marcada.
+2. A imagem inteira será adaptada à janela.
+3. Se necessário, use "Afastar" ou "Ajustar à janela".
+4. Clique e arraste do alto da cabeça até depois dos pés.
+5. Clique em "Confirmar personagem". Esse botão só habilita quando
+   há uma seleção de pelo menos 4 x 4 pixels.
+6. Se preferir pular a marcação, clique em "Ignorar marcação":
+   o processamento continuará sem a ajuda do retângulo.
+
+IMPORTANTE
+O retângulo mantém coordenadas do vídeo original, mesmo com zoom
+ou rolagem. O recurso não altera a escala, o alinhamento ou a posição
+dos sprites. O rastreamento apenas ajuda a distinguir o personagem.
+As funções de remoção de manchas, hover na grade, GIF e grids foram
+preservadas da v12.
+
+TESTE DE REGRESSÃO
+Execute python auditoria_v13.py, e opcionalmente auditoria_local.py
+até auditoria_v12.py. A interface Qt deve ser confirmada visualmente
+no seu Windows.
+
+---- HISTÓRICO DE VERSÕES ----
+
+SPRITEMOTION LOCAL v12 | LUPA DE SPRITES E CONFIRMAÇÃO DE MANCHAS
+
+NOVO: LUPA TEMPORÁRIA NAS MINIATURAS
+Passe o mouse sobre qualquer sprite na lista central. Uma janela flutuante
+mostra a imagem ampliada, sobre xadrez para inspeção de resíduos.
+A lupa desaparece quando o mouse sai da lista ou você clica no sprite.
+Ela não modifica nem reprocessa os arquivos.
+
+NOVO: SELEÇÃO ANTES DE REMOVER MANCHAS
+1. Dê dois cliques no sprite para abrir o editor de retoque.
+2. Escolha "Clique inteligente", "Clique: apagar para transparência" ou
+   "Clique: corrigir cor sem cortar".
+3. Clique UMA vez na mancha. Os pixels afetados aparecem destacados.
+   Laranja: a área seria apagada para transparência.
+   Azul claro: a área teria apenas a cor corrigida, preservando o contorno.
+   NESTE MOMENTO NENHUM PIXEL FOI MODIFICADO.
+4. Inspecione a região destacada usando o zoom e a rolagem existentes.
+5. Clique "Confirmar..." para aplicar somente os pixels selecionados.
+   Ou clique "Descartar seleção" e não altere nada.
+6. Clique "Salvar correção" para gravar o PNG editado.
+
+OBSERVAÇÕES DE SEGURANÇA
+O seletor limita cor, raio, continuidade e área máxima para reduzir o risco
+de atingir partes grandes da roupa ou pele. Ainda assim é uma ferramenta
+heurística: confira sempre o realce antes de confirmar.
+Se mudar a tolerância, o raio ou o modo, a seleção atual é descartada.
+Se fechar o editor com uma seleção pendente, o app pedirá confirmação para
+ignorar a seleção ainda não aplicada antes de salvar outras correções.
+"Desfazer" pode voltar uma remoção que já tenha sido confirmada.
+O fluxo de remoção de fundo, estabilidade das grids, frames consecutivos,
+projetos antigos, PNGs e GIFs permanece preservado.
+
+TESTES
+Rode "python auditoria_v12.py" para testar seleção, confirmação, cancelamento,
+segurança e conexão dos controles. Testes anteriores de engine e exportação
+continuam disponíveis. A interface Qt precisa de confirmação visual no Windows.
+
+--- VERSÕES ANTERIORES ---
+
+SPRITEMOTION LOCAL v11 | AUDITORIA COM VÍDEO REAL
+
+Novo nesta versão:
+
+A detecção de ciclos agora tolera pequenas mudanças de iluminação,
+compressão e diferenças entre repetições. Busca uma sequência CONTÍNUA
+de poses e o melhor início/fim para minimizar saltos no looping.
+
+Se o vídeo não apresentar um ciclo suficientemente confiável,
+a ferramenta preserva todos os quadros na ordem cronológica.
+Não retira quadros isolados e depois os reproduz com um FPS fixo,
+pois isso altera o tempo do movimento e pode parecer tremor.
+
+Clique em "Identificar ciclo contínuo sem tremor" para atualizar a
+seleção em projetos importados em versões anteriores. O programa
+informará quais sprites ainda precisam ter o fundo removido.
+
+Foi testado o arquivo de 97 frames / 24 FPS enviado pelo usuário:
+a v10 não detectava o período; a v11 encontra cerca de 19 quadros
+por ciclo neste clipe. Este resultado é heurístico e deve ser
+conferido visualmente. O recorte por IA precisa de validação local
+no Windows, já que o modelo rembg não estava disponível no teste.
+
+SPRITEMOTION LOCAL v10.0 | CORREÇÃO DE TREMOR CAUSADO PELO RETÂNGULO
+
+O QUE FOI CORRIGIDO
+Na v6-v9, cada frame enviado ao modelo de IA era recortado a partir
+do retângulo móvel, com uma margem. Como o rastreador oscila ao seguir
+o corpo, o enquadramento e o contorno da máscara mudavam entre sprites.
+Isso podia produzir um tremor artificial na prévia e no sprite sheet.
+
+Na v10, a IA recebe SEMPRE o frame completo com as dimensões originais
+(estáveis). O retângulo acompanha o personagem, mas serve SOMENTE para
+distingui-lo de outros objetos desconectados. Ele NÃO determina recorte,
+posição, largura, altura ou zoom do sprite, nem desloca a grid.
+O reconhecimento das poses também ignora a borda móvel do retângulo.
+A mesma transformação geométrica é aplicada à prévia e à exportação.
+
+COMO CORRIGIR PROJETOS DAS VERSÕES V6 A V9
+1. Abra a v10.
+2. Clique em 'Abrir projeto anterior' e selecione projeto.json.
+3. Marque os sprites já processados que deseja corrigir.
+4. No painel esquerdo, clique em
+   'Reprocessar máscaras sem recorte móvel'.
+5. Confirme a operação. A IA será executada novamente.
+6. Os PNGs antigos, INCLUSIVE retoques manuais, serão salvos na subpasta
+   backup_antes_correcao_tremor_... dentro do projeto.
+7. Revise a prévia e exporte novamente. Se necessário, faça retoques
+   manuais novos nos sprites reprocessados.
+
+O botão 'Refazer limpeza dos sprites prontos' só ajusta a cor do halo:
+NÃO corrige máscaras produzidas com o antigo recorte móvel.
+
+PARA NOVOS VÍDEOS
+A opção 'Ajudar com retângulo no personagem' continua disponível.
+Não é necessário desativá-la. A v10 separa rastreamento e recorte.
+Para preservar a cadência natural, deixe 'Estabilizar tronco'
+DESMARCADO inicialmente. Se houver deslocamento real de câmera,
+teste o recurso e compare a prévia com o vídeo de origem.
+
+LIMITAÇÕES
+A v10 remove a fonte de instabilidade causada pelo recorte variável,
+mas não corrige tremores que já existam no vídeo original e não garante
+que um modelo de segmentação produza máscaras idênticas em poses
+diferentes. O rastreamento pode perder o alvo em cenas difíceis.
+
+AUDITORIA
+Execute auditoria_v10.py, auditoria_local.py, auditoria_retoque_v7.py,
+auditoria_v8.py e auditoria_v9.py. Os testes de segmentação usam um
+modelo falso local para verificar invariância a oscilação do retângulo,
+sem baixar os pesos reais. A interface gráfica ainda precisa ser
+validada no Windows.
+
+--- HISTÓRICO ---
+
+SPRITEMOTION LOCAL v9.0 | CORREÇÃO DE TRAVAMENTO NA EXPORTAÇÃO
+
+PROBLEMA CORRIGIDO
+O aviso 'Exportação concluída' era aberto como janela modal antes de a tarefa
+em segundo plano encerrar completamente. Isso podia deixar o aplicativo sem
+responder, mesmo com os arquivos já gravados. A v9 aguarda QThread.finished,
+recupera os controles e só então informa o resultado no próprio painel.
+A v9 não abre automaticamente o Explorador de Arquivos.
+
+COMO SABER SE TERMINOU
+Após a exportação, o painel da direita mostrará o total de PNGs e, quando
+selecionado, a confirmação do GIF. O botão 'Abrir pasta exportada' fica
+habilitado. Clique nele se desejar abrir o destino.
+O progresso também chega a 100% na conclusão bem-sucedida.
+
+SE ESTAVA TRAVADO NA V8
+Feche o SpriteMotion antigo quando for seguro e confira a pasta de exportação:
+ela já pode conter sprite_sheet_001.png, sprites/frame_0001.png, atlas.json
+e animacao.gif. Não apague as pastas de projeto ou os PNGs corrigidos.
+Extraia a v9 numa nova pasta, rode INICIAR_SPRITEMOTION.bat e use
+'Abrir projeto anterior' para selecionar o projeto.json antigo.
+
+MEMÓRIA E GIF
+O GIF usa frames corrigidos com uma paleta limitada; para evitar consumo
+excessivo, a v9 limita o total de pixels de um GIF. Se um GIF for grande
+demais, o programa avisa no painel, preservando a exportação PNG.
+
+VALIDAÇÃO
+Os testes automatizados de extração, transparência, alinhamento, retoque
+por clique e GIF passaram. O código PySide6 passou na checagem de sintaxe.
+O aplicativo visual do Windows não foi executado aqui, portanto a correção
+precisa ser validada no seu computador.
+
+---
+
+SPRITEMOTION LOCAL v8.0 | WINDOWS 11
+
+NOVIDADE DA V8 — VOCÊ ESCOLHE ONDE OS ARQUIVOS FICAM
+A pasta Documentos\SpriteMotion NÃO é mais usada automaticamente.
+Na primeira execução, o local sugerido para novos trabalhos é a pasta
+em que você extraiu o SpriteMotion, ao lado do arquivo .bat.
+No topo da janela, em "Pasta dos projetos", clique em "Escolher pasta..."
+para mudar o destino antes de importar qualquer vídeo.
+Cada vídeo será salvo dentro de sua própria subpasta, com frames originais,
+sprites transparentes, recortes de IA e projeto.json. O local escolhido
+é lembrado nas próximas execuções em configuracoes.json, salvo ao lado
+do programa, quando houver permissão de escrita.
+A mudança NÃO move projetos antigos e NÃO exclui Documentos\SpriteMotion.
+Para abrir projetos antigos, clique em "Abrir projeto anterior" e navegue
+até a pasta que contém o projeto.json existente.
+
+NOVIDADE DA V8 — GIF ANIMADO A PARTIR DOS SPRITES CORRIGIDOS
+Os sprites continuam sendo PNG com transparência integral.
+Depois de corrigir manchas ou editar uma pose e SALVAR o quadro,
+a exportação usa o PNG corrigido correspondente, na ordem dos sprites
+marcados, na escala uniforme da grid e no FPS da prévia.
+No painel direito, marque "Criar GIF animado com sprites corrigidos"
+(ativado por padrão) e clique em "Exportar PNG + atlas + GIF".
+O arquivo animacao.gif é salvo na MESMA pasta dos PNGs exportados.
+Se quiser só o GIF, clique em "Exportar apenas GIF".
+O GIF repete indefinidamente a sequência de poses selecionadas.
+
+IMPORTANTE SOBRE TRANSPARÊNCIA
+O formato GIF tem no máximo 256 cores por frame e transparência binária:
+semitransparências suaves são aproximadas. Não use o GIF como original
+para jogos ou retrabalhos de bordas; use o PNG RGBA e o atlas.
+A exportação do GIF não altera os PNGs corrigidos e não reprocessa a IA.
+Para vídeos muito longos/resoluções altas, reduza o número de poses ou
+o tamanho da grid se houver alerta de memória.
+
+TESTES V8
+Executar python auditoria_local.py, python auditoria_retoque_v7.py,
+python auditoria_v8.py (sem downloads de modelos de IA).
+Verificam alinhamento/tremor, limpeza, preservação de PNGs, exportação
+GIF transparente em loop, FPS e uso das correções salvas.
+A interface PySide6 ainda depende da validação visual no Windows.
+
+--- HISTÓRICO E DEMAIS INSTRUÇÕES ---
+
+
+NOVIDADES DA V7 — MANCHAS REMOVIDAS COM UM CLIQUE
+1. Abra o programa, selecione um grupo e dê DOIS CLIQUES no sprite.
+2. Na janela de retoque, escolha "Clique inteligente (recomendado)".
+3. Amplie a imagem, navegue com a rolagem que JÁ EXISTE na janela,
+   e clique diretamente na mancha que deseja eliminar.
+4. O modo inteligente apaga resíduos de borda apropriados ou repara
+   a cor de manchas internas preservando a transparência do personagem.
+5. Se precisar escolher: "Clique: apagar para transparência" remove alpha;
+   "Clique: corrigir cor sem cortar" reconstitui RGB, sem abrir buracos.
+6. Ajuste Tolerância (comece em 19) e Raio (comece em 28 pixels).
+   O programa limita o alcance do clique para proteger o desenho.
+7. "Desfazer" restaura a correção anterior. "Salvar correção" grava
+   o PNG do sprite. "Cancelar" descarta as mudanças desta sessão.
+
+JANELA E NAVEGAÇÃO DA V7
+O editor abre como janela com botões nativos para MAXIMIZAR, MINIMIZAR,
+RESTAURAR e FECHAR. NÃO foi adicionada barra de rolagem duplicada.
+As barras horizontais e verticais que já existiam aparecem quando o
+zoom torna a imagem maior que a área visível. O alinhamento das grids
+na prévia/exportação permanece igual ao das versões anteriores.
+
+IMPORTANTE
+O clique inteligente é uma seleção por cor e proximidade, não uma IA
+capaz de reconstruir perfeitamente toda textura. Se a seleção atingisse
+uma parte grande demais do personagem, o programa se recusa a apagar;
+reduza Tolerância/Raio e tente novamente. Verifique cabelo e contornos,
+use Desfazer quando necessário. Processos de "Refazer limpeza" podem
+substituir edições manuais já salvas. A IA para remover fundos multicoloridos
+permanece a mesma; o ajuste por clique não requer rede.
+
+NOVIDADE DA V6
+Opcionalmente, marque o personagem com um retângulo no primeiro frame
+para orientar o rastreamento e a remoção do fundo, independentemente de
+ser verde ou de outra cor. O rastreamento não é infalível: revise poses.
+
+REVISÃO DO PROBLEMA OBSERVADO NA GRAVAÇÃO
+A versão anterior cortava cada personagem pelo retângulo individual e
+centralizava a imagem a cada frame. A extensão dos braços e das pernas
+mudava esse retângulo, deslocando o corpo e criando o tremor. A v4 usa
+uma área global para todos os sprites: o tronco não é recentralizado
+individualmente. A prévia e os PNGs exportados usam o MESMO alinhamento.
+
+Também existiam manchas verdes: a IA segmentava o fundo, mas o recorte
+mantinha verde misturado aos pixels de borda. Nesta versão:
+  - limpa regiões verdes externas classificadas incorretamente como corpo;
+  - substitui verde contaminante das bordas por cores próximas do personagem;
+  - trata pequenas manchas da cor do fundo dentro do corpo sem abrir furos;
+  - tenta preservar acessórios e roupas genuinamente verdes;
+  - conserva o recorte de IA original para poder refazer a limpeza.
+Nenhum algoritmo pode garantir 100% se a própria roupa for quase da mesma
+cor do fundo verde. Confira os PNGs de perto e use o pincel quando preciso.
+
+A ferramenta procura períodos recorrentes. Quando identifica uma repetição com
+confiança, seleciona um CICLO COMPLETO E CONTÍNUO de movimentos, em vez
+de misturar poses de ciclos separados, o que poderia causar outros saltos.
+Se não houver uma repetição detectável, mantém o método conservador de
+seleção e permite corrigir manualmente.
+
+COMO INSTALAR
+1. Python 3.12 para Windows x64 com o Python Launcher "py" instalado.
+2. Extraia a pasta inteira do ZIP (não abra o programa dentro do ZIP).
+3. Dê dois cliques em INICIAR_SPRITEMOTION.bat.
+4. Na primeira execução, instala dependências pela internet. O modelo de
+   IA local também é baixado no primeiro uso. Depois os vídeos são
+   processados localmente, sem envio a servidores do aplicativo.
+
+COMO REABRIR UM PROJETO DAS VERSÕES V1 / V2 / V3
+1. Abra a V7, clique em "Abrir projeto anterior".
+2. Escolha Documentos\\SpriteMotion\\<pasta_do_video>\\projeto.json.
+3. Deixe MARCADO "Ajustar tamanhos diferentes automaticamente" e
+   DESMARCADO "Estabilizar tronco" inicialmente. Assim, o programa
+   preserva as posições reais do vídeo dentro de todos os grids, sem
+   enquadrar cada frame individualmente. As imagens antigas também se
+   beneficiam desse alinhamento, sem precisar refazer IA.
+4. Use fundo verde "Automático", Força 85, Raio 10 e clique em
+   "Refazer limpeza dos sprites prontos". Se ainda restarem manchas,
+   teste "Forçar limpeza verde" ou aumente o raio moderadamente.
+5. Clique em "Encontrar 1 ciclo completo nos quadros". Se um ciclo for
+   detectado, você pode selecionar só a primeira repetição. Caso apareça
+   a informação de que há quadros sem transparência, use
+   "Processar quadros selecionados" antes de exportar.
+6. Ative "Mostrar transparência em xadrez" e confira a prévia.
+7. Exporte um novo sprite sheet e sprites PNG separados.
+
+AVISO: a refação automática pode sobrepor edições de pincel anteriores.
+Os quadros originais não são alterados. As versões V1 sem cache de
+recorte original de IA só conseguem refinar o PNG anterior; nesses casos,
+para a melhor qualidade, importe o vídeo de novo na V7.
+
+AJUSTE AUTOMÁTICO DE TAMANHO / PROPORÇÃO (NOVO NA V4)
+- Ativado por padrão em "Ajustar tamanhos diferentes automaticamente".
+- Todas as células são iguais, configuradas em "Largura" e "Altura".
+- Se as imagens dos sprites tiverem RESOLUÇÕES ORIGINAIS DIFERENTES
+  dentro do mesmo movimento (por exemplo 160x200 e 320x400), a ferramenta
+  agrupa os quadros pela sua resolução e encontra uma ESCALA ESTÁVEL para
+  cada grupo. A proporção do personagem é preservada: não estica tronco,
+  pernas, braços nem altera largura e altura separadamente.
+- Poses obtidas do mesmo tamanho de imagem partilham a MESMA escala.
+  A perna levantada não faz o corpo "dar zoom" só porque a silhueta ficou
+  um pouco mais baixa. Isso é essencial para a caminhada não tremer.
+- Enquadramento e escala usados na PREVIA são os MESMOS exportados nos PNGs.
+- O ajuste não recompõe detalhes que já foram perdidos na remoção de fundo
+  e não corrige automaticamente um personagem que muda de tamanho dentro
+  de um vídeo com quadros de resolução idêntica.
+- Desative a opção somente se desejar manter os tamanhos brutos de quadros
+  obtidos de fontes com resoluções diferentes.
+
+ALINHAMENTO DA ANIMAÇÃO
+- Estabilizar tronco DESLIGADO (padrão recomendado): conserva a posição
+  que o personagem tinha em cada quadro do vídeo. É o melhor modo para
+  vídeos com câmera parada e personagem caminhando no mesmo lugar.
+- Estabilizar tronco LIGADO: tenta alinhar o eixo superior do corpo quando
+  o sujeito está se deslocando no vídeo. Pode reduzir movimento natural
+  de balanço, então só use se necessário.
+- Em ambos os modos, as células têm as MESMAS dimensões e a escala é
+  estável dentro de cada resolução de origem.
+
+LIMPEZA DO VERDE
+- Automático: ativa apenas quando identifica fundo verde na borda.
+- Forçar: tenta reparar até quando essa detecção falha.
+- Desligado: mantém o recorte base sem limpeza extra.
+- Comece em Força 85% e Raio 10 pixels. Se remover algo verde que realmente
+  pertence ao personagem, reduza a força/raio ou corrija com pincel.
+- "Mostrar transparência em xadrez" só altera a prévia; exporta RGBA real.
+
+RECURSOS
+Importar MP4/MOV/WEBM/AVI, extrair TODOS os frames como PNG, detectar
+quadros repetidos, escolher poses principais, recortar com IA, remover
+spill verde, editar alpha por pincel, prévia FPS, grids de células iguais,
+exportar sprites PNG individuais e sprite_sheet_001.png com atlas.json.
+
+TESTES
+No terminal com ambiente configurado, rode auditoria_local.py.
+A auditoria simula a máscara de IA, testa cromakey, manchas internas,
+proteção de verde legítimo, movimento de pernas sem jitter no tronco,
+recuperação de projeto, seleção e exportação. A V4 inclui teste de
+origens com resoluções diferentes, prévia idêntica ao PNG, preservação de
+proporção e ausência de zoom artificial ao levantar as pernas. Não baixa
+pesos de IA.
+
+LIMITAÇÕES
+A interface gráfica PySide6 não pôde ser aberta no Windows durante a
+preparação desta versão; será importante conferir visualmente no seu PC.
+Vídeos com câmera em movimento ou com fundos multicoloridos podem exigir
+ajuste manual. O resultado varia conforme qualidade da fonte e da IA.
